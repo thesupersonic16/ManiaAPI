@@ -3,6 +3,7 @@
 #include <MemAccess.h>
 #include <cmath>
 
+#include <Entities/Entity.h>
 
 #pragma region PreprocessorDefines
 
@@ -26,7 +27,6 @@ namespace SonicMania
 
 #pragma region Declares
 	// Entities
-    struct Entity;
     struct EntityPlayer;
     struct EntityItemBox;
     struct EntityRing;
@@ -43,7 +43,7 @@ namespace SonicMania
     enum Scene : short
     {
         Scene_NONE = -1,
-        // Presentation 
+        // Presentation
         Scene_Logo,
         Scene_Title,
         Scene_MainMenu,
@@ -162,7 +162,7 @@ namespace SonicMania
         Scene_GoodEnd,
         Scene_TrueEnd
     };
-    
+
     enum Category : byte
     {
         Presentation,
@@ -250,13 +250,22 @@ namespace SonicMania
         ItemBoxItem_LifeMighty,
         ItemBoxItem_LifeRay
     };
-    
+
     enum CollisionModes
     {
         CollisionMode_Floor,
         CollisionMode_LeftWall,
         CollisionMode_Roof,
         CollisionMode_RightWall
+    };
+
+    enum CollisionSide
+    {
+        CollisionSide_None,
+        CollisionSide_Top,
+        CollisionSide_Left,
+        CollisionSide_Right,
+        CollisionSide_Bottom
     };
 
     // TODO: needs updating
@@ -422,8 +431,8 @@ namespace SonicMania
         ObjectType_TurboTurtle      = 0x00AC683C,
         ObjectType_FlasherMkII      = 0x00AC670C,
         ObjectType_BallHog2         = 0x00AC6678,
-        
-        // Angel Island Zone 
+
+        // Angel Island Zone
         ObjectType_MonkeyDude       = 0x00AC6784,
         ObjectType_Rhinobot         = 0x00AC6C24,
         ObjectType_Bloominator      = 0x00AC6F48,
@@ -432,7 +441,7 @@ namespace SonicMania
         ObjectType_S1Orbinaught        = 0x00AC6A00,
         ObjectType_S1Catakiller        = 0x00AC6B78,
 
-        //Service Objects 
+        //Service Objects
         ObjectType_FXFade            = 0x00AC6810
     };
 
@@ -485,7 +494,7 @@ namespace SonicMania
 #define PLAYERSTATE_TurningSmall_MMZ		(SonicMania::PlayerStatus)(baseAddress + 0x00431560) // TODO: needs updating
 #define PLAYERSTATE_TurningBig_MMZ			(SonicMania::PlayerStatus)(baseAddress + 0x00431690) // TODO: needs updating
 #define PLAYERSTATE_P2FLYIN					(SonicMania::PlayerStatus)(baseAddress + 0x004CD150)
-#define PLAYERSTATE_P2JUMPIN				(SonicMania::PlayerStatus)(baseAddress + 0x004CD560) 
+#define PLAYERSTATE_P2JUMPIN				(SonicMania::PlayerStatus)(baseAddress + 0x004CD560)
 #define PLAYERSTATE_SpringBasic				(SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
 #define PLAYERSTATE_ScoreCard				(SonicMania::PlayerStatus)(baseAddress + 0x000CCD30)
 #define PLAYERSTATE_TransportTube_CPZ		(SonicMania::PlayerStatus)(baseAddress + 0x000CBA90)
@@ -547,7 +556,7 @@ namespace SonicMania
         {
 
         }
-        
+
         Vector2(int x, int y) : Vector2()
         {
             X = x;
@@ -712,7 +721,7 @@ namespace SonicMania
             //return ((Red & 0b11111000) << 8) | ((Green & 0b11111100) << 3) | (Blue >> 3);
             return (Blue >> 3) | 32 * (Green >> 2) | ((Red >> 3) << 11);
         }
-        
+
         inline int ToRGB888()
         {
             return ((Red & 0xFF) << 16) + ((Green & 0xFF) << 16) + (Blue & 0xFF);
@@ -831,7 +840,7 @@ namespace SonicMania
     FunctionPointer(int, PlaySoundFX, (short SoundFXID, signed int a2, unsigned __int8 a3), 0x001BC390);
     FunctionPointer(short, GetSoundFXID, (const char *path), 0x001BC2F0);
     FunctionPointer(void, ChangeMusicSpeed, (int slot, float volume, float Channelbalance, float PlaybackSpeed), 0x001BC830);
-    
+
     // Entity
     FunctionPointer(bool, SetSpriteAnimation, (short spriteIndex, short animationID, EntityAnimationData* animationData, bool forceApply, short frameID), 0x001B35E0);
     FastcallFunctionPointer(void, FastChangeCharacter, (EntityPlayer* player, Character character), 0x000C7920);
@@ -843,7 +852,7 @@ namespace SonicMania
     FunctionPointer(int, ObjectTileCollision, (Entity* Entity, unsigned __int16 SolidityFilter, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int a7), 0x001BF5F0); //Check Collision at a certain point
     FunctionPointer(int, ObjectPathGrip, (Entity* Entity, unsigned __int16 SolidityFilter, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int a7), 0x001BFB40); //Check Collision around a certain point
     FunctionPointer(void, ProcessPlayerTileCollisions, (EntityPlayer* Player, Hitbox* OuterBox, Hitbox* InnerBox), 0x001C0060);
-    
+
     // Graphics
     FunctionPointer(void, DrawRect, (short XPos, short YPos, short SizeY, short SizeX, byte R, byte G, byte B, byte Alpha), 0x00001DAC10);
     FunctionPointer(void*, LoadAniTiles, (const char* FilePath, Scope scope), 0x001D4CE0);
@@ -915,7 +924,7 @@ namespace SonicMania
     DataPointer(float, Controller1LStickX, 0x43E5C8);
     DataPointer(float, Controller1LStickY, 0x43E5CC);
     char* CurrentSceneName = (char*)(baseAddress + 0x00A5359C);
-    
+
     // Palettes
     DataArray(SHORT, Palette0, 0x00945B58, 256);
     DataArray(SHORT, Palette1, 0x00945D58, 256);
@@ -925,7 +934,7 @@ namespace SonicMania
     DataArray(SHORT, Palette5, 0x00946558, 256);
     DataArray(SHORT, Palette6, 0x00946758, 256);
     DataArray(SHORT, Palette7, 0x00946958, 256);
-    
+
 #pragma endregion
 
 #pragma region Entity
@@ -948,70 +957,6 @@ namespace SonicMania
         CollisionSensor Sensors[5];
     };
 
-    //A NOTE ON HOW TO GET ATTRIBUTE VALUES
-
-    struct Entity
-    {
-#pragma region Data
-		/* 0x00000000 */ Vector2 Position;
-        /* 0x00000008 */ int ScaleX; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
-        /* 0x0000000C */ int ScaleY;
-        /* 0x00000010 */ int XVelocity;
-        /* 0x00000014 */ int YVelocity;
-        /* 0x00000018 */ int UpdateRangeX; //How many pixels offscreen to keep the object updating
-        /* 0x0000001C */ int UpdateRangeY;
-        /* 0x00000020 */ int Angle;
-        /* 0x00000024 */ int Alpha; //Transparency
-        /* 0x00000028 */ int Rotation;
-        /* 0x0000002C */ int Speed;
-        /* 0x00000030 */ DWORD field_30;
-        /* 0x00000034 */ WORD field_34;
-        /* 0x00000036 */ short ObjectID;
-        /* 0x00000038 */ bool OnScreen;
-        /* 0x0000003C */ DWORD field_3C;
-        /* 0x00000040 */ bool TileCollisions;
-        /* 0x00000044 */ DWORD field_44;
-        /* 0x00000048 */ bool Grounded;
-        /* 0x0000004C */ BYTE Priority; //Active State
-        /* 0x0000004D */ BYTE Filter;
-        /* 0x0000004E */ bool Direction;
-        /* 0x0000004F */ BYTE DrawOrder;                // The layer the Sprite Draws on (0-14)
-        /* 0x00000050 */ BYTE field_50;
-        /* 0x00000050 */ BYTE CollisionMode;
-        /* 0x00000052 */ BYTE CollisionPlane;
-        /* 0x00000053 */ BYTE DrawFX;
-        /* 0x00000054 */ BYTE InkEffect;
-        /* 0x00000055 */ BYTE field_55;
-        /* 0x00000055 */ BYTE field_56;
-        /* 0x00000055 */ BYTE field_57;
-        /* 0x00000058 */ void* State;
-        ///* 0x0000005C */ void* StateDraw;
-#pragma endregion
-
-        void Move(short x, short y)
-        {
-            Position.X = x;
-            Position.Y = y;
-        }
-        void AddVelocity(int x, int y)
-        {
-            XVelocity += x;
-            YVelocity += y;
-            Speed += x;
-        }
-        void SetVelocity(int x, int y)
-        {
-            XVelocity = x;
-            YVelocity = y;
-            Speed = x;
-        }
-        void MultiplyVelocity(float x, float y)
-        {
-            XVelocity = (int)(XVelocity * x);
-            YVelocity = (int)(YVelocity * y);
-            Speed = (int)(Speed * x);
-        }
-    };
     struct EntityPlayer : Entity
     {
         /* 0x00000060 */ DWORD dword60;
@@ -1383,14 +1328,14 @@ namespace SonicMania
         int abs = jmp + r + 5;
         return (T*)abs;
     }
-    
+
     inline short GetObjectIDFromType(ObjectType type)
     {
         if (*((int*)(baseAddress + type)) == 0)
             return 0;
         return *(short*)GetAddress((int)(baseAddress + type), 0);
     }
-    
+
     inline Ability GetMoveSetByCharacter(Character character)
     {
         switch (character)
@@ -1409,34 +1354,34 @@ namespace SonicMania
             return MOVESET_SONIC;
         }
     }
-    
+
     inline void RestartScene()
     {
         // Setting GameState to NotRunning restarts the scene
         GameState = GameState_NotRunning;
     }
-    
+
     inline void ChangeScene(Scene scene)
     {
         CurrentScene = scene;
         GameState = GameState_NotRunning;
     }
-    
+
     inline Entity* SpawnObject(short objectID, short subObject, short x, short y)
     {
         return SpawnObject_Internal(objectID, subObject, ((int)x) << 16, ((int)y) << 16);
     }
-    
+
     inline Entity* SpawnObject(short objectID, short subObject, Vector2 position)
     {
         return SpawnObject(objectID, subObject, position.X, position.Y);
     }
-    
+
     inline void DespawnEntity(Entity* entity)
     {
         DespawnEntity_Internal(entity, 0, 0);
     }
-    
+
     inline void PlaySong(const char* filePath, int loopstart, bool loop)
     {
         int* addr = GetAddress(0x00AC6E08, 0x248);
@@ -1446,7 +1391,7 @@ namespace SonicMania
             PlayMusic(filePath, 0, 0, loopstart, loop ? 1 : 0);
 
     }
-    
+
     inline int PlaySoundFXS(const char *path)
     {
         return PlaySoundFX(GetSoundFXID(path), 0, 0xFF);
@@ -1511,7 +1456,7 @@ namespace SonicMania
 #pragma endregion
 
 #pragma region ManiaPatches
-    
+
     inline void BindLBAndRB()
     {
         // LB
