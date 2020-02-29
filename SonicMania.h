@@ -25,7 +25,7 @@ namespace SonicMania
 #pragma endregion
 
 #pragma region Declares
-	// Entities
+    // Entities
     struct Entity;
     struct EntityPlayer;
     struct EntityItemBox;
@@ -187,12 +187,12 @@ namespace SonicMania
 
     enum Character : int
     {
-        Character_None = 0b00000,
-        Character_Sonic = 0b00001,  // 1 << 0
-        Character_Tails = 0b00010,  // 1 << 1
-        Character_Knux = 0b00100,   // 1 << 2
+        Character_None   = 0b00000,
+        Character_Sonic  = 0b00001,  // 1 << 0
+        Character_Tails  = 0b00010,  // 1 << 1
+        Character_Knux   = 0b00100,   // 1 << 2
         Character_Mighty = 0b01000, // 1 << 3
-        Character_Ray = 0b10000     // 1 << 4
+        Character_Ray    = 0b10000     // 1 << 4
     };
 
     enum GameMode : int
@@ -205,9 +205,9 @@ namespace SonicMania
 
     enum Filter : byte
     {
-        Filter_None = 0b0000,
-        Filter_ManiaMode = 0b0001,
-        Filter_Unknown = 0b0010,
+        Filter_None       = 0b0000,
+        Filter_ManiaMode  = 0b0001,
+        Filter_Unknown    = 0b0010,
         Filter_EncoreMode = 0b0100
     };
     BitFlag(Filter, byte)
@@ -215,12 +215,21 @@ namespace SonicMania
     enum GameStates : byte
     {
         GameState_NotRunning = 0b0000,
-        GameState_Running = 0b0001,
-        GameState_SoftPause = 0b0010,
-        GameState_HardPause = 0b0100,
-        GameState_DevMenu = 0b1000
+        GameState_Running    = 0b0001,
+        GameState_SoftPause  = 0b0010,
+        GameState_HardPause  = 0b0100,
+        GameState_DevMenu    = 0b1000
     };
     BitFlag(GameStates, byte)
+
+    enum DrawingFX : byte
+    {
+        FX_None   = 0b0000,
+        FX_Flip   = 0b0001,
+        FX_Rotate = 0b0010,
+        FX_Scale  = 0b0100,
+    };
+    BitFlag(DrawingFX, byte)
 
     enum Scope : byte
     {
@@ -458,69 +467,69 @@ namespace SonicMania
 
     // Player Status
 #define CONTROL_NONE                    (SonicMania::PlayerStatus)(0x00000000)
-#define CONTROL_NORMAL					(SonicMania::PlayerStatus)(baseAddress + 0x000C3E00)
-#define CONTROL_P2						(SonicMania::PlayerStatus)(baseAddress + 0x000C4340)
+#define CONTROL_NORMAL                  (SonicMania::PlayerStatus)(baseAddress + 0x000C3E00)
+#define CONTROL_P2                      (SonicMania::PlayerStatus)(baseAddress + 0x000C4340)
 
 
 // Player Status
-#define PLAYERSTATE_NONE					(SonicMania::PlayerStatus)(0x00000000)
-#define PLAYERSTATE_GROUND					(SonicMania::PlayerStatus)(baseAddress + 0x000CAD80)
-#define PLAYERSTATE_AIR						(SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
-#define PLAYERSTATE_JUMP					(SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
-#define PLAYERSTATE_LOOKDOWN				(SonicMania::PlayerStatus)(baseAddress + 0x000CBBD0)
-#define PLAYERSTATE_LOOKUP					(SonicMania::PlayerStatus)(baseAddress + 0x000CBAA0)
-#define PLAYERSTATE_SPINDASH				(SonicMania::PlayerStatus)(baseAddress + 0x000CBD80)
-#define PLAYERSTATE_Roll					(SonicMania::PlayerStatus)(baseAddress + 0x000CB850)
-#define PLAYERSTATE_HURT					(SonicMania::PlayerStatus)(baseAddress + 0x004CCA00)
-#define PLAYERSTATE_DIE						(SonicMania::PlayerStatus)(baseAddress + 0x000CCAC0)
+#define PLAYERSTATE_NONE                    (SonicMania::PlayerStatus)(0x00000000)
+#define PLAYERSTATE_GROUND                  (SonicMania::PlayerStatus)(baseAddress + 0x000CAD80)
+#define PLAYERSTATE_AIR                     (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
+#define PLAYERSTATE_JUMP                    (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
+#define PLAYERSTATE_LOOKDOWN                (SonicMania::PlayerStatus)(baseAddress + 0x000CBBD0)
+#define PLAYERSTATE_LOOKUP                  (SonicMania::PlayerStatus)(baseAddress + 0x000CBAA0)
+#define PLAYERSTATE_SPINDASH                (SonicMania::PlayerStatus)(baseAddress + 0x000CBD80)
+#define PLAYERSTATE_Roll                    (SonicMania::PlayerStatus)(baseAddress + 0x000CB850)
+#define PLAYERSTATE_HURT                    (SonicMania::PlayerStatus)(baseAddress + 0x004CCA00)
+#define PLAYERSTATE_DIE                     (SonicMania::PlayerStatus)(baseAddress + 0x000CCAC0)
 #define PLAYERSTATE_OUTTAHERE               (SonicMania::PlayerStatus)(baseAddress + 0x000CCE90)
-#define PLAYERSTATE_Gimmick					(SonicMania::PlayerStatus)(baseAddress + 0x000CAD70)
-#define PLAYERSTATE_Gimmick2				(SonicMania::PlayerStatus)(baseAddress + 0x004CBA90) // TODO: needs updating
-#define PLAYERSTATE_Hanging					(SonicMania::PlayerStatus)(baseAddress + 0x004CAD70) // TODO: needs updating
-#define PLAYERSTATE_SpiningTube_PGZ			(SonicMania::PlayerStatus)(baseAddress + 0x0041F7F0) // TODO: needs updating
-#define PLAYERSTATE_Frozen_PGZ				(SonicMania::PlayerStatus)(baseAddress + 0x004A3410) // TODO: needs updating
-#define PLAYERSTATE_Sliding_OOZ				(SonicMania::PlayerStatus)(baseAddress + 0x0042EB10) // TODO: needs updating
-#define PLAYERSTATE_SwitchingToBG_MMZ		(SonicMania::PlayerStatus)(baseAddress + 0x004304A0) // TODO: needs updating
-#define PLAYERSTATE_SwitchingToFG_MMZ		(SonicMania::PlayerStatus)(baseAddress + 0x004305B0) // TODO: needs updating
-#define PLAYERSTATE_TurningSmall_MMZ		(SonicMania::PlayerStatus)(baseAddress + 0x00431560) // TODO: needs updating
-#define PLAYERSTATE_TurningBig_MMZ			(SonicMania::PlayerStatus)(baseAddress + 0x00431690) // TODO: needs updating
-#define PLAYERSTATE_P2FLYIN					(SonicMania::PlayerStatus)(baseAddress + 0x004CD150)
-#define PLAYERSTATE_P2JUMPIN				(SonicMania::PlayerStatus)(baseAddress + 0x004CD560) 
-#define PLAYERSTATE_SpringBasic				(SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
-#define PLAYERSTATE_ScoreCard				(SonicMania::PlayerStatus)(baseAddress + 0x000CCD30)
-#define PLAYERSTATE_TransportTube_CPZ		(SonicMania::PlayerStatus)(baseAddress + 0x000CBA90)
+#define PLAYERSTATE_Gimmick                 (SonicMania::PlayerStatus)(baseAddress + 0x000CAD70)
+#define PLAYERSTATE_Gimmick2                (SonicMania::PlayerStatus)(baseAddress + 0x004CBA90) // TODO: needs updating
+#define PLAYERSTATE_Hanging                 (SonicMania::PlayerStatus)(baseAddress + 0x004CAD70) // TODO: needs updating
+#define PLAYERSTATE_SpiningTube_PGZ         (SonicMania::PlayerStatus)(baseAddress + 0x0041F7F0) // TODO: needs updating
+#define PLAYERSTATE_Frozen_PGZ              (SonicMania::PlayerStatus)(baseAddress + 0x004A3410) // TODO: needs updating
+#define PLAYERSTATE_Sliding_OOZ             (SonicMania::PlayerStatus)(baseAddress + 0x0042EB10) // TODO: needs updating
+#define PLAYERSTATE_SwitchingToBG_MMZ       (SonicMania::PlayerStatus)(baseAddress + 0x004304A0) // TODO: needs updating
+#define PLAYERSTATE_SwitchingToFG_MMZ       (SonicMania::PlayerStatus)(baseAddress + 0x004305B0) // TODO: needs updating
+#define PLAYERSTATE_TurningSmall_MMZ        (SonicMania::PlayerStatus)(baseAddress + 0x00431560) // TODO: needs updating
+#define PLAYERSTATE_TurningBig_MMZ          (SonicMania::PlayerStatus)(baseAddress + 0x00431690) // TODO: needs updating
+#define PLAYERSTATE_P2FLYIN                 (SonicMania::PlayerStatus)(baseAddress + 0x004CD150)
+#define PLAYERSTATE_P2JUMPIN                (SonicMania::PlayerStatus)(baseAddress + 0x004CD560) 
+#define PLAYERSTATE_SpringBasic             (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
+#define PLAYERSTATE_ScoreCard               (SonicMania::PlayerStatus)(baseAddress + 0x000CCD30)
+#define PLAYERSTATE_TransportTube_CPZ       (SonicMania::PlayerStatus)(baseAddress + 0x000CBA90)
 
 // Move Sets
-#define PLAYERSTATE_NOJUMPABILITY			(SonicMania::Ability)(0x00000000)
-#define PLAYERSTATE_SONICJUMPABILITY		(SonicMania::Ability)(baseAddress + 0x000C8630)
-#define PLAYERSTATE_TAILSJUMPABILITY		(SonicMania::Ability)(baseAddress + 0x000C8990)
-#define PLAYERSTATE_KNUXJUMPABILITY			(SonicMania::Ability)(baseAddress + 0x000C8A70)
-#define PLAYERSTATE_MIGHTYJUMPABILITY		(SonicMania::Ability)(baseAddress + 0x000C8B70)
-#define PLAYERSTATE_RAYJUMPABILITY			(SonicMania::Ability)(baseAddress + 0x000C8DF0)
-#define PLAYERSTATE_ERZSJUMPABILITY			(SonicMania::Ability)(baseAddress + 0x000C2340) // Egg Reverie Super Sonic
+#define PLAYERSTATE_NOJUMPABILITY           (SonicMania::Ability)(0x00000000)
+#define PLAYERSTATE_SONICJUMPABILITY        (SonicMania::Ability)(baseAddress + 0x000C8630)
+#define PLAYERSTATE_TAILSJUMPABILITY        (SonicMania::Ability)(baseAddress + 0x000C8990)
+#define PLAYERSTATE_KNUXJUMPABILITY         (SonicMania::Ability)(baseAddress + 0x000C8A70)
+#define PLAYERSTATE_MIGHTYJUMPABILITY       (SonicMania::Ability)(baseAddress + 0x000C8B70)
+#define PLAYERSTATE_RAYJUMPABILITY          (SonicMania::Ability)(baseAddress + 0x000C8DF0)
+#define PLAYERSTATE_ERZSJUMPABILITY         (SonicMania::Ability)(baseAddress + 0x000C2340) // Egg Reverie Super Sonic
 
 // Sonic
-#define PLAYERSTATE_DROPDASH				(SonicMania::PlayerStatus)(baseAddress + 0x004CC1F0)
-#define PLAYERSTATE_PEELOUT					(SonicMania::PlayerStatus)(baseAddress + 0x004CBF70)
+#define PLAYERSTATE_DROPDASH                (SonicMania::PlayerStatus)(baseAddress + 0x004CC1F0)
+#define PLAYERSTATE_PEELOUT                 (SonicMania::PlayerStatus)(baseAddress + 0x004CBF70)
 
 // Tails
-#define PLAYERSTATE_FLYING					(SonicMania::PlayerStatus)(baseAddress + 0x000CCF30)
-#define PLAYERSTATE_FLYCARRIED				(SonicMania::PlayerStatus)(baseAddress + 0x004CDA60)
+#define PLAYERSTATE_FLYING                  (SonicMania::PlayerStatus)(baseAddress + 0x000CCF30)
+#define PLAYERSTATE_FLYCARRIED              (SonicMania::PlayerStatus)(baseAddress + 0x004CDA60)
 
 // Knuckles
-#define PLAYERSTATE_GLIDELEFT				(SonicMania::PlayerStatus)(baseAddress + 0x000CDB10)
-#define PLAYERSTATE_GLIDERIGHT				(SonicMania::PlayerStatus)(baseAddress + 0x000CDE10)
-#define PLAYERSTATE_GLIDESLIDE				(SonicMania::PlayerStatus)(baseAddress + 0x004CE230)
-#define PLAYERSTATE_CLIMB					(SonicMania::PlayerStatus)(baseAddress + 0x000CE380)
-#define PLAYERSTATE_LEDGEPULLUP				(SonicMania::PlayerStatus)(baseAddress + 0x004CE6F0)
-#define PLAYERSTATE_GLIDEDROP				(SonicMania::PlayerStatus)(baseAddress + 0x000CE110)
+#define PLAYERSTATE_GLIDELEFT               (SonicMania::PlayerStatus)(baseAddress + 0x000CDB10)
+#define PLAYERSTATE_GLIDERIGHT              (SonicMania::PlayerStatus)(baseAddress + 0x000CDE10)
+#define PLAYERSTATE_GLIDESLIDE              (SonicMania::PlayerStatus)(baseAddress + 0x004CE230)
+#define PLAYERSTATE_CLIMB                   (SonicMania::PlayerStatus)(baseAddress + 0x000CE380)
+#define PLAYERSTATE_LEDGEPULLUP             (SonicMania::PlayerStatus)(baseAddress + 0x004CE6F0)
+#define PLAYERSTATE_GLIDEDROP               (SonicMania::PlayerStatus)(baseAddress + 0x000CE110)
 
 // Mighty
-#define PLAYERSTATE_HAMMERDROP				(SonicMania::PlayerStatus)(baseAddress + 0x000CC580)
-#define PLAYERSTATE_UNSPIN					(SonicMania::PlayerStatus)(baseAddress + 0x000CC990) //Unspin after bouncing on hazard
+#define PLAYERSTATE_HAMMERDROP              (SonicMania::PlayerStatus)(baseAddress + 0x000CC580)
+#define PLAYERSTATE_UNSPIN                  (SonicMania::PlayerStatus)(baseAddress + 0x000CC990) //Unspin after bouncing on hazard
 
 // Ray
-#define PLAYERSTATE_RAYGLIDE				(SonicMania::PlayerStatus)(baseAddress + 0x000CD660)
+#define PLAYERSTATE_RAYGLIDE                (SonicMania::PlayerStatus)(baseAddress + 0x000CD660)
 
 // Move Sets
 #define MOVESET_NONE    (SonicMania::Ability)(0x00000000)
@@ -953,7 +962,7 @@ namespace SonicMania
     struct Entity
     {
 #pragma region Data
-		/* 0x00000000 */ Vector2 Position;
+        /* 0x00000000 */ Vector2 Position;
         /* 0x00000008 */ int ScaleX; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
         /* 0x0000000C */ int ScaleY;
         /* 0x00000010 */ int XVelocity;
@@ -979,7 +988,7 @@ namespace SonicMania
         /* 0x00000050 */ BYTE field_50;
         /* 0x00000050 */ BYTE CollisionMode;
         /* 0x00000052 */ BYTE CollisionPlane;
-        /* 0x00000053 */ BYTE DrawFX;
+        /* 0x00000053 */ DrawingFX DrawFX;
         /* 0x00000054 */ BYTE InkEffect;
         /* 0x00000055 */ BYTE field_55;
         /* 0x00000055 */ BYTE field_56;
