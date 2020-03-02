@@ -205,31 +205,43 @@ namespace SonicMania
 
     enum Filter : byte
     {
-        Filter_None       = 0b0000,
-        Filter_ManiaMode  = 0b0001,
-        Filter_Unknown    = 0b0010,
-        Filter_EncoreMode = 0b0100
+        Filter_None       = 0b0000, // 0
+        Filter_ManiaMode  = 0b0001, // 1
+        Filter_Unknown    = 0b0010, // 2
+        Filter_EncoreMode = 0b0100  // 4
     };
     BitFlag(Filter, byte)
 
     enum GameStates : byte
     {
-        GameState_NotRunning = 0b0000,
-        GameState_Running    = 0b0001,
-        GameState_SoftPause  = 0b0010,
-        GameState_HardPause  = 0b0100,
-        GameState_DevMenu    = 0b1000
+        GameState_NotRunning = 0b0000, // 0
+        GameState_Running    = 0b0001, // 1
+        GameState_SoftPause  = 0b0010, // 2
+        GameState_HardPause  = 0b0100, // 4
+        GameState_DevMenu    = 0b1000  // 8
     };
     BitFlag(GameStates, byte)
 
     enum DrawingFX : byte
     {
-        FX_None   = 0b0000,
-        FX_Flip   = 0b0001,
-        FX_Rotate = 0b0010,
-        FX_Scale  = 0b0100,
+        FX_None   = 0b0000, // 1
+        FX_Flip   = 0b0001, // 2
+        FX_Rotate = 0b0010, // 4
+        FX_Scale  = 0b0100  // 8
     };
     BitFlag(DrawingFX, byte)
+
+    enum InkEffect : byte
+    {
+        Ink_None     = 0,
+        Ink_Blend    = 1,
+        Ink_Alpha    = 2,
+        Ink_Add      = 3,
+        Ink_Subtract = 4,
+        Ink_Distort  = 5,
+        Ink_Masked   = 6,
+        Ink_Unmasked = 7
+    };
 
     enum Scope : byte
     {
@@ -438,11 +450,11 @@ namespace SonicMania
         ObjectType_Bloominator      = 0x00AC6F48,
 
         //Unused - Other
-        ObjectType_S1Orbinaught        = 0x00AC6A00,
-        ObjectType_S1Catakiller        = 0x00AC6B78,
+        ObjectType_S1Orbinaught     = 0x00AC6A00,
+        ObjectType_S1Catakiller     = 0x00AC6B78,
 
         //Service Objects 
-        ObjectType_FXFade            = 0x00AC6810
+        ObjectType_FXFade           = 0x00AC6810
     };
 
     enum TransparencyFlag : byte
@@ -986,10 +998,10 @@ namespace SonicMania
         /* 0x0000004E */ bool Direction;
         /* 0x0000004F */ BYTE DrawOrder;                // The layer the Sprite Draws on (0-14)
         /* 0x00000050 */ BYTE field_50;
-        /* 0x00000050 */ BYTE CollisionMode;
+        /* 0x00000051 */ BYTE CollisionMode;
         /* 0x00000052 */ BYTE CollisionPlane;
         /* 0x00000053 */ DrawingFX DrawFX;
-        /* 0x00000054 */ BYTE InkEffect;
+        /* 0x00000054 */ InkEffect InkEffect;
         /* 0x00000055 */ BYTE field_55;
         /* 0x00000055 */ BYTE field_56;
         /* 0x00000055 */ BYTE field_57;
