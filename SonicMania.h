@@ -861,8 +861,8 @@ namespace SonicMania
     FunctionPointer(void, DespawnEntity_Internal, (Entity* entity, DWORD a2, DWORD a3), 0x001D3CF0);
     FunctionPointer(FILE*, LoadStaticObject, (int ObjStruct, int a2, Scope scope), 0x001D32B0);
     //Collision
-    FunctionPointer(int, ObjectTileCollision, (Entity* Entity, unsigned __int16 SolidityFilter, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int a7), 0x001BF5F0); //Check Collision at a certain point
-    FunctionPointer(int, ObjectPathGrip, (Entity* Entity, unsigned __int16 SolidityFilter, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int a7), 0x001BFB40); //Check Collision around a certain point
+    FunctionPointer(int, ObjectTileCollision, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BF5F0); //Check Collision at a certain point
+    FunctionPointer(int, ObjectPathGrip, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BFB40); //Check Collision around a certain point
     FunctionPointer(void, ProcessPlayerTileCollisions, (EntityPlayer* Player, Hitbox* OuterBox, Hitbox* InnerBox), 0x001C0060);
     
     // Graphics
@@ -997,7 +997,7 @@ namespace SonicMania
         /* 0x0000004D */ BYTE Filter;
         /* 0x0000004E */ bool Direction;
         /* 0x0000004F */ BYTE DrawOrder;                // The layer the Sprite Draws on (0-14)
-        /* 0x00000050 */ BYTE field_50;
+        /* 0x00000050 */ BYTE CollisionLayers;
         /* 0x00000051 */ BYTE CollisionMode;
         /* 0x00000052 */ BYTE CollisionPlane;
         /* 0x00000053 */ DrawingFX DrawFX;
