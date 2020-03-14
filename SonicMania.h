@@ -1006,7 +1006,7 @@ namespace SonicMania
         /* 0x00000055 */ BYTE field_56;
         /* 0x00000055 */ BYTE field_57;
         /* 0x00000058 */ void* State;
-        ///* 0x0000005C */ void* StateDraw;
+        
 #pragma endregion
 
         void Move(short x, short y)
@@ -1035,6 +1035,7 @@ namespace SonicMania
     };
     struct EntityPlayer : Entity
     {
+		/* 0x0000005C */ DWORD StateDraw; //Name might not be correct
         /* 0x00000060 */ DWORD dword60;
         /* 0x00000064 */ DWORD dword64;
         /* 0x00000068 */ EntityAnimationData Animation;
