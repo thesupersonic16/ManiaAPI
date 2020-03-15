@@ -992,16 +992,16 @@ namespace SonicMania
         /* 0x0000003C */ DWORD field_3C;
         /* 0x00000040 */ bool TileCollisions;
         /* 0x00000044 */ DWORD field_44;
-		/* 0x00000048 */ bool Grounded;
-		/* 0x00000049 */ byte Unknown49;
-		/* 0x0000004A */ byte Unknown4A;
-		/* 0x0000004B */ byte Unknown4B;
-		/* 0x0000004C */ byte Priority; //Active State
+        /* 0x00000048 */ bool Grounded;
+        /* 0x00000049 */ byte Unknown49;
+        /* 0x0000004A */ byte Unknown4A;
+        /* 0x0000004B */ byte Unknown4B;
+        /* 0x0000004C */ byte Priority; //Active State
         /* 0x0000004D */ BYTE Filter;
         /* 0x0000004E */ bool Direction;
         /* 0x0000004F */ BYTE DrawOrder;                // The layer the Sprite Draws on (0-14)
         /* 0x00000050 */ BYTE CollisionLayers;
-		/* 0x00000051 */ BYTE CollisionPlane;
+        /* 0x00000051 */ BYTE CollisionPlane;
         /* 0x00000052 */ CollisionModes CollisionMode;
         /* 0x00000053 */ DrawingFX DrawFX;
         /* 0x00000054 */ InkEffect InkEffect;
@@ -1038,8 +1038,8 @@ namespace SonicMania
     };
     struct EntityPlayer : Entity
     {
-		/* 0x00000058 */ void* State;
-		/* 0x0000005C */ DWORD StateDraw; //Name might not be correct
+        /* 0x00000058 */ void* State;
+        /* 0x0000005C */ DWORD StateDraw; //Name might not be correct
         /* 0x00000060 */ DWORD dword60;
         /* 0x00000064 */ DWORD dword64;
         /* 0x00000068 */ EntityAnimationData Animation;
@@ -1163,7 +1163,7 @@ namespace SonicMania
     };
     struct EntityItemBox : Entity
     {
-		/* 0x00000058 */ void* State;
+        /* 0x00000058 */ void* State;
         /* 0x0000005C */ int Type;
         /* 0x00000060 */ DWORD dword60;
         /* 0x00000064 */ DWORD dword64;
@@ -1184,7 +1184,7 @@ namespace SonicMania
     };
     struct EntityRing : Entity
     {
-		/* 0x00000058 */ void* State;
+        /* 0x00000058 */ void* State;
         /* 0x0000005C */ DWORD dword5C;
         /* 0x00000060 */ int Type;
         /* 0x00000064 */ DWORD dword64;
@@ -1203,7 +1203,7 @@ namespace SonicMania
     };
     struct EntityFXFade : Entity
     {
-		/* 0x00000058 */ void* State;
+        /* 0x00000058 */ void* State;
         /* 0x0000005C */ int Time;
         /* 0x00000060 */ int SpeedIn;
         /* 0x00000064 */ int Wait;
@@ -1222,7 +1222,7 @@ namespace SonicMania
     };
     struct EntityUIText : Entity
     {
-		/* 0x00000058 */ void* State;
+        /* 0x00000058 */ void* State;
         /* 0x0000005C */ DWORD dword5C;
         /* 0x00000060 */ char* Text;
         /* 0x00000064 */ DWORD dword64;
@@ -1240,7 +1240,7 @@ namespace SonicMania
     };
     struct EntityMotoBug : Entity
     {
-		/* 0x00000058 */ void* State;
+        /* 0x00000058 */ void* State;
         /* 0x0000005C */ DWORD dword5C;
         /* 0x00000060 */ DWORD Timer;
         /* 0x00000064 */ DWORD StartX;
