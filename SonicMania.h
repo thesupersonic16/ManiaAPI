@@ -992,8 +992,11 @@ namespace SonicMania
         /* 0x0000003C */ DWORD field_3C;
         /* 0x00000040 */ bool TileCollisions;
         /* 0x00000044 */ DWORD field_44;
-        /* 0x00000048 */ bool Grounded;
-        /* 0x0000004C */ BYTE Priority; //Active State
+		/* 0x00000048 */ bool Grounded;
+		/* 0x00000049 */ byte Unknown49;
+		/* 0x0000004A */ byte Unknown4A;
+		/* 0x0000004B */ byte Unknown4B;
+		/* 0x0000004C */ byte Priority; //Active State
         /* 0x0000004D */ BYTE Filter;
         /* 0x0000004E */ bool Direction;
         /* 0x0000004F */ BYTE DrawOrder;                // The layer the Sprite Draws on (0-14)
