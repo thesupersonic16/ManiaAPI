@@ -1505,7 +1505,7 @@ namespace SonicMania
     }
 
 
-    static int loc_HitEntity = (baseAddress + 0x001C9380);
+    static int loc_HitEntity = (baseAddress + 0x000C9380);
     inline __declspec(naked) bool HitEntity(Entity* attacker, Entity* target, DWORD a3)
     {
         __asm
@@ -1518,8 +1518,8 @@ namespace SonicMania
             ret
         }
     }
-    static int loc_CallEffect = (baseAddress + 0x001D3CF0);
-    inline __declspec(naked) bool CallEffect(EntityPlayer* Player, Entity* target)
+    static int loc_CallDespawn = (baseAddress + 0x001D3CF0);
+    inline __declspec(naked) bool CallDespawn(EntityPlayer* Player, Entity* target)
     {
         __asm
         {
@@ -1533,7 +1533,7 @@ namespace SonicMania
             push 0x12
             push eax
 
-            call loc_HitEntity
+            call loc_CallDespawn
             add esp, 4
             ret
         }
