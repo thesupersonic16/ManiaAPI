@@ -846,6 +846,15 @@ namespace SonicMania
 
 #pragma region Functions
 
+	//New
+	FunctionPointer(BOOL, Player_CheckBadnikHit, (EntityPlayer* Player, Entity* Entity, Hitbox* EntityHitbox), 0xC5E30);
+	FunctionPointer(int, CheckObjectCollisionBox, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0xAA793C);
+	FunctionPointer(int, CheckObjectCollisionPlatform, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0xAA7940);
+	FunctionPointer(Hitbox*, GetHitbox, (EntityAnimationData* AnimData, int HitboxID), 0xAA7904);
+	FunctionPointer(void, ProcessAnimation, (EntityAnimationData* AnimData), 0xAA7910);
+	FunctionPointer(void, Camera_ShakeScreen, (int ShakeX, int EntityID, int ShakeY), 0x2140);
+	FunctionPointer(int, GetEntityID, (Entity* EntityPtr), 0xAA7750);
+
     // Audio
     FastcallFunctionPointer(void, SetupMusic, (int slot, const char* filePath, int loopStart), 0x00002AD0);
     FunctionPointer(int, PlayMusic, (const char* filePath, int slot, int a3, int loopstart, bool loop), 0x001BC640);
