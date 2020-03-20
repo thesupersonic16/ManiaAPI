@@ -6,8 +6,8 @@
 
 #pragma region PreprocessorDefines
 
-    #define BitFlag(type, enumType) inline type operator|(type a, type b) { return (type)((enumType)a | (enumType)b); }
-    #define ALIGN(x) __declspec(align(x))
+#define BitFlag(type, enumType) inline type operator|(type a, type b) { return (type)((enumType)a | (enumType)b); }
+#define ALIGN(x) __declspec(align(x))
 
 #pragma endregion
 
@@ -18,20 +18,29 @@ namespace SonicMania
 {
 #pragma region TypesDefs
 
-    typedef void(__cdecl *Ability)();
-    typedef void(__cdecl *PlayerStatus)();
-    typedef void(__cdecl *InputStatus)();
+    typedef void(__cdecl* Ability)();
+    typedef void(__cdecl* PlayerStatus)();
+    typedef void(__cdecl* InputStatus)();
 
 #pragma endregion
 
 #pragma region Declares
     // Entities
     struct Entity;
+    struct EntityBase;
     struct EntityPlayer;
+    struct EntityCamera;
     struct EntityItemBox;
     struct EntityRing;
     struct EntityUIText;
 
+    //Objects
+    struct Object;
+    struct Obj_Player;
+    struct Obj_Camera;
+    struct Obj_Ring;
+
+    //Misc
     struct Hitbox;
 
 #pragma endregion
@@ -162,7 +171,7 @@ namespace SonicMania
         Scene_GoodEnd,
         Scene_TrueEnd
     };
-    
+
     enum Category : byte
     {
         Presentation,
@@ -187,12 +196,12 @@ namespace SonicMania
 
     enum Character : int
     {
-        Character_None   = 0b00000,
-        Character_Sonic  = 0b00001,  // 1 << 0
-        Character_Tails  = 0b00010,  // 1 << 1
-        Character_Knux   = 0b00100,   // 1 << 2
+        Character_None = 0b00000,
+        Character_Sonic = 0b00001,  // 1 << 0
+        Character_Tails = 0b00010,  // 1 << 1
+        Character_Knux = 0b00100,   // 1 << 2
         Character_Mighty = 0b01000, // 1 << 3
-        Character_Ray    = 0b10000     // 1 << 4
+        Character_Ray = 0b10000     // 1 << 4
     };
 
     enum GameMode : int
@@ -205,42 +214,55 @@ namespace SonicMania
 
     enum Filter : byte
     {
-        Filter_None       = 0b0000, // 0
-        Filter_ManiaMode  = 0b0001, // 1
-        Filter_Unknown    = 0b0010, // 2
+        Filter_None = 0b0000, // 0
+        Filter_ManiaMode = 0b0001, // 1
+        Filter_Unknown = 0b0010, // 2
         Filter_EncoreMode = 0b0100  // 4
     };
     BitFlag(Filter, byte)
 
-    enum GameStates : byte
+        enum GameStates : byte
     {
         GameState_NotRunning = 0b0000, // 0
-        GameState_Running    = 0b0001, // 1
-        GameState_SoftPause  = 0b0010, // 2
-        GameState_HardPause  = 0b0100, // 4
-        GameState_DevMenu    = 0b1000  // 8
+        GameState_Running = 0b0001, // 1
+        GameState_SoftPause = 0b0010, // 2
+        GameState_HardPause = 0b0100, // 4
+        GameState_DevMenu = 0b1000  // 8
     };
     BitFlag(GameStates, byte)
 
-    enum DrawingFX : byte
+        enum DrawingFX : byte
     {
-        FX_None   = 0b0000, // 1
-        FX_Flip   = 0b0001, // 2
+        FX_None = 0b0000, // 1
+        FX_Flip = 0b0001, // 2
         FX_Rotate = 0b0010, // 4
-        FX_Scale  = 0b0100  // 8
+        FX_Scale = 0b0100  // 8
     };
     BitFlag(DrawingFX, byte)
 
-    enum InkEffect : byte
+        enum InkEffect : byte
     {
-        Ink_None     = 0,
-        Ink_Blend    = 1,
-        Ink_Alpha    = 2,
-        Ink_Add      = 3,
+        Ink_None = 0,
+        Ink_Blend = 1,
+        Ink_Alpha = 2,
+        Ink_Add = 3,
         Ink_Subtract = 4,
-        Ink_Distort  = 5,
-        Ink_Masked   = 6,
+        Ink_Distort = 5,
+        Ink_Masked = 6,
         Ink_Unmasked = 7
+    };
+
+    enum ActiveStates : byte
+    {
+        ACTIVE_NEVER = 0,
+        ACTIVE_ALWAYS = 1,
+        ACTIVE_NORMAL = 2,
+        ACTIVE_PAUSED = 3,
+        ACTIVE_BOUNDS = 4,
+        ACTIVE_XBOUNDS = 5,
+        ACTIVE_YBOUNDS = 6,
+        ACTIVE_BOUNDS2 = 7,
+        ACTIVE_NEVER3 = -1,
     };
 
     enum Scope : byte
@@ -271,7 +293,7 @@ namespace SonicMania
         ItemBoxItem_LifeMighty,
         ItemBoxItem_LifeRay
     };
-    
+
     enum CollisionModes : byte
     {
         CollisionMode_Floor,
@@ -363,106 +385,107 @@ namespace SonicMania
         //ObjectType_CrabMeat         = 0x00EBBF34,
         //ObjectType_Toxomister       = 0x00EBBF38
         //General
-        ObjectType_Ring             = 0x00AC67E0,
-        ObjectType_SSRing           = 0x00AC686C,
-        ObjectType_ItemBox          = 0x00AC6F00,
-        ObjectType_Spring           = 0x00AC6BD8,
-        ObjectType_Animal           = 0x00AC6D78,
+        ObjectType_Player = 0x00AC6838,
+        ObjectType_Ring = 0x00AC67E0,
+        ObjectType_SSRing = 0x00AC686C,
+        ObjectType_ItemBox = 0x00AC6F00,
+        ObjectType_Spring = 0x00AC6BD8,
+        ObjectType_Animal = 0x00AC6D78,
         ObjectType_ScoreOnHitNumber = 0x00AC6D80,
-        ObjectType_Explosion        = 0x00AC6D84,
+        ObjectType_Explosion = 0x00AC6D84,
         // Green Hill Zone
-        ObjectType_Motobug          = 0x00AC6B60,
-        ObjectType_CrabMeat         = 0x00AC6F9C,
-        ObjectType_Chopper          = 0x00AC6A8C,
-        ObjectType_BuzzBomber       = 0x00AC6F2C,
-        ObjectType_NewTron          = 0x00AC6F84,
-        ObjectType_BatBrain         = 0x00AC6F90,
-        ObjectType_Splats           = 0x00AC6900,
-        ObjectType_DDWrecker        = 0x00AC67F0,
-        ObjectType_DERobot          = 0x00AC6D70,
+        ObjectType_Motobug = 0x00AC6B60,
+        ObjectType_CrabMeat = 0x00AC6F9C,
+        ObjectType_Chopper = 0x00AC6A8C,
+        ObjectType_BuzzBomber = 0x00AC6F2C,
+        ObjectType_NewTron = 0x00AC6F84,
+        ObjectType_BatBrain = 0x00AC6F90,
+        ObjectType_Splats = 0x00AC6900,
+        ObjectType_DDWrecker = 0x00AC67F0,
+        ObjectType_DERobot = 0x00AC6D70,
         // Chemical Plant Zone
-        ObjectType_Grabber          = 0x00AC6C18,
-        ObjectType_Spiny            = 0x00AC6DAC,
-        ObjectType_AmoebaDroid      = 0x00AC67F0,
-        ObjectType_CatakillerJR     = 0x00AC6798,
+        ObjectType_Grabber = 0x00AC6C18,
+        ObjectType_Spiny = 0x00AC6DAC,
+        ObjectType_AmoebaDroid = 0x00AC67F0,
+        ObjectType_CatakillerJR = 0x00AC6798,
         // Studiopolis Zone
-        ObjectType_MicDrop          = 0x00AC6DA8,
-        ObjectType_ShutterBug       = 0x00AC6E58,
-        ObjectType_Tubinaut         = 0x00AC6AD0,
-        ObjectType_WallCrawl        = 0x00AC6B14,
-        ObjectType_HeavyGunner      = 0x00AC6C2C,
-        ObjectType_WeatherMobile    = 0x00AC6A80,
+        ObjectType_MicDrop = 0x00AC6DA8,
+        ObjectType_ShutterBug = 0x00AC6E58,
+        ObjectType_Tubinaut = 0x00AC6AD0,
+        ObjectType_WallCrawl = 0x00AC6B14,
+        ObjectType_HeavyGunner = 0x00AC6C2C,
+        ObjectType_WeatherMobile = 0x00AC6A80,
         // Flying Battery
-        ObjectType_TechnoSqueek     = 0x00AC69FC,
-        ObjectType_Blaster          = 0x00AC6A6C,
-        ObjectType_Clucker          = 0x00AC6C88,
+        ObjectType_TechnoSqueek = 0x00AC69FC,
+        ObjectType_Blaster = 0x00AC6A6C,
+        ObjectType_Clucker = 0x00AC6C88,
         // Press Garden Zone
-        ObjectType_Dragonfly        = 0x00AC6928,
-        ObjectType_Jugglesaw        = 0x00AC6688,
-        ObjectType_SplatsJar        = 0x00AC6CB4,
-        ObjectType_Woodrow          = 0x00AC67FC,
-        ObjectType_IceBomba         = 0x00AC66EC,
-        ObjectType_HeavyShinobi     = 0x00AC6E18,
+        ObjectType_Dragonfly = 0x00AC6928,
+        ObjectType_Jugglesaw = 0x00AC6688,
+        ObjectType_SplatsJar = 0x00AC6CB4,
+        ObjectType_Woodrow = 0x00AC67FC,
+        ObjectType_IceBomba = 0x00AC66EC,
+        ObjectType_HeavyShinobi = 0x00AC6E18,
         // StarDust Speed Way
-        ObjectType_Hotaru           = 0x00AC6808,
-        ObjectType_Dango            = 0x00AC6F34,
-        ObjectType_Kanabun          = 0x00AC67FC,
-        ObjectType_Kabasira         = 0x00AC6CB4,
-        ObjectType_SilverSonic      = 0x00AC679C,
+        ObjectType_Hotaru = 0x00AC6808,
+        ObjectType_Dango = 0x00AC6F34,
+        ObjectType_Kanabun = 0x00AC67FC,
+        ObjectType_Kabasira = 0x00AC6CB4,
+        ObjectType_SilverSonic = 0x00AC679C,
         // HydroCity Zone
-        ObjectType_Jellygnite       = 0x00AC6B9C,
-        ObjectType_Pointdexter      = 0x00AC6A2C,
-        ObjectType_Blastoid         = 0x00AC66F4,
-        ObjectType_Jawz             = 0x00AC6D10,
-        ObjectType_MegaChopper      = 0x00AC6DB8,
-        ObjectType_TurboSpiker      = 0x00AC6DF0,
-        ObjectType_Buggernaut       = 0x00AC6728,
+        ObjectType_Jellygnite = 0x00AC6B9C,
+        ObjectType_Pointdexter = 0x00AC6A2C,
+        ObjectType_Blastoid = 0x00AC66F4,
+        ObjectType_Jawz = 0x00AC6D10,
+        ObjectType_MegaChopper = 0x00AC6DB8,
+        ObjectType_TurboSpiker = 0x00AC6DF0,
+        ObjectType_Buggernaut = 0x00AC6728,
         //MirageSaloonZone
-        ObjectType_Vultron          = 0x00AC67CC,
-        ObjectType_Cactula          = 0x00AC6EC4,
-        ObjectType_Bumpalo          = 0x00AC66A4,
-        ObjectType_Rattlekiller     = 0x00AC6748,
-        ObjectType_BallHog          = 0x00AC69A0,
-        ObjectType_Armadiloid       = 0x00AC68A4,
+        ObjectType_Vultron = 0x00AC67CC,
+        ObjectType_Cactula = 0x00AC6EC4,
+        ObjectType_Bumpalo = 0x00AC66A4,
+        ObjectType_Rattlekiller = 0x00AC6748,
+        ObjectType_BallHog = 0x00AC69A0,
+        ObjectType_Armadiloid = 0x00AC68A4,
         //Oil Ocean Zone
-        ObjectType_Aquis            = 0x00AC6EE4,
-        ObjectType_Octus            = 0x00AC6DC4,
-        ObjectType_Sol              = 0x00AC6778,
+        ObjectType_Aquis = 0x00AC6EE4,
+        ObjectType_Octus = 0x00AC6DC4,
+        ObjectType_Sol = 0x00AC6778,
         // Lave Reef Zone
-        ObjectType_Toxomister       = 0x00AC6FA0,
-        ObjectType_Fireworm         = 0x00AC6A40,
-        ObjectType_Iwamodoki        = 0x00AC6638,
-        ObjectType_Rexon            = 0x00AC6DD4,
+        ObjectType_Toxomister = 0x00AC6FA0,
+        ObjectType_Fireworm = 0x00AC6A40,
+        ObjectType_Iwamodoki = 0x00AC6638,
+        ObjectType_Rexon = 0x00AC6DD4,
         // Metallic Madness Zone
-        ObjectType_MechaBu          = 0x00AC6888,
-        ObjectType_MatryoshkaBom    = 0x00AC6C30,
-        ObjectType_Scarab           = 0x00AC69A8,
-        ObjectType_PohBee           = 0x00AC6950,
+        ObjectType_MechaBu = 0x00AC6888,
+        ObjectType_MatryoshkaBom = 0x00AC6C30,
+        ObjectType_Scarab = 0x00AC69A8,
+        ObjectType_PohBee = 0x00AC6950,
         // Titanic Monarch Zone
-        ObjectType_SentryBug        = 0x00AC6E70,
-        ObjectType_TurboTurtle      = 0x00AC683C,
-        ObjectType_FlasherMkII      = 0x00AC670C,
-        ObjectType_BallHog2         = 0x00AC6678,
-        
+        ObjectType_SentryBug = 0x00AC6E70,
+        ObjectType_TurboTurtle = 0x00AC683C,
+        ObjectType_FlasherMkII = 0x00AC670C,
+        ObjectType_BallHog2 = 0x00AC6678,
+
         // Angel Island Zone 
-        ObjectType_MonkeyDude       = 0x00AC6784,
-        ObjectType_Rhinobot         = 0x00AC6C24,
-        ObjectType_Bloominator      = 0x00AC6F48,
+        ObjectType_MonkeyDude = 0x00AC6784,
+        ObjectType_Rhinobot = 0x00AC6C24,
+        ObjectType_Bloominator = 0x00AC6F48,
 
         //Unused - Other
-        ObjectType_S1Orbinaught     = 0x00AC6A00,
-        ObjectType_S1Catakiller     = 0x00AC6B78,
+        ObjectType_S1Orbinaught = 0x00AC6A00,
+        ObjectType_S1Catakiller = 0x00AC6B78,
 
         //Service Objects 
-        ObjectType_FXFade           = 0x00AC6810
+        ObjectType_FXFade = 0x00AC6810
     };
 
-    enum TransparencyFlag : byte
+    /*enum TransparencyFlag : byte
     {
         TransparencyFlag_Opaque,
         TransparencyFlag_HalfTransparent,
         TransparencyFlag_Transparent
-    };
+    };*/
 
     enum SuperState : int
     {
@@ -568,7 +591,7 @@ namespace SonicMania
         {
 
         }
-        
+
         Vector2(int x, int y) : Vector2()
         {
             X = x;
@@ -581,28 +604,28 @@ namespace SonicMania
             Y = x;
         }
 
-        Vector2* Add(Vector2 &vec)
+        Vector2* Add(Vector2& vec)
         {
             X += vec.X;
             Y += vec.Y;
             return this;
         }
 
-        Vector2* Sub(Vector2 &vec)
+        Vector2* Sub(Vector2& vec)
         {
             X -= vec.X;
             Y -= vec.Y;
             return this;
         }
 
-        Vector2* Mul(Vector2 &vec)
+        Vector2* Mul(Vector2& vec)
         {
             X *= vec.X;
             Y *= vec.Y;
             return this;
         }
 
-        Vector2* Div(Vector2 &vec)
+        Vector2* Div(Vector2& vec)
         {
             X /= vec.X;
             Y /= vec.Y;
@@ -702,11 +725,11 @@ namespace SonicMania
 
 
     private:
-        WORD SubX;
+        short SubX;
     public:
         short X = 0;
     private:
-        WORD SubY;
+        short SubY;
     public:
         short Y = 0;
     };
@@ -733,7 +756,7 @@ namespace SonicMania
             //return ((Red & 0b11111000) << 8) | ((Green & 0b11111100) << 3) | (Blue >> 3);
             return (Blue >> 3) | 32 * (Green >> 2) | ((Red >> 3) << 11);
         }
-        
+
         inline int ToRGB888()
         {
             return ((Red & 0xFF) << 16) + ((Green & 0xFF) << 16) + (Blue & 0xFF);
@@ -741,37 +764,37 @@ namespace SonicMania
 
         inline void FromRGB565(SHORT RGB565)
         {
-            Red   = (RGB565 & 0b1111100000000000) >> 8;
+            Red = (RGB565 & 0b1111100000000000) >> 8;
             Green = (RGB565 & 0b0000011111100000) >> 3;
-            Blue  = (RGB565 & 0b0000000000011111) << 3;
+            Blue = (RGB565 & 0b0000000000011111) << 3;
         }
 
         inline void FromINT(int rgb)
         {
-            Red   = (rgb >> 16) & 0xFF;
+            Red = (rgb >> 16) & 0xFF;
             Green = (rgb >> 8) & 0xFF;
-            Blue  = rgb & 0xFF;
+            Blue = rgb & 0xFF;
         }
 
         inline void Tint(float tint)
         {
-            Red   *= tint;
+            Red *= tint;
             Green *= tint;
-            Blue  *= tint;
+            Blue *= tint;
         }
 
         inline void Blend(byte r, byte g, byte b, float a)
         {
-            Red   = a * r + (1 - a) * Red;
+            Red = a * r + (1 - a) * Red;
             Green = a * g + (1 - a) * Green;
-            Blue  = a * b + (1 - a) * Blue;
+            Blue = a * b + (1 - a) * Blue;
         }
 
         inline void Blend(Color color, float a)
         {
-            Red   = a * color.Red   + (1 - a) * Red;
+            Red = a * color.Red + (1 - a) * Red;
             Green = a * color.Green + (1 - a) * Green;
-            Blue  = a * color.Blue  + (1 - a) * Blue;
+            Blue = a * color.Blue + (1 - a) * Blue;
         }
 
 
@@ -779,9 +802,9 @@ namespace SonicMania
     };
     struct ControllerInput
     {
-        /* 0x00000000 */ ALIGN(4) bool Down;
-        /* 0x00000004 */ ALIGN(4) bool Press;
-        /* 0x00000008 */ ALIGN(4) bool Unknown;
+        /* 0x00000000 */ BOOL Down;
+        /* 0x00000004 */ BOOL Press;
+        /* 0x00000008 */ BOOL Release;
     };
     struct Controller
     {
@@ -842,124 +865,6 @@ namespace SonicMania
         }
     };
 
-#pragma endregion
-
-#pragma region Functions
-
-	//New
-	FunctionPointer(BOOL, Player_CheckBadnikHit, (EntityPlayer* Player, Entity* Entity, Hitbox* EntityHitbox), 0xC5E30);
-	FunctionPointer(int, CheckObjectCollisionBox, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0xAA793C);
-	FunctionPointer(int, CheckObjectCollisionPlatform, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0xAA7940);
-	FunctionPointer(Hitbox*, GetHitbox, (EntityAnimationData* AnimData, int HitboxID), 0xAA7904);
-	FunctionPointer(void, ProcessAnimation, (EntityAnimationData* AnimData), 0xAA7910);
-	FunctionPointer(void, Camera_ShakeScreen, (int ShakeX, int EntityID, int ShakeY), 0x2140);
-	FunctionPointer(int, GetEntityID, (Entity* EntityPtr), 0xAA7750);
-
-    // Audio
-    FastcallFunctionPointer(void, SetupMusic, (int slot, const char* filePath, int loopStart), 0x00002AD0);
-    FunctionPointer(int, PlayMusic, (const char* filePath, int slot, int a3, int loopstart, bool loop), 0x001BC640);
-    FunctionPointer(int, PlaySoundFX, (short SoundFXID, signed int a2, unsigned __int8 a3), 0x001BC390);
-    FunctionPointer(short, GetSoundFXID, (const char *path), 0x001BC2F0);
-    FunctionPointer(void, ChangeMusicSpeed, (int slot, float volume, float Channelbalance, float PlaybackSpeed), 0x001BC830);
-    
-    // Entity
-    FunctionPointer(bool, SetSpriteAnimation, (short spriteIndex, short animationID, EntityAnimationData* animationData, bool forceApply, short frameID), 0x001B35E0);
-    FastcallFunctionPointer(void, FastChangeCharacter, (EntityPlayer* player, Character character), 0x000C7920);
-    FastcallFunctionPointer(void, ApplyShieldEffect, (Entity* entity), 0x000C5910);
-    FunctionPointer(Entity*, SpawnObject_Internal, (short objectID, short subObject, DWORD x, DWORD y), 0x001D3E00);
-    FunctionPointer(void, DespawnEntity_Internal, (Entity* entity, DWORD a2, DWORD a3), 0x001D3CF0);
-    FunctionPointer(FILE*, LoadStaticObject, (int ObjStruct, int a2, Scope scope), 0x001D32B0);
-    //Collision
-    FunctionPointer(int, ObjectTileCollision, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BF5F0); //Check Collision at a certain point
-    FunctionPointer(int, ObjectPathGrip, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BFB40); //Check Collision around a certain point
-    FunctionPointer(void, ProcessPlayerTileCollisions, (EntityPlayer* Player, Hitbox* OuterBox, Hitbox* InnerBox), 0x001C0060);
-    
-    // Graphics
-    FunctionPointer(void, DrawRect, (short XPos, short YPos, short SizeY, short SizeX, byte R, byte G, byte B, byte Alpha), 0x00001DAC10);
-    FunctionPointer(void*, LoadAniTiles, (const char* FilePath, Scope scope), 0x001D4CE0);
-    FunctionPointer(void*, SetAniTiles, (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth, ushort FrameHeight), 0x00BDC4B0);
-    FunctionPointer(void*, LoadMesh, (const char* filepath, Scope scope), 0x00BDE080);
-    FunctionPointer(void*, DrawSprite, (EntityAnimationData* animationData, signed __int16* a2, int a3), 0x001B3B00);
-    FunctionPointer(void*, DrawSpriteRotoZoom, (int XPos, int YPos, int PivotX, int PivotY, int Width, int Height, int SprX, int SprY, signed int ScaleX, signed int ScaleY, int Direction, __int16 Rotation, int InkEffect, signed int Alpha, int SheetID), 0x001D7260); //Internal Call From "DrawSprite"
-    FunctionPointer(void*, DrawMesh, (ushort a1, ushort a2, char a3, DWORD* a4, DWORD* a5, int a6), 0x001DEF00);
-    FunctionPointer(short, LoadAnimation, (const char* filename, Scope scope), 0x001B1FA0);
-    FunctionPointer(char, LoadGif, (int a1, char* filepath, int buffer), 0x001CBA90);
-    //Palettes
-    FunctionPointer(int, SetPaletteEntry, (char PaletteID, unsigned char Index, int Color), 0x001D5020);
-    FunctionPointer(int, GetPaletteEntry, (char PaletteID, unsigned char Index), 0x001D5070);
-    FunctionPointer(void, BlendFromPalettes, (byte DestPaletteID, byte SourcePalA, byte SourcePalB, signed int AlphaPerFrame, int StartIndex, int EndIndex), 0x001D54E0);
-    FunctionPointer(void*, SetActivePalette, (byte PaletteID, int StartLine, int EndLine), 0x001D50B0);
-    FunctionPointer(void*, CopyPaletteColors, (byte SourcePalID, byte SourceIndex, byte DestPalID, byte DestIndex, byte ColorCount), 0x001D50F0);
-    FunctionPointer(void*, LoadPalette, (byte PaletteID, const char* Filename, unsigned short ColorCount), 0x001D5150);
-
-    // Utility
-    FunctionPointer(int, Rand, (int Min, int Max), 0x00BDC4B0); //ADDRESS COULD BE 0x008DC4B0
-    FunctionPointer(int, GetSettingsValue, (int ValueID), 0x001E3270);
-    FunctionPointer(void*, SetSettingsValue, (int ValueID, signed int Value), 0x001E33A0);
-    FunctionPointer(void, LoadSettings, (), 0x001CD690);
-    FunctionPointer(void, SaveSettings, (bool writeToFile), 0x005E4780);
-    FunctionPointer(void*, SetPresence, (int a1, const char* message), 0x002016D0);
-
-    // Scenes
-    FunctionPointer(int, LoadSceneFile, (int a1), 0x001EF0C0);
-    FunctionPointer(void, LoadScene, (int a1), 0x001EF0C0);
-    FunctionPointer(int, LoadGameScene, (char* CategoryName, char* SceneName), 0x001F23C0);
-    FunctionPointer(char, LoadTileconfig, (), 0x001BE440);
-    FunctionPointer(void, LoadGameconfig, (int ths), 0x001C6510);
-
-    // MATRICIES - DO NOT UNCOMMENT UNTIL AN EQUIVALENT TO RSDK_MATRIX IS ADDED
-    /*
-    FunctionPointer(void*, MatrixTranslateXYZ, (RSDK_MATRIX *Matrix, int X, int Y, int Z), 0x001DD3F0);
-    FunctionPointer(void*, MatrixRotateX, (RSDK_MATRIX *Matrix, ushort RotationX), 0x001DD470);
-    FunctionPointer(void*, MatrixRotateY, (RSDK_MATRIX *Matrix, ushort RotationY), 0x001DD500);
-    FunctionPointer(void*, MatrixRotateZ, (RSDK_MATRIX *RSDK_MATRIX, ushort RotationZ), 0x001DD590);
-    FunctionPointer(void*, MatrixInvert, (unsigned int a1, RSDK_MATRIX *Matrix), 0x001DD770);
-    FunctionPointer(void*, MatrixMultiply, (RSDK_MATRIX *Matrix1, RSDK_MATRIX *Matrix2), 0x001DE010);
-    */
-
-
-#pragma endregion
-
-#pragma region DataPointers
-
-    // Players
-    DataPointer(EntityPlayer, Player1, 0x00469A10);
-    DataPointer(EntityPlayer, Player2, 0x00469E68);
-    DataPointer(EntityPlayer, Player3, 0x0046A2C0);
-    DataPointer(EntityPlayer, Player4, 0x0046A718);
-
-    //Currently Running Entity
-    DataPointer(Entity*, CurrentEntity, 0x00AA7634);
-
-    // Other
-    DataPointer(Scene, CurrentScene, 0x00A535C4);
-    DataPointer(short, CurrentSceneInt, 0x00A535C4);
-    DataPointer(Category, CurrentCategory, 0x00A535E0);
-    DataPointer(byte, CurrentCategoryInt, 0x00A535E0);
-
-    DataPointer(struct_Timer, Timer, 0x00A535DC);
-    DataPointer(GameStates, GameState, 0x00A535E2);
-    DataArray(Controller, PlayerControllers, 0x004416D8, 5);
-    DataPointer(float, Controller1RStickX, 0x43E5C0);
-    DataPointer(float, Controller1RStickY, 0x43E5C4);
-    DataPointer(float, Controller1LStickX, 0x43E5C8);
-    DataPointer(float, Controller1LStickY, 0x43E5CC);
-    char* CurrentSceneName = (char*)(baseAddress + 0x00A5359C);
-    
-    // Palettes
-    DataArray(SHORT, Palette0, 0x00945B58, 256);
-    DataArray(SHORT, Palette1, 0x00945D58, 256);
-    DataArray(SHORT, Palette2, 0x00945F58, 256);
-    DataArray(SHORT, Palette3, 0x00946158, 256);
-    DataArray(SHORT, Palette4, 0x00946358, 256);
-    DataArray(SHORT, Palette5, 0x00946558, 256);
-    DataArray(SHORT, Palette6, 0x00946758, 256);
-    DataArray(SHORT, Palette7, 0x00946958, 256);
-    
-#pragma endregion
-
-#pragma region Entity
-
     struct Hitbox {
         short Left;
         short Top;
@@ -978,18 +883,185 @@ namespace SonicMania
         CollisionSensor Sensors[5];
     };
 
+    struct Matrix {
+        int Values[16];
+    };
+
+    struct ActiveEntityInfo {
+        EntityBase* CurrentEntity;
+        DWORD field_4;
+        DWORD field_8;
+        DWORD field_C;
+        DWORD field_10;
+        DWORD field_14;
+        DWORD field_18;
+        DWORD field_1C;
+        DWORD field_20;
+        DWORD field_24;
+        DWORD field_28;
+        DWORD field_2C;
+        DWORD field_30;
+        DWORD field_34;
+    };
+
+#pragma endregion
+
+#pragma region Functions
+
+    //New
+    FunctionPointer(BOOL, Player_CheckBadnikHit, (EntityPlayer* Player, Entity* Entity, Hitbox* EntityHitbox), 0x000C5E30);
+    FunctionPointer(int, CheckObjectCollisionTouch, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BEB20);
+    FunctionPointer(int, CheckObjectCollisionBox, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BEDD0);
+    FunctionPointer(int, CheckObjectCollisionPlatform, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BF330);
+    FunctionPointer(Hitbox*, GetHitbox, (EntityAnimationData* AnimData, int HitboxID), 0x001B3930);
+    FunctionPointer(void, ProcessAnimation, (EntityAnimationData* AnimData), 0x001B3A70);
+    FunctionPointer(int, Camera_ShakeScreen, (int ShakeX, int EntityID, int ShakeY), 0x002140); //Broken, Use "ShakeCamera"
+    FunctionPointer(int, Camera_SetTargetEntity, (int EntityID, Entity* Target), 0x002010); //Untested, may work
+    FunctionPointer(int, GetEntityID, (Entity* EntityPtr), 0x001D3CC0);
+    FunctionPointer(int, GetActiveObjects, (unsigned __int16 ObjectType, Entity* EntityPtr), 0x001C8430);
+    FunctionPointer(int, GetObjects, (unsigned __int16 ObjectType, Entity* EntityPtr), 0x001C84E0);
+    FunctionPointer(void*, GetObjectByID, (unsigned __int16 SlotID), 0x001D3C90);
+    FunctionPointer(int, GetAttribute, (int AttributeType, char* AttributeName, int ObjectID, int StoreOffset), 0x001D3B20);
+    FunctionPointer(char, GetTileAngle, (__int16 TileXPos, unsigned __int8 TileYPos, char CollisionMode), 0x001C22A0);
+    FunctionPointer(char, GetTileBehaviour, (__int16 TileXPos, unsigned __int8 TileYPos), 0x001C23C0);
+
+    //Unknown Function Ptrs (that are used and needed
+    FunctionPointer(int, RSDK_Unknown45, (), 0x00AA7744);
+
+    // Audio
+    FastcallFunctionPointer(void, SetupMusic, (int slot, const char* filePath, int loopStart), 0x00002AD0);
+    FunctionPointer(int, PlayMusic, (const char* filePath, int slot, int a3, int loopstart, bool loop), 0x001BC640);
+    FunctionPointer(int, PlaySoundFX, (short SoundFXID, signed int a2, unsigned __int8 a3), 0x001BC390);
+    FunctionPointer(short, GetSoundFXID, (const char* path), 0x001BC2F0);
+    FunctionPointer(void, ChangeMusicSpeed, (int slot, float volume, float Channelbalance, float PlaybackSpeed), 0x001BC830);
+
+    // Entity
+    FunctionPointer(bool, SetSpriteAnimation, (short spriteIndex, short animationID, EntityAnimationData* animationData, bool forceApply, short frameID), 0x001B35E0);
+    FastcallFunctionPointer(void, FastChangeCharacter, (EntityPlayer* player, Character character), 0x000C7920);
+    FastcallFunctionPointer(void, ApplyShieldEffect, (Entity* entity), 0x000C5910);
+    FunctionPointer(Entity*, SpawnObject_Internal, (short objectID, short subObject, DWORD x, DWORD y), 0x001D3E00);
+    FunctionPointer(void, DespawnEntity_Internal, (Entity* entity, DWORD a2, DWORD a3), 0x001D3CF0);
+    FunctionPointer(FILE*, LoadStaticObject, (int ObjStruct, int a2, Scope scope), 0x001D32B0);
+    //Collision
+    FunctionPointer(int, ObjectTileCollision, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BF5F0); //Check Collision at a certain point
+    FunctionPointer(int, ObjectPathGrip, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BFB40); //Check Collision around a certain point
+    FunctionPointer(void, ProcessPlayerTileCollisions, (EntityPlayer* Player, Hitbox* OuterBox, Hitbox* InnerBox), 0x001C0060);
+
+    // Graphics
+    //FunctionPointer(void, DrawRect, (short XPos, short YPos, short SizeY, short SizeX, byte R, byte G, byte B, byte Alpha), 0x00001DAC10);
+    FunctionPointer(void, DrawRect, (int Xpos, int Ypos, int Width, int Height, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x001D8870);
+    FunctionPointer(void*, LoadAniTiles, (const char* FilePath, Scope scope), 0x001D4CE0);
+    FunctionPointer(void*, SetAniTiles, (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth, ushort FrameHeight), 0x00BDC4B0);
+    FunctionPointer(void*, LoadMesh, (const char* filepath, Scope scope), 0x00BDE080);
+    FunctionPointer(int, DrawSprite, (EntityAnimationData* AnimData, Vector2* Position, BOOL ScreenRelative), 0x001B3B00);
+    FunctionPointer(void, DrawLine, (int X1, int Y1, int X2, int Y2, unsigned int Colour, signed int Alpha, int InkEffect, BOOL ScreenRelative), 0x001D8DF0);
+    FunctionPointer(void*, DrawSpriteRotoZoom, (int XPos, int YPos, int PivotX, int PivotY, int Width, int Height, int SprX, int SprY, signed int ScaleX, signed int ScaleY, int Direction, __int16 Rotation, int InkEffect, signed int Alpha, int SheetID), 0x001D7260); //Internal Call From "DrawSprite"
+    FunctionPointer(void*, DrawMesh, (ushort AnimationID, ushort ModelID, char a3, DWORD* a4, DWORD* a5, int Colour), 0x001DEF00);
+    FunctionPointer(short, LoadAnimation, (const char* filename, Scope scope), 0x001B1FA0);
+    FunctionPointer(char, LoadGif, (int a1, char* filepath, int buffer), 0x001CBA90);
+    //Palettes
+    FunctionPointer(int, SetPaletteEntry, (char PaletteID, unsigned char Index, int Color), 0x001D5020);
+    FunctionPointer(int, GetPaletteEntry, (char PaletteID, unsigned char Index), 0x001D5070);
+    FunctionPointer(void, BlendFromPalettes, (byte DestPaletteID, byte SourcePalA, byte SourcePalB, signed int AlphaPerFrame, int StartIndex, int EndIndex), 0x001D54E0);
+    FunctionPointer(void*, SetActivePalette, (byte PaletteID, int StartLine, int EndLine), 0x001D50B0);
+    FunctionPointer(void*, CopyPaletteColors, (byte SourcePalID, byte SourceIndex, byte DestPalID, byte DestIndex, byte ColorCount), 0x001D50F0);
+    FunctionPointer(void*, LoadPalette, (byte PaletteID, const char* Filename, unsigned short ColorCount), 0x001D5150);
+    FunctionPointer(int, RotatePalette, (unsigned __int8 PaletteID, unsigned __int8 StartIndex, unsigned __int8 EndIndex, bool Right), 0x001D5420);
+    FunctionPointer(int, SetPaletteMask, (int MaskColour), 0x001D4FE0);
+    FunctionPointer(int, SetPaletteDistortValue, (int Value), 0x001D4A50);
+
+    // Utility
+    FunctionPointer(int, Rand, (int Min, int Max), 0x001DCDA0);
+    FunctionPointer(int, GetSettingsValue, (int ValueID), 0x001E3270);
+    FunctionPointer(void*, SetSettingsValue, (int ValueID, signed int Value), 0x001E33A0);
+    FunctionPointer(void, LoadSettings, (), 0x001CD690);
+    FunctionPointer(void, SaveSettings, (bool writeToFile), 0x005E4780);
+    FunctionPointer(void*, SetPresence, (int a1, const char* message), 0x002016D0);
+
+    // Scenes
+    FunctionPointer(int, LoadSceneFile, (int a1), 0x001EF0C0);
+    FunctionPointer(void, LoadScene, (int a1), 0x001EF0C0);
+    FunctionPointer(int, LoadGameScene, (char* CategoryName, char* SceneName), 0x001F23C0);
+    FunctionPointer(char, LoadTileconfig, (), 0x001BE440);
+    FunctionPointer(void, LoadGameconfig, (int ths), 0x001C6510);
+
+    // MATRICIES - Untested
+    FunctionPointer(void*, MatrixTranslateXYZ, (Matrix* Matrix, int X, int Y, int Z), 0x001DD3F0);
+    FunctionPointer(void*, MatrixRotateX, (Matrix* Matrix, ushort RotationX), 0x001DD470);
+    FunctionPointer(void*, MatrixRotateY, (Matrix* Matrix, ushort RotationY), 0x001DD500);
+    FunctionPointer(void*, MatrixRotateZ, (Matrix* Matrix, ushort RotationZ), 0x001DD590);
+    FunctionPointer(void*, MatrixInvert, (unsigned int a1, Matrix* Matrix), 0x001DD770);
+    FunctionPointer(void*, MatrixMultiply, (Matrix* Matrix1, Matrix* Matrix2), 0x001DE010);
+
+
+
+#pragma endregion
+
+#pragma region DataPointers
+
+    // Players
+    //DataPointer(EntityBase, ObjectList, 0x00469A10, 0x940); //Object List (Size: 0x940)
+    DataArray(Entity, ObjectEntityList, 0x00469A10, 0x940);
+
+    DataPointer(EntityPlayer, Player1, 0x00469A10);
+    DataPointer(EntityPlayer, Player2, 0x00469E68);
+    DataPointer(EntityPlayer, Player3, 0x0046A2C0);
+    DataPointer(EntityPlayer, Player4, 0x0046A718);
+
+    //Currently Running Entity
+    DataPointer(ActiveEntityInfo*, EntityInfo, 0x00AA7634);
+
+    // Other
+    DataPointer(Scene, CurrentScene, 0x00A535C4);
+    DataPointer(short, CurrentSceneInt, 0x00A535C4);
+    DataPointer(Category, CurrentCategory, 0x00A535E0);
+    DataPointer(byte, CurrentCategoryInt, 0x00A535E0);
+
+    DataPointer(struct_Timer, Timer, 0x00A535DC);
+    DataPointer(GameStates, GameState, 0x00A535E2);
+    DataArray(Controller, PlayerControllers, 0x004416D8, 5);
+    DataPointer(float, Controller1RStickX, 0x43E5C0);
+    DataPointer(float, Controller1RStickY, 0x43E5C4);
+    DataPointer(float, Controller1LStickX, 0x43E5C8);
+    DataPointer(float, Controller1LStickY, 0x43E5CC);
+    char* CurrentSceneName = (char*)(baseAddress + 0x00A5359C);
+
+    // Palettes
+    DataArray(SHORT, Palette0, 0x00945B58, 256);
+    DataArray(SHORT, Palette1, 0x00945D58, 256);
+    DataArray(SHORT, Palette2, 0x00945F58, 256);
+    DataArray(SHORT, Palette3, 0x00946158, 256);
+    DataArray(SHORT, Palette4, 0x00946358, 256);
+    DataArray(SHORT, Palette5, 0x00946558, 256);
+    DataArray(SHORT, Palette6, 0x00946758, 256);
+    DataArray(SHORT, Palette7, 0x00946958, 256);
+
+    //Objects
+    DataPointer(Obj_Ring*, OBJ_Ring, 0x00AC67E0);
+    DataPointer(Obj_Player*, OBJ_Player, 0x00AC6838);
+    DataPointer(Obj_Camera*, OBJ_Camera, 0x00AC6AA4);
+
+#pragma endregion
+
+#pragma region Entity
+
     //A NOTE ON HOW TO GET ATTRIBUTE VALUES
+
+    enum ImportantEntityIDs {
+        ENTITYSLOT_PLAYER1 = 0,
+        ENTITYSLOT_PLAYER2 = 1,
+        ENTITYSLOT_PLAYER3 = 1,
+        ENTITYSLOT_PLAYER4 = 1,
+        ENTITYSLOT_MUSIC = 9,
+    };
 
     struct Entity
     {
 #pragma region Data
         /* 0x00000000 */ Vector2 Position;
-        /* 0x00000008 */ int ScaleX; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
-        /* 0x0000000C */ int ScaleY;
-        /* 0x00000010 */ int XVelocity;
-        /* 0x00000014 */ int YVelocity;
-        /* 0x00000018 */ int UpdateRangeX; //How many pixels offscreen to keep the object updating
-        /* 0x0000001C */ int UpdateRangeY;
+        /* 0x00000008 */ Vector2 Scale; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
+        /* 0x0000000C */ Vector2 Velocity;
+        /* 0x00000018 */ Vector2 UpdateRange; //How many pixels offscreen to keep the object updating
         /* 0x00000020 */ int Angle;
         /* 0x00000024 */ int Alpha; //Transparency
         /* 0x00000028 */ int Rotation;
@@ -997,17 +1069,14 @@ namespace SonicMania
         /* 0x00000030 */ DWORD field_30;
         /* 0x00000034 */ WORD field_34;
         /* 0x00000036 */ short ObjectID;
-        /* 0x00000038 */ bool OnScreen;
+        /* 0x00000038 */ BOOL InBounds;
         /* 0x0000003C */ DWORD field_3C;
-        /* 0x00000040 */ bool TileCollisions;
-        /* 0x00000044 */ DWORD field_44;
-        /* 0x00000048 */ bool Grounded;
-        /* 0x00000049 */ byte Unknown49;
-        /* 0x0000004A */ byte Unknown4A;
-        /* 0x0000004B */ byte Unknown4B;
-        /* 0x0000004C */ byte Priority; //Active State
+        /* 0x00000040 */ BOOL TileCollisions;
+        /* 0x00000044 */ BOOL Active;
+        /* 0x00000048 */ BOOL Grounded;
+        /* 0x0000004C */ ActiveStates Priority; //Active State
         /* 0x0000004D */ BYTE Filter;
-        /* 0x0000004E */ bool Direction;
+        /* 0x0000004E */ BYTE Direction; //0-3
         /* 0x0000004F */ BYTE DrawOrder;                // The layer the Sprite Draws on (0-14)
         /* 0x00000050 */ BYTE CollisionLayers;
         /* 0x00000051 */ BYTE CollisionPlane;
@@ -1018,7 +1087,7 @@ namespace SonicMania
         /* 0x00000056 */ BYTE ActiveScreens;
         /* 0x00000055 */ BYTE field_57;
 
-        
+
 #pragma endregion
 
         void Move(short x, short y)
@@ -1028,94 +1097,96 @@ namespace SonicMania
         }
         void AddVelocity(int x, int y)
         {
-            XVelocity += x;
-            YVelocity += y;
+            Velocity.X += x;
+            Velocity.Y += y;
             Speed += x;
         }
         void SetVelocity(int x, int y)
         {
-            XVelocity = x;
-            YVelocity = y;
+            Velocity.X = x;
+            Velocity.Y = y;
             Speed = x;
         }
         void MultiplyVelocity(float x, float y)
         {
-            XVelocity = (int)(XVelocity * x);
-            YVelocity = (int)(YVelocity * y);
+            Velocity.X = (int)(Velocity.X * x);
+            Velocity.Y = (int)(Velocity.Y * y);
             Speed = (int)(Speed * x);
         }
     };
+
+    //struct to fill up the base class
+    struct EntityBase {
+        Entity Base;
+        byte Extra[0x400];
+    };
+
     struct EntityPlayer : Entity
     {
         /* 0x00000058 */ void* State;
         /* 0x0000005C */ DWORD StateDraw; //Name might not be correct
         /* 0x00000060 */ DWORD dword60;
-        /* 0x00000064 */ DWORD dword64;
+        /* 0x00000064 */ DWORD Camera;
         /* 0x00000068 */ EntityAnimationData Animation;
-        /* 0x00000080 */ DWORD dword80;
-        /* 0x00000084 */ DWORD dword84;
-        /* 0x00000088 */ DWORD dword88;
-        /* 0x0000008C */ DWORD dword8C;
-        /* 0x00000090 */ DWORD dword90;
-        /* 0x00000094 */ DWORD dword94;
-        /* 0x00000098 */ DWORD dword98;
-        /* 0x0000009C */ DWORD dword9C;
-        /* 0x000000A0 */ DWORD dwordA0;
-        /* 0x000000A4 */ char field_A4[12];
+        /* 0x00000080 */ EntityAnimationData TailAnimation;
+        /* 0x00000098 */ DWORD MaxWalkSpeed;
+        /* 0x0000009C */ DWORD MaxJogSpeed;
+        /* 0x000000A0 */ DWORD MaxRunSpeed;
+        /* 0x000000A4 */ DWORD field_A4;
+        /* 0x000000A4 */ DWORD TailRotation;
+        /* 0x000000A4 */ DWORD TailDirection;
         /* 0x000000B0 */ short SpriteIndex;
         /* 0x000000B2 */ short SpriteIndexTails;
-        /* 0x000000B4 */ WORD wordB4;
+        /* 0x000000B4 */ WORD StoredAnim;
         /* 0x000000B6 */ unsigned short PlayerID;
-        /* 0x000000B8 */ short HitBoxLeft; // TODO: Check if its a pointer to a Hitbox or the Hitbox Struct itself
-        /* 0x000000BA */ short HitBoxRight;
-        /* 0x000000BC */ short HitBoxTop;
-        /* 0x000000BE */ short HitBoxBottom;
+        /* 0x000000B8 */ Hitbox* Innerbox;
+        /* 0x000000BC */ Hitbox* Outerbox;
         /* 0x000000C0 */ Character Character;
         /* 0x000000C4 */ int RingCount;
         /* 0x000000C8 */ int RingsToNextLife;
         /* 0x000000CC */ ShieldType Shield;
         /* 0x000000D0 */ int LifeCount;
         /* 0x000000D4 */ int Score;
-        /* 0x000000D8 */ DWORD dwordD8;
+        /* 0x000000D8 */ DWORD TargetScore; //Next Score bonus amount
         /* 0x000000DC */ DWORD CombineRing;
-        /* 0x000000E0 */ DWORD field_E0;
-        /* 0x000000E4 */ DWORD field_E4;
-        /* 0x000000E8 */ DWORD field_E8;
+        /* 0x000000E0 */ DWORD Timer;
+        /* 0x000000E4 */ DWORD OuttaHereTimer;
+        /* 0x000000E8 */ DWORD AbilityTimer;
         /* 0x000000EC */ DWORD field_EC;
         /* 0x000000F0 */ DWORD field_F0;
         /* 0x000000F4 */ DWORD AirLeft;
         /* 0x000000F8 */ DWORD Invincibility;
         /* 0x000000FC */ DWORD SpeedShoesTTL;
         /* 0x00000100 */ DWORD InvincibilityFrames;
-        /* 0x00000104 */ DWORD field_104;
-        /* 0x00000108 */ DWORD field_108;
-        /* 0x0000010C */ DWORD field_10C;
-        /* 0x00000110 */ DWORD field_110;
-        /* 0x00000114 */ DWORD field_114;
-        /* 0x00000118 */ DWORD IsUpSideDown; // Bool?
+        /* 0x00000104 */ DWORD field_104; //For when hit
+        /* 0x00000108 */ DWORD Skidding;
+        /* 0x0000010C */ DWORD Pushing;
+        /* 0x00000110 */ BOOL Underwater;
+        /* 0x00000114 */ DWORD GroundedStore;
+        /* 0x00000118 */ BOOL IsUpSideDown;
         /* 0x0000011C */ DWORD field_11C;
         /* 0x00000120 */ DWORD field_120;
         /* 0x00000124 */ SuperState SuperState;
-        /* 0x00000128 */ DWORD field_128;
-        /* 0x0000012C */ DWORD GroundSpeed2;
-        /* 0x00000130 */ DWORD field_130;
+        /* 0x00000128 */ DWORD SuperSecondTimer;
+        /* 0x0000012C */ DWORD SuperBlendAmount;
+        /* 0x00000130 */ DWORD SuperBlendDirection;
         /* 0x00000134 */ DWORD InteractStatus; // TODO: Work out all the Statuses
-        /* 0x00000138 */ BYTE gap138[4];
-        /* 0x0000013C */ DWORD dword13C;
+        /* 0x00000138 */ DWORD ScoreBonus;
+        /* 0x0000013C */ DWORD CameraOffset;
         /* 0x00000140 */ DWORD dword140;
         /* 0x00000144 */ DWORD dword144;
-        /* 0x00000148 */ DWORD dword148;
-        /* 0x0000014C */ int physicsAcceleration;
-        /* 0x00000150 */ int physicsDeacceleration;
-        /* 0x00000154 */ int physicsAirAcceleration;
-        /* 0x00000158 */ int physicsAirDeacceleration;
-        /* 0x0000015C */ int physicsUnknown15C;
-        /* 0x00000160 */ int physicsUnknown160; // AirDeacceleration?
-        /* 0x00000164 */ int physicsUnknown164;
-        /* 0x00000168 */ int physicsJumpGravity;
-        /* 0x0000016C */ int physicsUnknown16C;
-        /* 0x00000170 */ int physicsJumpSpeed;
-        /* 0x00000174 */ DWORD dword174;
+        /* 0x00000148 */ DWORD TopSpeed;
+        /* 0x0000014C */ int Acceleration;
+        /* 0x00000150 */ int Decceleration;
+        /* 0x00000154 */ int AirAcceleration;
+        /* 0x00000158 */ int AirDecceleration;
+        /* 0x0000015C */ int SkidSpeed;
+        /* 0x00000160 */ int RollingFriction;
+        /* 0x00000164 */ int RollingDeceleration;
+        /* 0x00000168 */ int GravityStrength;
+        /* 0x0000016C */ int GlideSpeedStore;
+        /* 0x00000170 */ int JumpStrength;
+        /* 0x00000174 */ DWORD JumpCap;
         /* 0x00000178 */ DWORD dword178;
         /* 0x0000017C */ DWORD dword17C;
         /* 0x00000180 */ DWORD dword180;
@@ -1128,14 +1199,14 @@ namespace SonicMania
         /* 0x000001A0 */ InputStatus InputStatus;
         /* 0x000001A4 */ int ControllerID;
         /* 0x000001A8 */ DWORD dword1A8;
-        /* 0x000001AC */ ALIGN(4) bool Up;
-        /* 0x000001B0 */ ALIGN(4) bool Down;
-        /* 0x000001B4 */ ALIGN(4) bool Left;
-        /* 0x000001B8 */ ALIGN(4) bool Right;
-        /* 0x000001BC */ ALIGN(4) bool Jump;
-        /* 0x000001C0 */ ALIGN(4) int JumpAbilityFlag;
+        /* 0x000001AC */ BOOL Up;
+        /* 0x000001B0 */ BOOL Down;
+        /* 0x000001B4 */ BOOL Left;
+        /* 0x000001B8 */ BOOL Right;
+        /* 0x000001BC */ BOOL JumpPress;
+        /* 0x000001C0 */ BOOL JumpHold;
         /* 0x000001C4 */ int JumpAbility;
-        /* 0x000001C8 */ int AbilityTimer;
+        /* 0x000001C8 */ int field_1C8;
         /* 0x000001CC */ Ability Moveset;
         /* 0x000001D0 */ Ability UpAbility;
         /* 0x000001D4 */ DWORD dword1D4;
@@ -1190,6 +1261,39 @@ namespace SonicMania
         /* 0x000000A8 */ EntityAnimationData AnimationInner;
         /* 0x000000C0 */ byte gapC0[128];
 
+    };
+    struct EntityCamera : Entity {
+        void* State;
+        Vector2* TargetPosPtr;
+        int ActiveEntity;
+        int field_64;
+        int field_68;
+        int field_6C;
+        int field_70;
+        int LastXPos;
+        int LastYPos;
+        int ShakeX;
+        int ShakeY;
+        int field_84;
+        int field_88;
+        int field_8C;
+        int field_90;
+        int field_94;
+        int field_98;
+        int AdjustY;
+        int field_A0;
+        int field_A4;
+        int field_A8;
+        int field_AC;
+        int field_B0;
+        int field_B4;
+        int field_B8;
+        int field_BC;
+        int field_C0;
+        int dwordC4;
+        int dwordC8;
+        int dwordCC;
+        int dwordD0;
     };
     struct EntityRing : Entity
     {
@@ -1268,6 +1372,132 @@ namespace SonicMania
 
 #pragma endregion
 
+#pragma region Object 
+    struct Object
+    {
+        WORD ObjectID;
+        BYTE EarlyUpdateFlag;
+        BYTE field_3;
+    };
+
+    struct Obj_Ring : Object
+    {
+        Hitbox Hitbox;
+        WORD field_C;
+        WORD SpriteIndex;
+        WORD SFX_Ring;
+    };
+
+    struct Obj_Camera : Object
+    {
+        int XPos;
+        int YPos;
+    };
+
+    struct Obj_Player : Object
+    {
+        int  SonicPhysicsTable[64];
+        int  TailsPhysicsTable[64];
+        int  KnuxPhysicsTable[64];
+        int  MightyPhysicsTable[64];
+        int  RayPhysicsTable[64];
+        int  SuperPalette_Sonic[18];
+        int  SuperPalette_Sonic_CPZ[18];
+        int  SuperPalette_Sonic_HCZ[18];
+        int  SuperPalette_Tails[18];
+        int  SuperPalette_Tails_CPZ[18];
+        int  SuperPalette_Tails_HCZ[18];
+        int  SuperPalette_Knux[18];
+        int  SuperPalette_Knux_CPZ[18];
+        int  SuperPalette_Knux_HCZ[18];
+        int  SuperPalette_Mighty[18];
+        int  SuperPalette_Mighty_CPZ[18];
+        int  SuperPalette_Mighty_HCZ[18];
+        int  SuperPalette_Ray[18];
+        int  SuperPalette_Ray_CPZ[18];
+        int  SuperPalette_Ray_HCZ[18];
+        int field_93C;
+        int  PlayerCount;
+        short  UpState;
+        short  DownState;
+        short  LeftState;
+        short RightState;
+        short  JumpPressState;
+        short  JumpHoldState;
+        int  field_950;
+        int  field_954;
+        Vector2  FlyCarryPositions[16];
+        BYTE  field_9D8;
+        BYTE field_9D9;
+        BYTE  field_9DA;
+        BYTE  field_9DB;
+        BYTE  field_9DC;
+        BYTE  field_9DD;
+        BYTE  field_9DE;
+        BYTE  field_9DF;
+        BYTE  field_9E0;
+        BYTE  field_9E1;
+        BYTE  field_9E2;
+        BYTE  field_9E3;
+        int  field_9E4;
+        BYTE  P2InputDelay;
+        BYTE  field_9E9;
+        BYTE  field_9EA;
+        BYTE  field_9EB;
+        BYTE  field_9EC;
+        int Rings;
+        int  RingExtraLife;
+        int  Powerups;
+        int  SavedLives;
+        int  SavedScore;
+        int  SavedTargetScore;
+        short  SonicSpriteIndex;
+        short  SuperSpriteIndex;
+        short  TailsSpriteIndex;
+        short  TailsTailsSpriteIndex;
+        short KnuxSpriteIndex;
+        short  MightySpriteIndex;
+        short  RaySpriteIndex;
+        short  SFX_Jump;
+        short  SFX_Roll;
+        short  SFX_Charge;
+        short  SFX_Release;
+        short  SFX_PeelCharge;
+        short  SFX_PeelRelease;
+        short  SFX_Dropdash;
+        short  SFX_LoseRings;
+        short  SFX_Hurt;
+        short SFX_PimPom;
+        short  SFX_Skidding;
+        short  SFX_Grab;
+        short  SFX_Flying;
+        BOOL  PlayingFlySFX;
+        short  SFX_Tired;
+        BYTE  field_A36;
+        BYTE  field_A37;
+        BOOL  PlayingTiredSFX;
+        short  SFX_Land;
+        short SFX_Slide;
+        short  SFX_Outtahere;
+        short  SFX_Transform2;
+        short SFX_Swap;
+        short  SFX_SwapFail;
+        short  SFX_MightyDeflect;
+        short SFX_MightyDrill;
+        short  SFX_MightyLand;
+        short  SFX_MightyUnspin;
+        int  RaySwoopTimer;
+        int RayDiveTimer;
+        int  GotHit;
+        int  field_A5C;
+        int field_A60;
+        int field_A64;
+        void* pfuncA68;
+        void* field_A6C;
+        int  field_A70;
+    };
+#pragma endregion
+
 #pragma region Pointer Functions
     static byte GetChaosEmeraldBits()
     {
@@ -1319,7 +1549,7 @@ namespace SonicMania
         return result;
     }
 
-    inline void ToRGB888(SHORT val, byte &R, byte &G, byte &B)
+    inline void ToRGB888(SHORT val, byte& R, byte& G, byte& B)
     {
         R = (val & 0b1111100000000000) >> 8;
         G = (val & 0b0000011111100000) >> 3;
@@ -1380,7 +1610,7 @@ namespace SonicMania
     {
         return (int*)(*(int*)GetAddress(baseAddress, offset1) + offset2);
     }
-    static byte GetSpritePointer(int SpritePointer, int offset)
+    static ushort GetSpritePointer(int SpritePointer, int offset)
     {
         int* pointer = (int*)(baseAddress + SpritePointer);
         if (!*pointer)
@@ -1407,7 +1637,7 @@ namespace SonicMania
     template <typename T>
     inline T* GetActiveEntity()
     {
-        return (T*)CurrentEntity;
+        return (T*)EntityInfo.CurrentEntity;
     }
 
     template <typename T>
@@ -1423,14 +1653,14 @@ namespace SonicMania
         int abs = jmp + r + 5;
         return (T*)abs;
     }
-    
+
     inline short GetObjectIDFromType(ObjectType type)
     {
         if (*((int*)(baseAddress + type)) == 0)
             return 0;
         return *(short*)GetAddress((int)(baseAddress + type), 0);
     }
-    
+
     inline Ability GetMoveSetByCharacter(Character character)
     {
         switch (character)
@@ -1449,34 +1679,57 @@ namespace SonicMania
             return MOVESET_SONIC;
         }
     }
-    
+
     inline void RestartScene()
     {
         // Setting GameState to NotRunning restarts the scene
         GameState = GameState_NotRunning;
     }
-    
+
     inline void ChangeScene(Scene scene)
     {
         CurrentScene = scene;
         GameState = GameState_NotRunning;
     }
-    
+
     inline Entity* SpawnObject(short objectID, short subObject, short x, short y)
     {
         return SpawnObject_Internal(objectID, subObject, ((int)x) << 16, ((int)y) << 16);
     }
-    
+
     inline Entity* SpawnObject(short objectID, short subObject, Vector2 position)
     {
         return SpawnObject(objectID, subObject, position.X, position.Y);
     }
-    
+
     inline void DespawnEntity(Entity* entity)
     {
         DespawnEntity_Internal(entity, 0, 0);
     }
-    
+
+    inline int ShakeCamera(int ShakeX, int CameraTarget, int ShakeY) {
+        int result; // eax
+        EntityCamera* Camera; // [esp+8h] [ebp-4h]
+
+        if (OBJ_Camera) {
+            Camera = NULL;
+            result = GetActiveObjects(OBJ_Camera->ObjectID, (Entity*)&Camera);
+            if (result == 1) {
+                while (Camera->ActiveEntity != CameraTarget)
+                {
+                    result = GetActiveObjects(OBJ_Camera->ObjectID, (Entity*)&Camera);
+                    if (result != 1) {
+                        return result;
+                    }
+                }
+                Camera->ShakeX = ShakeX;
+                Camera->ShakeY = ShakeY;
+                //result = RSDK_Unknown45();
+            }
+        }
+        return result;
+    }
+
     inline void PlaySong(const char* filePath, int loopstart, bool loop)
     {
         int* addr = GetAddress(0x00AC6E08, 0x248);
@@ -1486,8 +1739,8 @@ namespace SonicMania
             PlayMusic(filePath, 0, 0, loopstart, loop ? 1 : 0);
 
     }
-    
-    inline int PlaySoundFXS(const char *path)
+
+    inline int PlaySoundFXS(const char* path)
     {
         return PlaySoundFX(GetSoundFXID(path), 0, 0xFF);
     }
@@ -1551,7 +1804,7 @@ namespace SonicMania
 #pragma endregion
 
 #pragma region ManiaPatches
-    
+
     inline void BindLBAndRB()
     {
         // LB
