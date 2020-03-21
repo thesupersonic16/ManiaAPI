@@ -1149,14 +1149,14 @@ namespace SonicMania
     struct Entity
     {
 #pragma region Data
-        /* 0x00000000 */ int XPos;
-        /* 0x00000004 */ int YPos;
+        /* 0x00000000 */ int XPos; //16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
+        /* 0x00000004 */ int YPos; //16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
         /* 0x00000008 */ int ScaleX; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
-        /* 0x00000008 */ int ScaleY; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
-        /* 0x00000010 */ int XVelocity;
-        /* 0x00000010 */ int YVelocity;
+        /* 0x0000000C */ int ScaleY; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
+        /* 0x00000010 */ int XVelocity; //16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
+        /* 0x00000014 */ int YVelocity; //16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
         /* 0x00000018 */ int UpdateRangeX; //How many pixels offscreen to keep the object updating
-        /* 0x00000018 */ int UpdateRangeY; //How many pixels offscreen to keep the object updating
+        /* 0x0000001C */ int UpdateRangeY; //How many pixels offscreen to keep the object updating
         /* 0x00000020 */ int Angle;
         /* 0x00000024 */ int Alpha; //Transparency
         /* 0x00000028 */ int Rotation;
