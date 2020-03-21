@@ -39,6 +39,22 @@ namespace SonicMania
     struct Obj_Player;
     struct Obj_Camera;
     struct Obj_Ring;
+    struct Obj_Platform;
+    struct Obj_SpecialRing;
+    struct Obj_ItemBox;
+    struct Obj_Spring;
+    struct Obj_Animals;
+    struct Obj_ScoreBonus;
+    struct Obj_Explosion;
+    struct Obj_Spikes;
+    struct Obj_Door;
+    struct Obj_Button;
+    struct Obj_StarPost;
+    struct Obj_BreakableWall;
+    struct Obj_LRZBreakableWall;
+    struct Obj_CollapsingPlatform;
+    struct Obj_ForceSpin;
+    struct Obj_PlaneSwitch;
 
     //Misc
     struct Hitbox;
@@ -265,6 +281,14 @@ namespace SonicMania
         ACTIVE_NEVER3 = -1,
     };
 
+    enum FlipFlags : byte
+    {
+        FLIP_NONE,
+        FLIP_X,
+        FLIP_Y,
+        FLIP_XY,
+    };
+
     enum Scope : byte
     {
         Scope_None,
@@ -387,12 +411,23 @@ namespace SonicMania
         //General
         ObjectType_Player = 0x00AC6838,
         ObjectType_Ring = 0x00AC67E0,
+        ObjectType_Platform = 0x004ACF50,
         ObjectType_SSRing = 0x00AC686C,
         ObjectType_ItemBox = 0x00AC6F00,
         ObjectType_Spring = 0x00AC6BD8,
-        ObjectType_Animal = 0x00AC6D78,
-        ObjectType_ScoreOnHitNumber = 0x00AC6D80,
+        ObjectType_Spikes = 0x00AC67BC,
+        ObjectType_Button = 0x00AC68BC,
+        ObjectType_Door = 0x00AC68B0,
+        ObjectType_LRZBreakableWall = 0x00AC6C80,
+        ObjectType_BreakableWall = 0x00AC6A34,
+        ObjectType_CollapsingPlatform = 0x00AC66EC,
+        ObjectType_ForcedSpin = 0x00AC6CB4,
+        ObjectType_StarPost = 0x00AC672C,
+        ObjectType_Animals = 0x00AC6D78,
+        ObjectType_ScoreBonus = 0x00AC6D80,
         ObjectType_Explosion = 0x00AC6D84,
+        ObjectType_PlathSwapper = 0x00AC6C0C,
+
         // Green Hill Zone
         ObjectType_Motobug = 0x00AC6B60,
         ObjectType_CrabMeat = 0x00AC6F9C,
@@ -422,7 +457,7 @@ namespace SonicMania
         // Press Garden Zone
         ObjectType_Dragonfly = 0x00AC6928,
         ObjectType_Jugglesaw = 0x00AC6688,
-        ObjectType_SplatsJar = 0x00AC6CB4,
+        ObjectType_SplatsJar = 0x004ACF50,
         ObjectType_Woodrow = 0x00AC67FC,
         ObjectType_IceBomba = 0x00AC66EC,
         ObjectType_HeavyShinobi = 0x00AC6E18,
@@ -430,7 +465,7 @@ namespace SonicMania
         ObjectType_Hotaru = 0x00AC6808,
         ObjectType_Dango = 0x00AC6F34,
         ObjectType_Kanabun = 0x00AC67FC,
-        ObjectType_Kabasira = 0x00AC6CB4,
+        ObjectType_Kabasira = 0x004ACF50,
         ObjectType_SilverSonic = 0x00AC679C,
         // HydroCity Zone
         ObjectType_Jellygnite = 0x00AC6B9C,
@@ -480,12 +515,12 @@ namespace SonicMania
         ObjectType_FXFade = 0x00AC6810
     };
 
-    /*enum TransparencyFlag : byte
+    enum TransparencyFlag : byte
     {
         TransparencyFlag_Opaque,
         TransparencyFlag_HalfTransparent,
         TransparencyFlag_Transparent
-    };*/
+    };
 
     enum SuperState : int
     {
@@ -596,6 +631,50 @@ namespace SonicMania
         {
             X = x;
             Y = y;
+        }
+
+        Vector2(float x, float y) : Vector2()
+        {
+            X = (short)x;
+            Y = (short)y;
+            SubX = (x - (ushort)(x)) * 0x10000;
+            SubX = (y - (ushort)(y)) * 0x10000;
+        }
+
+        int GetFullX() {
+            return (X << 16) + SubX;
+        }
+
+        int GetFullY() {
+            return (Y << 16) + SubY;
+        }
+
+        float GetFullX_F() {
+            return (float)X + (float)(SubX / 0x10000);
+        }
+
+        float GetFullY_F() {
+            return (float)Y + (float)(SubY / 0x10000);
+        }
+
+        void SetFullX(int x) {
+            SubX = (short)x;
+            X = x >> 16;
+        }
+
+        void SetFullY(int y) {
+            SubY = (short)y;
+            Y = y >> 16;
+        }
+
+        void SetFullX(float x) {
+            X = (short)x;
+            SubX = (x - (ushort)(x)) * 0x10000;
+        }
+
+        void SetFullY(float y) {
+            Y = (short)y;
+            SubY = (y - (ushort)(y)) * 0x10000;
         }
 
         Vector2(int x) : Vector2()
@@ -722,15 +801,11 @@ namespace SonicMania
             return X == 0 && Y == 0;
         }
 
-
-
-    private:
-        short SubX;
     public:
+        ushort SubX;
         short X = 0;
-    private:
-        short SubY;
-    public:
+
+        ushort SubY;
         short Y = 0;
     };
     struct Color
@@ -968,7 +1043,7 @@ namespace SonicMania
     FunctionPointer(void*, LoadPalette, (byte PaletteID, const char* Filename, unsigned short ColorCount), 0x001D5150);
     FunctionPointer(int, RotatePalette, (unsigned __int8 PaletteID, unsigned __int8 StartIndex, unsigned __int8 EndIndex, bool Right), 0x001D5420);
     FunctionPointer(int, SetPaletteMask, (int MaskColour), 0x001D4FE0);
-    FunctionPointer(int, SetPaletteDistortValue, (int Value), 0x001D4A50);
+    FunctionPointer(int, SetPaletteMask2, (int Value), 0x001D4A50);
 
     // Utility
     FunctionPointer(int, Rand, (int Min, int Max), 0x001DCDA0);
@@ -1040,6 +1115,22 @@ namespace SonicMania
     DataPointer(Obj_Ring*, OBJ_Ring, 0x00AC67E0);
     DataPointer(Obj_Player*, OBJ_Player, 0x00AC6838);
     DataPointer(Obj_Camera*, OBJ_Camera, 0x00AC6AA4);
+    DataPointer(Obj_Platform*, OBJ_Platform, 0x004ACF50);
+    DataPointer(Obj_ForceSpin*, OBJ_ForceSpin, 0x00AC6CB4);
+    DataPointer(Obj_CollapsingPlatform*, OBJ_CollapsingPlatform, 0x00AC66EC);
+    DataPointer(Obj_LRZBreakableWall*, OBJ_LRZBreakableWall, 0x00AC6C80);
+    DataPointer(Obj_BreakableWall*, OBJ_BreakableWall, 0x00AC6A34);
+    DataPointer(Obj_StarPost*, OBJ_StarPost, 0x00AC672C);
+    DataPointer(Obj_Button*, OBJ_Button, 0x00AC68BC);
+    DataPointer(Obj_Door*, OBJ_Door, 0x00AC68BC);
+    DataPointer(Obj_Spikes*, OBJ_Spikes, 0x00AC67BC);
+    DataPointer(Obj_Explosion*, OBJ_Explosion, 0x00AC6D84);
+    DataPointer(Obj_ScoreBonus*, OBJ_ScoreBonus, 0x00AC6D80);
+    DataPointer(Obj_Animals*, OBJ_Animals, 0x00AC6D78);
+    DataPointer(Obj_Spring*, OBJ_Spring, 0x00AC6BD8);
+    DataPointer(Obj_ItemBox*, OBJ_ItemBox, 0x00AC6F00);
+    DataPointer(Obj_SpecialRing*, OBJ_SpecialRing, 0x00AC686C);
+    DataPointer(Obj_PlaneSwitch*, OBJ_PlaneSwitch, 0x00AC6C0C);
 
 #pragma endregion
 
@@ -1060,7 +1151,7 @@ namespace SonicMania
 #pragma region Data
         /* 0x00000000 */ Vector2 Position;
         /* 0x00000008 */ Vector2 Scale; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
-        /* 0x0000000C */ Vector2 Velocity;
+        /* 0x00000010 */ Vector2 Velocity;
         /* 0x00000018 */ Vector2 UpdateRange; //How many pixels offscreen to keep the object updating
         /* 0x00000020 */ int Angle;
         /* 0x00000024 */ int Alpha; //Transparency
@@ -1496,6 +1587,105 @@ namespace SonicMania
         void* field_A6C;
         int  field_A70;
     };
+
+    struct Obj_Platform : Object
+    {
+        short SpriteIndex;
+        short field_6;
+        int StoodPositions[8];
+        short SFX_Clacker;
+        short SFX_Clang;
+        short SFX_Push;
+        short SFX_Clack;
+        int dword30;
+        int dword34;
+    };
+
+    struct Obj_ForceSpin : Object
+    {
+        //TO-DO: fill out later
+    };
+    struct Obj_CollapsingPlatform : Object
+    {
+        //TO-DO: fill out later
+    };
+    struct Obj_LRZBreakableWall : Object
+    {
+        //TO-DO: fill out later
+    };
+    struct Obj_BreakableWall : Object
+    {
+        //TO-DO: fill out later
+    };
+    struct Obj_StarPost : Object
+    {
+        //TO-DO: fill out later
+    };
+    struct Obj_Button : Object
+    {
+        //TO-DO: fill out later
+    };
+    struct Obj_Door : Object
+    {
+        //TO-DO: fill out later
+    };
+    struct Obj_Spikes : Object
+    {
+        int field_4;
+        EntityAnimationData VerticalAnimData;
+        EntityAnimationData HorizontalAnimData;
+        short SpriteIndex;
+        BYTE field_3A;
+        BYTE field_3B;
+        int dword3C;
+        int dword40;
+        short SFX_Move;
+        short SFX_Spke;
+    };
+    struct Obj_Explosion : Object
+    {
+        short SpriteIndex;
+        short SFX_Destroy;
+    };
+    struct Obj_ScoreBonus : Object
+    {
+        short SpriteIndex;
+    };
+    struct Obj_Animals : Object
+    {
+        //TO-DO: fill out later
+    };
+    struct Obj_Spring : Object
+    {
+        short SpriteIndex;
+        short SFX_Spring;
+    };
+    struct Obj_ItemBox : Object
+    {
+        Hitbox MainHitbox;
+        Hitbox HiddenHitbox;
+        int BrokenFrame;
+        short SpriteMappings;
+        short SFX_Destroy;
+        short SFX_Teleport;
+        short SFX_HyperRing;
+        short SFX_PowerDown;
+        short SFX_Revovery;
+    };
+    struct Obj_SpecialRing : Object
+    {
+        short SpriteIndex;
+        Hitbox Hitbox;
+        short  field_E;
+        short  SFX_Warp;
+        short  ModelIndex;
+        short  View_SpecialRing;
+    };
+    struct Obj_PlaneSwitch : Object
+    {
+        //TO-DO: fill out later
+    };
+
 #pragma endregion
 
 #pragma region Pointer Functions
