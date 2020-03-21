@@ -1149,10 +1149,14 @@ namespace SonicMania
     struct Entity
     {
 #pragma region Data
-        /* 0x00000000 */ Vector2 Position;
-        /* 0x00000008 */ Vector2 Scale; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
-        /* 0x00000010 */ Vector2 Velocity;
-        /* 0x00000018 */ Vector2 UpdateRange; //How many pixels offscreen to keep the object updating
+        /* 0x00000000 */ int XPos;
+        /* 0x00000004 */ int YPos;
+        /* 0x00000008 */ int ScaleX; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
+        /* 0x00000008 */ int ScaleY; //512-based (512 = 0, 1024 = 2, 256 = 1/2)
+        /* 0x00000010 */ int XVelocity;
+        /* 0x00000010 */ int YVelocity;
+        /* 0x00000018 */ int UpdateRangeX; //How many pixels offscreen to keep the object updating
+        /* 0x00000018 */ int UpdateRangeY; //How many pixels offscreen to keep the object updating
         /* 0x00000020 */ int Angle;
         /* 0x00000024 */ int Alpha; //Transparency
         /* 0x00000028 */ int Rotation;
@@ -1183,25 +1187,25 @@ namespace SonicMania
 
         void Move(short x, short y)
         {
-            Position.X = x;
-            Position.Y = y;
+            XPos = x;
+            YPos = y;
         }
         void AddVelocity(int x, int y)
         {
-            Velocity.X += x;
-            Velocity.Y += y;
+            XVelocity += x;
+            YVelocity += y;
             Speed += x;
         }
         void SetVelocity(int x, int y)
         {
-            Velocity.X = x;
-            Velocity.Y = y;
+            XVelocity = x;
+            YVelocity = y;
             Speed = x;
         }
         void MultiplyVelocity(float x, float y)
         {
-            Velocity.X = (int)(Velocity.X * x);
-            Velocity.Y = (int)(Velocity.Y * y);
+            XVelocity = (int)(XVelocity * x);
+            YVelocity = (int)(YVelocity * y);
             Speed = (int)(Speed * x);
         }
     };
@@ -1517,7 +1521,7 @@ namespace SonicMania
         short  JumpHoldState;
         int  field_950;
         int  field_954;
-        Vector2  FlyCarryPositions[16];
+        int  FlyCarryPositions[32];
         BYTE  field_9D8;
         BYTE field_9D9;
         BYTE  field_9DA;
