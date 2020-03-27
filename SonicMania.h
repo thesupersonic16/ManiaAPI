@@ -404,7 +404,7 @@ namespace SonicMania
         //General
         ObjectType_Player             = 0x00AC6838,
         ObjectType_Ring               = 0x00AC67E0,
-        ObjectType_Platform           = 0x004ACF50,
+        ObjectType_Platform           = 0x00AC6CB4,
         ObjectType_SSRing             = 0x00AC686C,
         ObjectType_ItemBox            = 0x00AC6F00,
         ObjectType_Spring             = 0x00AC6BD8,
@@ -1108,12 +1108,12 @@ namespace SonicMania
     DataArray(SHORT, Palette6, 0x00946758, 256);
     DataArray(SHORT, Palette7, 0x00946958, 256);
 
-    //Objects
+    // Objects
     DataPointer(Obj_Ring*               , OBJ_Ring,               0x00AC67E0);
     DataPointer(Obj_Player*             , OBJ_Player,             0x00AC6838);
     DataPointer(Obj_Camera*             , OBJ_Camera,             0x00AC6AA4);
-    DataPointer(Obj_Platform*           , OBJ_Platform,           0x004ACF50);
-    DataPointer(Obj_ForceSpin*          , OBJ_ForceSpin,          0x00AC6CB4);
+    DataPointer(Obj_Platform*           , OBJ_Platform,           0x00AC6CB4);
+    DataPointer(Obj_ForceSpin*          , OBJ_ForceSpin,          0x00AC6CB4); // TODO: Check if the address is correct.
     DataPointer(Obj_CollapsingPlatform* , OBJ_CollapsingPlatform, 0x00AC66EC);
     DataPointer(Obj_LRZBreakableWall*   , OBJ_LRZBreakableWall,   0x00AC6C80);
     DataPointer(Obj_BreakableWall*      , OBJ_BreakableWall,      0x00AC6A34);
