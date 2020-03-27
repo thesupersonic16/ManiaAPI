@@ -465,6 +465,7 @@ namespace SonicMania
         ObjectType_Pointdexter      = 0x00AC6A2C,
         ObjectType_Blastoid         = 0x00AC66F4,
         ObjectType_Jawz             = 0x00AC6D10,
+        ObjectType_MovingDust       = 0x00AC6D18, // Mighty - Ground Pound
         ObjectType_MegaChopper      = 0x00AC6DB8,
         ObjectType_TurboSpiker      = 0x00AC6DF0,
         ObjectType_Buggernaut       = 0x00AC6728,
@@ -1191,8 +1192,8 @@ namespace SonicMania
 
         void Move(short x, short y)
         {
-            XPos = x;
-            YPos = y;
+            Position.X = x;
+            Position.Y = y;
         }
         void AddVelocity(int x, int y)
         {
