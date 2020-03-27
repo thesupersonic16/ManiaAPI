@@ -1148,6 +1148,12 @@ namespace SonicMania
 #pragma region Data
         ///* 0x00000000 */ int XPos;              // 16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
         ///* 0x00000004 */ int YPos;              // 16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
+        //
+        // +---------------------------------+
+        // ¦                                 ¦
+        // ¦ !! Please stop removing this !! ¦
+        // ¦                                 ¦
+        // +---------------------------------+
         /* 0x00000000 */ Vector2 Position;
         /* 0x00000008 */ int ScaleX;            // 512-based (512 = 0, 1024 = 2, 256 = 1/2)
         /* 0x0000000C */ int ScaleY;            // 512-based (512 = 0, 1024 = 2, 256 = 1/2)
@@ -1356,6 +1362,61 @@ namespace SonicMania
         /* 0x000000C0 */ byte gapC0[128];
 
     };
+
+    struct EntityPlatform : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x0000005C */ DWORD StateCollide;
+        /* 0x00000060 */ DWORD Type;
+        /* 0x00000064 */ DWORD AplitudeX;
+        /* 0x00000068 */ DWORD AplitudeY;
+        /* 0x0000006C */ DWORD Speed;
+        /* 0x00000070 */ DWORD HasTension;
+        /* 0x00000074 */ byte FrameId;
+        /* 0x00000075 */ byte CollisionType;
+        /* 0x00000076 */ byte Field_76;
+        /* 0x00000077 */ byte Field_77;
+        /* 0x00000078 */ DWORD TileOrginX;
+        /* 0x0000007C */ DWORD TileOrginY;
+        /* 0x00000080 */ DWORD CenterX;
+        /* 0x00000084 */ DWORD CenterY;
+        /* 0x00000088 */ DWORD DrawX;
+        /* 0x0000008C */ DWORD DrawY;
+        /* 0x00000090 */ DWORD CollisionXOffset;
+        /* 0x00000094 */ DWORD CollisionYOffset;
+        /* 0x00000098 */ DWORD Stood;
+        /* 0x0000009C */ DWORD CollapseDelay;
+        /* 0x000000A0 */ DWORD StoodAngle;
+        /* 0x000000A4 */ byte StoodPlayers;
+        /* 0x000000A5 */ byte PushPlayersL;
+        /* 0x000000A6 */ byte PushPlayersY;
+        /* 0x000000A7 */ byte field_A7;
+        /* 0x000000A8 */ Hitbox Hitbox;
+        /* 0x000000B0 */ EntityAnimationData Animation;
+        /* 0x000000C8 */ DWORD ChildCount;
+    };
+
+    // TODO: Needs Updating
+    struct EntityMovingSmoke : Entity
+    {
+        /* 0x00000058 */ int State;
+        /* 0x0000005C */ DWORD dword5C;
+        /* 0x00000060 */ int Type;
+        /* 0x00000064 */ DWORD dword64;
+        /* 0x00000068 */ int RingsToReward;
+        /* 0x0000006C */ DWORD dword6C;
+        /* 0x00000070 */ DWORD dword70;
+        /* 0x00000074 */ DWORD dword74;
+        /* 0x00000078 */ DWORD dword78;
+        /* 0x0000007C */ DWORD MoveType;
+        /* 0x00000080 */ DWORD dword80;
+        /* 0x00000084 */ DWORD dword84;
+        /* 0x00000088 */ DWORD Speed;
+        /* 0x0000008C */ DWORD dword8C;
+        /* 0x00000090 */ DWORD dword90;
+        /* 0x00000094 */ EntityAnimationData Animation;
+    };
+
     struct EntityCamera : Entity
     {
         void* State;
