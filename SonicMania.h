@@ -1397,26 +1397,14 @@ namespace SonicMania
         /* 0x000000C8 */ DWORD ChildCount;
     };
 
-    // TODO: Needs Updating
-    struct EntityMovingSmoke : Entity
-    {
-        /* 0x00000058 */ int State;
-        /* 0x0000005C */ DWORD dword5C;
-        /* 0x00000060 */ int Type;
-        /* 0x00000064 */ DWORD dword64;
-        /* 0x00000068 */ int RingsToReward;
-        /* 0x0000006C */ DWORD dword6C;
-        /* 0x00000070 */ DWORD dword70;
-        /* 0x00000074 */ DWORD dword74;
-        /* 0x00000078 */ DWORD dword78;
-        /* 0x0000007C */ DWORD MoveType;
-        /* 0x00000080 */ DWORD dword80;
-        /* 0x00000084 */ DWORD dword84;
-        /* 0x00000088 */ DWORD Speed;
-        /* 0x0000008C */ DWORD dword8C;
-        /* 0x00000090 */ DWORD dword90;
-        /* 0x00000094 */ EntityAnimationData Animation;
-    };
+	struct EntityDust : Entity
+	{
+	    /* 0x00000058 */ int State;
+	    /* 0x0000005C */ DWORD Timer;
+        /* 0x00000060 */ DWORD Parent;
+	    /* 0x00000064 */ EntityAnimationData Animation;
+	};
+
 
     struct EntityCamera : Entity
     {
@@ -1670,7 +1658,10 @@ namespace SonicMania
         int   dword30;
         int   dword34;
     };
-
+	struct Obj_Dust : Object
+	{
+	    WORD SpriteIndex;
+	};
     struct Obj_ForceSpin : Object
     {
         //TODO: fill out later
