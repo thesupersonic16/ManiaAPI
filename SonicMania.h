@@ -1480,7 +1480,16 @@ namespace SonicMania
         /* 0x00000090 */ DWORD dword90;
         /* 0x00000094 */ EntityAnimationData Animation;
     };
-
+	struct UIVsZoneButton : Entity
+	{
+		/* 0x00000058 */ BYTE gap[164];
+		/* 0x000000FC */ DWORD Filter; //Might not Exist 
+		/* 0x00000100 */ bool Disabled;
+		/* 0x00000104 */ DWORD ZoneID;
+		/* 0x00000108 */ DWORD Act;
+		/* 0x0000010C */ bool XOut;
+        /* 0x00000110 */ bool Obfuscate;
+	};
     struct EntityUIText : Entity
     {
         /* 0x00000058 */ void* State;
