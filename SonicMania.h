@@ -55,6 +55,7 @@ namespace SonicMania
     struct Obj_CollapsingPlatform;
     struct Obj_ForceSpin;
     struct Obj_PlaneSwitch;
+	struct Obj_Clapperboard;
 
     //Misc
     struct Hitbox;
@@ -1527,7 +1528,26 @@ namespace SonicMania
         /* 0x00000090 */ DWORD dword90;
 
     };
-
+	struct EntityClapperboard : Entity
+	{
+		/* 0x00000058 */ void* State;
+		/* 0x0000005C */ DWORD dword5C;
+		/* 0x00000060 */ BYTE TakeID;
+		/* 0x00000061 */ BYTE Field_61;
+		/* 0x00000062 */ BYTE Field_62;
+		/* 0x00000063 */ BYTE Field_63;
+		/* 0x00000064 */ DWORD dword64;
+		/* 0x00000068 */ DWORD StarField_68;
+		/* 0x0000006C */ Hitbox Hotbox;
+		/* 0x00000074 */ DWORD dword74;
+		/* 0x00000078 */ DWORD dword78;
+		/* 0x0000007C */ DWORD dword7C;
+		/* 0x00000080 */ DWORD dword80;
+		/* 0x00000084 */ EntityAnimationData Animation84;
+		/* 0x0000009C */ EntityAnimationData Animation9C;
+		/* 0x000000B4 */ EntityAnimationData AnimationB4;
+		/* 0x000000CC */ EntityAnimationData AnimationCC;
+	};
 #pragma endregion
 
 #pragma region Object 
@@ -1670,6 +1690,11 @@ namespace SonicMania
 	struct Obj_Dust : Object
 	{
 	    WORD SpriteIndex;
+	};
+	struct Obj_Clapperboard : Object
+	{
+		WORD SpriteIndex;
+		WORD SFX_Whack;
 	};
     struct Obj_ForceSpin : Object
     {
