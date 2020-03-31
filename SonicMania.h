@@ -1442,25 +1442,26 @@ namespace SonicMania
         int dwordD0;
     };
 
-    struct EntityRing : Entity
-    {
-        /* 0x00000058 */ void* State;
-        /* 0x0000005C */ DWORD dword5C;
-        /* 0x00000060 */ int Type;
-        /* 0x00000064 */ DWORD dword64;
-        /* 0x00000068 */ int RingsToReward;
-        /* 0x0000006C */ DWORD dword6C;
-        /* 0x00000070 */ DWORD dword70;
-        /* 0x00000074 */ DWORD dword74;
-        /* 0x00000078 */ DWORD dword78;
-        /* 0x0000007C */ DWORD MoveType;
-        /* 0x00000080 */ DWORD dword80;
-        /* 0x00000084 */ DWORD dword84;
-        /* 0x00000088 */ DWORD Speed;
-        /* 0x0000008C */ DWORD dword8C;
-        /* 0x00000090 */ DWORD dword90;
-        /* 0x00000094 */ EntityAnimationData Animation;
-    };
+	struct EntityRing : Entity
+	{
+		/* 0x00000058 */ void* State;
+		/* 0x00000058 */ void* StateDraw;
+		/* 0x00000060 */ int Type;
+		/* 0x00000064 */ DWORD PlaneFilter;
+		/* 0x00000068 */ int RingAmount;
+		/* 0x0000006C */ DWORD Timer;
+		/* 0x00000070 */ DWORD MaxFrameCount;
+		/* 0x00000074 */ DWORD SparkleType2;
+		/* 0x00000078 */ DWORD StoredPlayer;
+		/* 0x0000007C */ DWORD MoveType;
+		/* 0x00000080 */ DWORD AmplitudeX;
+		/* 0x00000084 */ DWORD AmplitudeY;
+		/* 0x00000088 */ DWORD MoveSpeed;
+		/* 0x0000008C */ DWORD XOffset;
+		/* 0x00000090 */ DWORD YOffset;
+		/* 0x00000094 */ EntityAnimationData Animation;
+	
+	};
 
     struct EntityFXFade : Entity
     {
@@ -1561,7 +1562,7 @@ namespace SonicMania
     struct Obj_Ring : Object
     {
         Hitbox Hitbox;
-        WORD field_C;
+        WORD Pan;
         WORD SpriteIndex;
         WORD SFX_Ring;
     };
