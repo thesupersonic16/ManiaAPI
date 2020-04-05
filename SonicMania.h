@@ -507,7 +507,22 @@ namespace SonicMania
         ObjectType_S1Catakiller     = 0x00AC6B78,
 
         //Service Objects 
-        ObjectType_FXFade           = 0x00AC6810
+        ObjectType_FXFade           = 0x00AC6810,
+
+	    //UFO - SpecialStage
+		ObjectType_UFO_Dust         = 0x00AC6DB0,
+		ObjectType_UFO_Itembox      = 0x00AC66B4,
+		ObjectType_SpecialClear     = 0x00AC6CC8,
+		ObjectType_UFO_Decoration   = 0x00AC6DB0,
+		ObjectType_UFO_Springboard  = 0x00AC67D4,
+		ObjectType_UFO_Message      = 0x00AC6EBC,
+		ObjectType_UFO_Sphere       = 0x00AC667C,
+		ObjectType_UFO_Ring         = 0x00AC6700,
+		ObjectType_UFO_Player       = 0x00AC6F8C,
+
+		//UI - 
+		ObjectType_UIWaitSpinner    = 0x00AC6DA0,
+		ObjectType_PauseMenu        = 0x00AC6EF0
     };
 
     enum TransparencyFlag : byte
