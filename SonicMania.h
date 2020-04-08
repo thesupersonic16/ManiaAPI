@@ -1564,6 +1564,38 @@ namespace SonicMania
 		/* 0x000000B4 */ EntityAnimationData AnimationB4;
 		/* 0x000000CC */ EntityAnimationData AnimationCC;
 	};
+	struct EntityHUD : Entity
+	{
+		/* 0x00000058 */ DWORD dword58;
+		/* 0x0000005C */ DWORD dword5C;
+		/* 0x00000060 */ DWORD dword60;
+		/* 0x00000064 */ DWORD dword64;
+		/* 0x00000068 */ DWORD dword68;
+		/* 0x0000006C */ DWORD dword6C;
+		/* 0x00000070 */ DWORD dword70;
+		/* 0x00000074 */ DWORD dword74;
+		/* 0x00000078 */ DWORD dword78;
+		/* 0x0000007C */ DWORD dword7C;
+		/* 0x00000080 */ DWORD dword80;
+		/* 0x00000084 */ DWORD dword84;
+		/* 0x00000088 */ DWORD dword88;
+		/* 0x0000008C */ DWORD dword8C;
+		/* 0x00000090 */ DWORD dword90;
+		/* 0x00000094 */ DWORD dword94;
+		/* 0x00000098 */ DWORD dword98;
+		/* 0x0000009C */ DWORD dword9C;
+		/* 0x000000A0 */ DWORD dwordA0;
+		/* 0x000000A4 */ DWORD CompetitionSomething;
+		/* 0x000000A8 */ DWORD dwordA8;
+		/* 0x000000AC */ DWORD dwordAC;
+		/* 0x000000B0 */ DWORD dwordB0;
+		/* 0x000000B4 */ DWORD dwordB4;
+		/* 0x000000B8 */ DWORD dwordB8;
+		/* 0x000000BC */ DWORD dwordBC;
+
+
+
+	};
 #pragma endregion
 
 #pragma region Object 
@@ -1587,7 +1619,23 @@ namespace SonicMania
         int XPos;
         int YPos;
     };
+	struct Obj_Hud : Object
+	{
+		int Base;
+		WORD HUDMappings;
+		WORD SuperButtonMappings;
+		WORD SFX_Click;
+		WORD SFX_Starpost;
+		DWORD dwordC;
+		DWORD gap10;
+		DWORD dword14; //Offset should be 14, but next jumps to 24!?
+		DWORD field_24;
+		DWORD field_28;
+		DWORD field_2C;
+		DWORD field_30;
+		DWORD field_34;
 
+	};
     struct Obj_Player : Object
     {
         int    SonicPhysicsTable[64];
