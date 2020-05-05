@@ -1601,10 +1601,10 @@ namespace SonicMania
 		/* 0x00000058 */ void* State;
 		/* 0x0000005C */ int Type;
 		/* 0x00000060 */ int FlipFlag;
-		/* 0x00000064 */ byte PlaneFilter;
-		/* 0x00000065 */ byte gap65;
-		/* 0x00000066 */ byte field_66;
-		/* 0x00000067 */ byte field_67;
+		/* 0x00000064 */ BYTE PlaneFilter;
+		/* 0x00000065 */ BYTE gap65;
+		/* 0x00000066 */ BYTE field_66;
+		/* 0x00000067 */ BYTE field_67;
 		/* 0x00000068 */ DWORD field_68;
 		/* 0x0000006C */ EntityAnimationData Animation;
 		/* 0x00000084 */ DWORD dword84;
@@ -1630,7 +1630,7 @@ namespace SonicMania
 		/* 0x00000094 */ DWORD dword94;
 		/* 0x00000098 */ DWORD dword98;
 		/* 0x0000009C */ DWORD dword9C;
-		/* 0x000000A0 */ byte gapC0[148];
+		/* 0x000000A0 */ BYTE gapC0[148];
 		/* 0x00000140 */ EntityAnimationData Animation;
 	};
 	struct EntityUFOPlayer : Entity
@@ -1685,10 +1685,10 @@ namespace SonicMania
 		/* 0x00000114 */ DWORD field_114;
 		/* 0x00000118 */ DWORD field_118;
 		/* 0x0000011C */ DWORD field_11C;
-		/* 0x00000140 */ DWORD field_140;
-		/* 0x00000144 */ DWORD field_144;
-		/* 0x00000148 */ DWORD field_148;
-		/* 0x0000014C */ DWORD field_14C;
+		/* 0x00000120 */ DWORD field_120;
+		/* 0x00000124 */ DWORD field_124;
+		/* 0x00000128 */ DWORD field_128;
+		/* 0x0000012C */ DWORD field_12C;
 		/* 0x00000130 */ DWORD field_130;
 		/* 0x00000134 */ DWORD field_134;
 		/* 0x00000138 */ DWORD field_138;
@@ -1871,11 +1871,11 @@ namespace SonicMania
 	struct Obj_UFO_Player : Object
 	{
 		int Base;
-		DWORD field_4
-		byte field_8;
-		byte field_9;
-		byte field_A;
-		byte field_B;
+		DWORD field_4;
+		BYTE field_8;
+		BYTE field_9;
+		BYTE field_A;
+		BYTE field_B;
 		WORD SFX_Jump;
 		WORD SFX_Charge;
 		WORD SFX_Release;
@@ -1891,8 +1891,8 @@ namespace SonicMania
 		WORD BallMOdel;
 		WORD TumbleModel;
 		WORD ModelID;
-		byte field_2A;
-		byte field_2B;
+		BYTE field_2A;
+		BYTE field_2B;
 
 	};
     struct Obj_Platform : Object
