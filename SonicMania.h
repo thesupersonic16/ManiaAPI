@@ -1422,40 +1422,38 @@ namespace SonicMania
 	};
 
 
-    struct EntityCamera : Entity
-    {
-        void* State;
-        Vector2* TargetPosPtr;
-        int ActiveEntity;
-        int field_64;
-        int field_68;
-        int field_6C;
-        int field_70;
-        int LastXPos;
-        int LastYPos;
-        int ShakeX;
-        int ShakeY;
-        int field_84;
-        int field_88;
-        int field_8C;
-        int field_90;
-        int field_94;
-        int field_98;
-        int AdjustY;
-        int field_A0;
-        int field_A4;
-        int field_A8;
-        int field_AC;
-        int field_B0;
-        int field_B4;
-        int field_B8;
-        int field_BC;
-        int field_C0;
-        int dwordC4;
-        int dwordC8;
-        int dwordCC;
-        int dwordD0;
-    };
+	struct EntityCamera : Entity
+	{
+		void* State;
+		Entity* CameraTarget;
+		int ViewIndex;
+		int ClampedShakeX;
+		int ClampedShakeY;
+		int DestinationOffsetX;
+		int DestinationOffsetY;
+		int LastXPos;
+		int LastYPos;
+		int ShakeX;
+		int ShakeY;
+		int OffsetX;
+		int OffsetY;
+		int MinFollowDistanceX;
+		int GroundCamOffsetY;
+		int PlayerInAir;
+		int CustomViewHeightHalf;
+		int AdjustY;
+		int PanProgress;
+		int PanSpeed;
+		int PanType;
+		Vector2 PanToPositionEnd;
+		Vector2 PanToPositionSTart;
+		int BoundPanningSpeedX;
+		int BoundPanningSpeedY;
+		int MinX;
+		int MaxX;
+		int MinY;
+		int MaxY;
+	};
 
 	struct EntityRing : Entity
 	{
