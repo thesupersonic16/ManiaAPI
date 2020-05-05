@@ -1426,7 +1426,7 @@ namespace SonicMania
 	{
 		void* State;
 		Entity* CameraTarget;
-		int ViewIndex;
+		int ActiveEntity;
 		int ClampedShakeX;
 		int ClampedShakeY;
 		int DestinationOffsetX;
