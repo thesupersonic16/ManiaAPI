@@ -1596,6 +1596,136 @@ namespace SonicMania
 
 
 	};
+	struct EntitySpring : Entity
+	{
+		/* 0x00000058 */ void* State;
+		/* 0x0000005C */ int Type;
+		/* 0x00000060 */ int FlipFlag;
+		/* 0x00000064 */ byte PlaneFilter;
+		/* 0x00000065 */ byte gap65;
+		/* 0x00000066 */ byte field_66;
+		/* 0x00000067 */ byte field_67;
+		/* 0x00000068 */ DWORD field_68;
+		/* 0x0000006C */ EntityAnimationData Animation;
+		/* 0x00000084 */ DWORD dword84;
+		/* 0x00000088 */ DWORD dword88;
+	};
+	struct EntityUFOSphere : Entity
+	{
+		/* 0x00000058 */ void* State;
+		/* 0x0000005C */ int Type;
+		/* 0x00000060 */ int Behavior;
+		/* 0x00000064 */ int Height;
+		/* 0x00000068 */ int Speed;
+		/* 0x0000006C */ int MatAngleX;
+		/* 0x00000070 */ int MatAngleY;
+		/* 0x00000074 */ int AmplitudeX;
+		/* 0x00000078 */ int AmplitudeY;
+		/* 0x0000007C */ DWORD field7C;
+		/* 0x00000080 */ DWORD dword80;
+		/* 0x00000084 */ DWORD dword84;
+		/* 0x00000088 */ DWORD dword88;
+		/* 0x0000008C */ DWORD dword8C;
+		/* 0x00000090 */ DWORD dword90;
+		/* 0x00000094 */ DWORD dword94;
+		/* 0x00000098 */ DWORD dword98;
+		/* 0x0000009C */ DWORD dword9C;
+		/* 0x000000A0 */ byte gapC0[148];
+		/* 0x00000140 */ EntityAnimationData Animation;
+	};
+	struct EntityUFOPlayer : Entity
+	{
+		/* 0x00000058 */ void* State;
+		/* 0x00000058 */ int MachQuota1;
+		/* 0x00000060 */ int MachQuota4;
+		/* 0x00000064 */ int MachQuota3;
+		/* 0x00000068 */ int StartingRings;
+		/* 0x0000006C */ DWORD field_6C;
+		/* 0x00000070 */ DWORD field_70;
+		/* 0x00000074 */ DWORD field_74;
+		/* 0x00000078 */ DWORD field_78;
+		/* 0x0000007C */ DWORD field_7C;
+		/* 0x00000080 */ DWORD field_80;
+		/* 0x00000084 */ DWORD field_84;
+		/* 0x00000088 */ int BumperSFXTimer;
+		/* 0x0000008C */ DWORD field_8C;
+		/* 0x00000090 */ DWORD field_90;
+		/* 0x00000094 */ DWORD field_94;
+		/* 0x00000098 */ DWORD field_98;
+		/* 0x0000009C */ DWORD field_9C;
+		/* 0x000000A0 */ DWORD field_A0;
+		/* 0x000000A4 */ DWORD field_A4;
+		/* 0x000000A8 */ DWORD field_A8;
+		/* 0x000000AC */ DWORD field_AC;
+		/* 0x000000B0 */ DWORD field_B0;
+		/* 0x000000B4 */ DWORD field_B4;
+		/* 0x000000B8 */ DWORD field_B8;
+		/* 0x000000BC */ DWORD field_BC;
+		/* 0x000000C0 */ DWORD field_C0;
+		/* 0x000000C4 */ DWORD field_C4;
+		/* 0x000000C8 */ DWORD field_C8;
+		/* 0x000000CC */ DWORD field_CC;
+		/* 0x000000D0 */ DWORD field_D0;
+		/* 0x000000D4 */ DWORD field_D4;
+		/* 0x000000D8 */ DWORD field_D8;
+		/* 0x000000DC */ DWORD field_DC;
+		/* 0x000000E0 */ DWORD field_E0;
+		/* 0x000000E4 */ DWORD field_E4;
+		/* 0x000000E8 */ DWORD field_E8;
+		/* 0x000000EC */ DWORD field_EC;
+		/* 0x000000F0 */ DWORD field_F0;
+		/* 0x000000F4 */ DWORD field_F4;
+		/* 0x000000F8 */ DWORD field_F8;
+		/* 0x000000FC */ DWORD field_FC;
+		/* 0x00000100 */ DWORD field_100;
+		/* 0x00000104 */ DWORD field_104;
+		/* 0x00000108 */ DWORD field_108;
+		/* 0x0000010C */ DWORD field_10C;
+		/* 0x00000110 */ DWORD field_110;
+		/* 0x00000114 */ DWORD field_114;
+		/* 0x00000118 */ DWORD field_118;
+		/* 0x0000011C */ DWORD field_11C;
+		/* 0x00000140 */ DWORD field_140;
+		/* 0x00000144 */ DWORD field_144;
+		/* 0x00000148 */ DWORD field_148;
+		/* 0x0000014C */ DWORD field_14C;
+		/* 0x00000130 */ DWORD field_130;
+		/* 0x00000134 */ DWORD field_134;
+		/* 0x00000138 */ DWORD field_138;
+		/* 0x0000013C */ DWORD field_13C;
+		/* 0x00000140 */ DWORD field_140;
+		/* 0x00000144 */ DWORD field_144;
+		/* 0x00000148 */ DWORD field_148;
+		/* 0x0000014C */ DWORD field_14C;
+		/* 0x00000150 */ DWORD field_150;
+		/* 0x00000154 */ DWORD field_154;
+		/* 0x00000158 */ DWORD field_158;
+		/* 0x0000015C */ DWORD field_15C;
+		/* 0x00000160 */ DWORD field_160;
+		/* 0x00000164 */ DWORD field_164;
+		/* 0x00000168 */ DWORD field_168;
+		/* 0x0000016C */ DWORD field_16C;
+		/* 0x00000170 */ DWORD field_170;
+		/* 0x00000174 */ DWORD field_174;
+		/* 0x00000178 */ DWORD field_178;
+		/* 0x0000017C */ DWORD field_17C;
+		/* 0x00000180 */ DWORD field_180;
+		/* 0x00000184 */ DWORD field_184;
+		/* 0x00000188 */ DWORD field_188;
+		/* 0x0000018C */ DWORD field_18C;
+		/* 0x00000190 */ DWORD field_190;
+		/* 0x00000194 */ DWORD field_194;
+		/* 0x00000198 */ DWORD field_198;
+		/* 0x0000019C */ InputStatus InputState;
+		/* 0x000001A0 */ DWORD field_1A0;
+		/* 0x000001A4 */ BOOL Up;
+		/* 0x000001A8 */ BOOL Down;
+		/* 0x000001AC */ BOOL Left;
+		/* 0x000001B0 */ BOOL Right;
+		/* 0x000001B4 */ BOOL JumpPress;
+		/* 0x000001B8 */ BOOL JumpHold;
+		/* 0x000001BC */ EntityAnimationData Animation;
+	};
 #pragma endregion
 
 #pragma region Object 
@@ -1738,7 +1868,33 @@ namespace SonicMania
         void*  field_A6C;
         int    field_A70;
     };
+	struct Obj_UFO_Player : Object
+	{
+		int Base;
+		DWORD field_4
+		byte field_8;
+		byte field_9;
+		byte field_A;
+		byte field_B;
+		WORD SFX_Jump;
+		WORD SFX_Charge;
+		WORD SFX_Release;
+		WORD SFX_LoseRings;
+		WORD SFX_Drop;
+		WORD SFX_Bumper;
+		WORD SFX_Spring;
+		WORD SFX_Skid;
+		WORD SFX_GrittyGround;
+		WORD JogModel;
+		WORD DashModel;
+		WORD JumpModel;
+		WORD BallMOdel;
+		WORD TumbleModel;
+		WORD ModelID;
+		byte field_2A;
+		byte field_2B;
 
+	};
     struct Obj_Platform : Object
     {
         short SpriteIndex;
