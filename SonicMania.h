@@ -1243,7 +1243,7 @@ namespace SonicMania
         /* 0x00000058 */ void* State;
         /* 0x0000005C */ DWORD StateDraw; // Name might not be correct
         /* 0x00000060 */ DWORD dword60;
-        /* 0x00000064 */ EntityCamera Camera;
+        /* 0x00000064 */ EntityCamera* Camera;
         /* 0x00000068 */ EntityAnimationData Animation;
         /* 0x00000080 */ EntityAnimationData TailAnimation;
         /* 0x00000098 */ DWORD MaxWalkSpeed;
