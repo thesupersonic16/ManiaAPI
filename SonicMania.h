@@ -1013,6 +1013,7 @@ namespace SonicMania
     FunctionPointer(int, GetAttribute, (int AttributeType, char* AttributeName, int ObjectID, int StoreOffset), 0x001D3B20);
     FunctionPointer(char, GetTileAngle, (__int16 TileXPos, unsigned __int8 TileYPos, char CollisionMode), 0x001C22A0);
     FunctionPointer(char, GetTileBehaviour, (__int16 TileXPos, unsigned __int8 TileYPos), 0x001C23C0);
+	FunctionPointer(int, Itembox_Break, (EntityItemBox* ItemBox, EntityPlayer* Player), 0x004A9930);
 
     //Unknown Function Ptrs (that are used and needed
     FunctionPointer(int, RSDK_Unknown45, (), 0x00AA7744);
@@ -1358,27 +1359,28 @@ namespace SonicMania
             return PlayerControllers[ControllerID];
         }
     };
-    struct EntityItemBox : Entity
-    {
-        /* 0x00000058 */ void* State;
-        /* 0x0000005C */ int Type;
-        /* 0x00000060 */ DWORD dword60;
-        /* 0x00000064 */ DWORD dword64;
-        /* 0x00000068 */ DWORD dword68;
-        /* 0x0000006C */ DWORD dword6C;
-        /* 0x00000070 */ DWORD dword70;
-        /* 0x00000074 */ DWORD dword74;
-        /* 0x00000078 */ DWORD dword78;
-        /* 0x0000007C */ DWORD dword7C;
-        /* 0x00000080 */ DWORD dword80;
-        /* 0x00000084 */ DWORD dword84;
-        /* 0x00000088 */ DWORD dword88;
-        /* 0x0000008C */ DWORD dword8C;
-        /* 0x00000090 */ EntityAnimationData Animation;
-        /* 0x000000A8 */ EntityAnimationData AnimationInner;
-        /* 0x000000C0 */ byte gapC0[128];
-
-    };
+	struct EntityItemBox : Entity
+	{
+		/* 0x00000058 */ void* State;
+		/* 0x0000005C */ int Type;
+		/* 0x00000060 */ int ContentsXPos;
+		/* 0x00000064 */ int ContentsYPos;
+		/* 0x00000068 */ DWORD dword68;
+		/* 0x0000006C */ DWORD dword6C;
+		/* 0x00000070 */ int ContenseSpeed;
+		/* 0x00000074 */ Entity* StoredEntity; //Entity To Grant?
+		/* 0x00000078 */ int RandomValue;
+		/* 0x0000007C */ int IsFalling;
+		/* 0x00000080 */ int isContense;
+		/* 0x00000084 */ int Hidden;
+		/* 0x00000088 */ int PlaneFilter;
+		/* 0x0000008C */ int LRZConvPhys; //Lava Reef Convayer Physics 
+		/* 0x00000090 */ EntityAnimationData BrokenData;
+		/* 0x000000A8 */ EntityAnimationData ContenseData;
+		/* 0x000000C0 */ EntityAnimationData OverlyData;
+		/* 0x000000D8 */ EntityAnimationData DebrisData;
+		/* 0x000000F0 */ int Parent;
+	};
 
     struct EntityPlatform : Entity
     {
