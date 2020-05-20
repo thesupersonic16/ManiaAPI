@@ -433,9 +433,10 @@ namespace SonicMania
         ObjectType_DDWrecker        = 0x00AC67F0,
         ObjectType_DERobot          = 0x00AC6D70,
         // Chemical Plant Zone
-        ObjectType_Grabber          = 0x00AC6C18,
-        ObjectType_Spiny            = 0x00AC6DAC,
-        ObjectType_AmoebaDroid      = 0x00AC67F0,
+        ObjectType_Grabber          = 0x00AC6648,
+        ObjectType_Spiny            = 0x00AC6704,
+        ObjectType_AmoebaDroid      = 0x00AC6880,
+		ObjectType_Sweep            = 0x00AC6870,
         ObjectType_CatakillerJR     = 0x00AC6798,
         // Studiopolis Zone
         ObjectType_MicDrop          = 0x00AC6DA8,
@@ -452,8 +453,8 @@ namespace SonicMania
         ObjectType_Dragonfly        = 0x00AC6928,
         ObjectType_Jugglesaw        = 0x00AC6688,
         ObjectType_SplatsJar        = 0x004ACF50,
-        ObjectType_Woodrow          = 0x00AC67FC,
-        ObjectType_IceBomba         = 0x00AC66EC,
+        ObjectType_Woodrow          = 0x00AC6674,
+        ObjectType_IceBomba         = 0x00AC6E5C,
         ObjectType_HeavyShinobi     = 0x00AC6E18,
         // StarDust Speed Way
         ObjectType_Hotaru           = 0x00AC6808,
