@@ -56,6 +56,7 @@ namespace SonicMania
     struct Obj_ForceSpin;
     struct Obj_PlaneSwitch;
 	struct Obj_Clapperboard;
+	struct Obj_Lovetester;
 
     //Misc
     struct Hitbox;
@@ -2215,6 +2216,40 @@ namespace SonicMania
 		/* 00000334 */ EntityAnimationData ZoneLetterData;
 		/* 0000034C */ EntityAnimationData ActNumbersData;
 	};
+	struct EntityLoveTester : Entity
+	{
+		/* 00000058 */ void* State;
+		/* 0000005C */ DWORD field_5C;
+		/* 00000060 */ BYTE field_60;
+		/* 00000061 */ BYTE field_61;
+		/* 00000062 */ BYTE field_62;
+		/* 00000063 */ BYTE field_63;
+		/* 00000064 */ Vector2 StoredPos;
+		/* 0000006C */ DWORD field_6C;
+		/* 00000070 */ DWORD field_70;
+		/* 00000074 */ DWORD field_74;
+		/* 00000078 */ SHORT field_78;
+		/* 0000007A */ BYTE field_7A;
+		/* 0000007B */ BYTE field_7B;
+		/* 0000007C */ DWORD field_7C;
+		/* 00000080 */ SHORT field_80;
+		/* 00000082 */ BYTE field_82;
+		/* 00000083 */ BYTE field_83;
+		/* 00000084 */ INT  Timer;
+		/* 00000088 */ DWORD field_88;
+		/* 0000008C */ EntityAnimationData AnimData2;
+		/* 000000A4 */ EntityAnimationData AnimData0;
+		/* 000000BC */ EntityAnimationData AnimData3;
+		/* 000000D4 */ EntityAnimationData AnimData11;
+		/* 000000EC*/ EntityAnimationData AnimData4;
+		/* 00000104 */ EntityAnimationData AnimData10;
+		/* 0000011C */ EntityAnimationData AnimData5;
+		/* 00000134 */ EntityAnimationData AnimData9;
+		/* 0000014C */ EntityAnimationData AnimData6;
+		/* 00000164 */ EntityAnimationData AnimData8;
+		/* 0000017C */ EntityAnimationData AnimData7;
+
+	};
 #pragma endregion
 
 #pragma region Object 
@@ -2404,6 +2439,20 @@ namespace SonicMania
 	{
 		WORD SpriteIndex;
 		WORD SFX_Whack;
+	};
+	struct Obj_LoveTester : Object
+	{
+		Hitbox Hitbox1;
+		Hitbox Hitbox2;
+		Hitbox Hitbox3;
+		short SpriteIndex;
+		short SFXScore;
+		DWORD Field_20;
+		DWORD Field_24;
+		DWORD Field_28;
+		DWORD Field_2C;
+		Vector2 Positions;
+
 	};
     struct Obj_ForceSpin : Object
     {
