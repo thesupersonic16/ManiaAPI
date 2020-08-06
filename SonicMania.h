@@ -1042,7 +1042,7 @@ namespace SonicMania
     // Graphics
     //FunctionPointer(void, DrawRect, (short XPos, short YPos, short SizeY, short SizeX, byte R, byte G, byte B, byte Alpha), 0x00001DAC10);
     FunctionPointer(void, DrawRect, (int Xpos, int Ypos, int Width, int Height, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x001D8870);
-	FunctionPointer(void, DrawQuad, (Vector2* Verticies, int VertCount, int Red, int Green, int Blue, int Alpha, InkEffect InkEffect), 0x1DAC10);
+	FunctionPointer(void, DrawVertices, (Vector2* Verticies, int VertCount, int Red, int Green, int Blue, int Alpha, InkEffect InkEffect), 0x1DAC10);
     FunctionPointer(void*, LoadAniTiles, (const char* FilePath, Scope scope), 0x001D4CE0);
     FunctionPointer(void*, SetAniTiles, (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth, ushort FrameHeight), 0x00BDC4B0);
     FunctionPointer(void*, LoadMesh, (const char* filepath, Scope scope), 0x00BDE080);
