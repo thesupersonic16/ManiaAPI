@@ -57,6 +57,8 @@ namespace SonicMania
     struct Obj_PlaneSwitch;
 	struct Obj_Clapperboard;
 	struct Obj_Lovetester;
+	struct Obj_PauseMenu;
+	struct Obj_FXRuby;
 
     //Misc
     struct Hitbox;
@@ -524,7 +526,8 @@ namespace SonicMania
 
 		//UI - 
 		ObjectType_UIWaitSpinner    = 0x00AC6DA0,
-		ObjectType_PauseMenu        = 0x00AC6EF0
+		ObjectType_PauseMenu		= 0x00AC6EF0,
+		ObjectType_FXRuby			= 0x00AC6E90
     };
 
     enum TransparencyFlag : byte
@@ -1043,6 +1046,8 @@ namespace SonicMania
     //FunctionPointer(void, DrawRect, (short XPos, short YPos, short SizeY, short SizeX, byte R, byte G, byte B, byte Alpha), 0x00001DAC10);
     FunctionPointer(void, DrawRect, (int Xpos, int Ypos, int Width, int Height, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x001D8870);
 	FunctionPointer(void, DrawVertices, (Vector2* Verticies, int VertCount, int Red, int Green, int Blue, int Alpha, InkEffect InkEffect), 0x1DAC10);
+	FunctionPointer(void, DrawCircle, (int Xpos, int Ypos, signed int Radius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1D9890);
+	FunctionPointer(void, DrawCircleOutline, (int Xpos, int Ypos, signed int InnerRadius, signed int OuterRadius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1DA170);
     FunctionPointer(void*, LoadAniTiles, (const char* FilePath, Scope scope), 0x001D4CE0);
     FunctionPointer(void*, SetAniTiles, (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth, ushort FrameHeight), 0x00BDC4B0);
     FunctionPointer(void*, LoadMesh, (const char* filepath, Scope scope), 0x00BDE080);
@@ -1061,7 +1066,7 @@ namespace SonicMania
     FunctionPointer(void*, LoadPalette, (byte PaletteID, const char* Filename, unsigned short ColorCount), 0x001D5150);
     FunctionPointer(int, RotatePalette, (unsigned __int8 PaletteID, unsigned __int8 StartIndex, unsigned __int8 EndIndex, bool Right), 0x001D5420);
     FunctionPointer(int, SetPaletteMask, (int MaskColour), 0x001D4FE0);
-    FunctionPointer(int, SetPaletteMask2, (int Value), 0x001D4A50);
+    FunctionPointer(int, SetInkColour, (int Value), 0x001D4A50);
 
     // Utility
     FunctionPointer(int, Rand, (int Min, int Max), 0x001DCDA0);
@@ -1149,6 +1154,8 @@ namespace SonicMania
     DataPointer(Obj_ItemBox*            , OBJ_ItemBox,            0x00AC6F00);
     DataPointer(Obj_SpecialRing*        , OBJ_SpecialRing,        0x00AC686C);
     DataPointer(Obj_PlaneSwitch*        , OBJ_PlaneSwitch,        0x00AC6C0C);
+	DataPointer(Obj_FXRuby*				, OBJ_FXRuby,			  0x00AC6EF0);
+	DataPointer(Obj_PauseMenu*			, OBJ_PauseMenu,		  0x00AC6E90);
 
 #pragma endregion
 
@@ -1500,6 +1507,57 @@ namespace SonicMania
         /* 0x00000090 */ DWORD dword90;
         /* 0x00000094 */ EntityAnimationData Animation;
     };
+	struct EntityFXRuby : Entity
+	{
+		/* 0x00000058 */ void* State;
+		/* 0x0000005C */ DWORD gap5C;
+		/* 0x00000060 */ DWORD dword60;
+		/* 0x00000064 */ DWORD gap64;
+		/* 0x00000068 */ DWORD field_68;
+		/* 0x0000006C */ int OutterRadius;
+		/* 0x00000070 */ int FadeWhite;
+		/* 0x00000074 */ int FadeBlack;
+		/* 0x00000078 */ DWORD WaitForTrigger;
+		/* 0x0000007C */ DWORD field_7C;
+		/* 0x00000080 */ DWORD dword80;
+		/* 0x00000084 */ DWORD field_84;
+		/* 0x00000088 */ DWORD field_88;
+		/* 0x0000008C */ DWORD field_8C;
+		/* 0x00000090 */ DWORD field_90;
+
+	};
+	struct EntityPauseMenu : Entity
+	{
+		/* 0x00000058 */ void* State;
+		/* 0x00000058 */ void* StateDraw;
+		/* 0x00000060 */ DWORD field_60;
+		/* 0x00000064 */ DWORD field_64;
+		/* 0x00000068 */ DWORD field_68;
+		/* 0x0000006C */ DWORD field_6C;
+		/* 0x00000070 */ DWORD field_70;
+		/* 0x00000074 */ DWORD field_74;
+		/* 0x00000078 */ DWORD field_78;
+		/* 0x0000007C */ short field_7C;
+		/* 0x0000007E */ short field_7E;
+		/* 0x00000080 */ DWORD field_80;
+		/* 0x00000084 */ DWORD field_84;
+		/* 0x00000088 */ DWORD field_88;
+		/* 0x0000008C */ DWORD field_8C;
+		/* 0x00000090 */ DWORD field_90;
+		/* 0x00000094 */ DWORD field_94;
+		/* 0x00000098 */ DWORD field_98;
+		/* 0x0000009C */ DWORD field_9C;
+		/* 0x000000A0 */ DWORD field_A0;
+		/* 0x000000A4 */ DWORD field_A4;
+		/* 0x000000A8 */ DWORD field_A8;
+		/* 0x000000AC */ DWORD field_AC;
+		/* 0x000000B0 */ DWORD field_B0;
+		/* 0x000000B4 */ EntityAnimationData Animation;
+		/* 0x000000CC */ DWORD field_CC;
+		/* 0x000000D0 */ DWORD field_D0;
+		/* 0x000000D4 */ DWORD field_D4;
+
+	};
 	struct UIVsZoneButton : Entity
 	{
 		/* 0x00000058 */ BYTE gap[164];
@@ -2440,6 +2498,79 @@ namespace SonicMania
 	{
 		WORD SpriteIndex;
 		WORD SFX_Whack;
+	};
+	struct Obj_PauseMenu : Object
+	{
+		short SFX_Bleep;
+		short SFX_Accept;
+		DWORD dword8;
+		DWORD dwordC;
+		DWORD dword10;
+		DWORD dword14;
+		DWORD dword18;
+		BYTE field_1C;
+		BYTE field_1D;
+		BYTE field_1E;
+		BYTE field_1F;
+		BYTE field_20;
+		BYTE field_21;
+		BYTE field_22;
+		BYTE field_23;
+		BYTE field_24;
+		BYTE field_25;
+		BYTE field_26;
+		BYTE field_27;
+		BYTE field_28;
+		BYTE field_29;
+		BYTE field_2A;
+		BYTE field_2B;
+		BYTE field_2C;
+		BYTE field_30;
+		BYTE field_31;
+		BYTE field_32;
+		BYTE field_33;
+		BYTE field_34;
+		BYTE field_35;
+		BYTE field_36;
+		BYTE field_37;
+		BYTE field_38;
+		BYTE field_39;
+		BYTE field_3A;
+		BYTE field_3B;
+		BYTE field_3C;
+		BYTE field_40;
+		BYTE field_41;
+		BYTE field_42;
+		BYTE field_43;
+		BYTE field_44;
+		BYTE field_45;
+		BYTE field_46;
+		BYTE field_47;
+		BYTE field_48;
+		BYTE field_49;
+		BYTE field_4A;
+		BYTE field_4B;
+		BYTE field_4C;
+		BYTE field_50;
+		BYTE field_51;
+		BYTE field_52;
+		BYTE field_53;
+		BYTE field_54;
+		BYTE field_55;
+		BYTE field_56;
+		BYTE field_57;
+		BYTE field_58;
+		BYTE field_59;
+		BYTE field_5A;
+		BYTE field_5B;
+		DWORD InkValues[0xFFFF];
+	};
+	struct Obj_FXRuby : Object
+	{
+		DWORD UnknownArray[0x200];
+		short InkValues[0xFFFF];
+		DWORD FGLow;
+		DWORD FGHigh;
 	};
 	struct Obj_LoveTester : Object
 	{
