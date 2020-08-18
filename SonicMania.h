@@ -59,6 +59,7 @@ namespace SonicMania
 	struct Obj_Lovetester;
 	struct Obj_PauseMenu;
 	struct Obj_FXRuby;
+	struct GameOptions;
 
     //Misc
     struct Hitbox;
@@ -1111,6 +1112,7 @@ namespace SonicMania
 
     // Other
     DataPointer(Scene, CurrentScene, 0x00A535C4);
+	DataPointer(GameOptions*, Options, 0x00AA763C);
     DataPointer(short, CurrentSceneInt, 0x00A535C4);
     DataPointer(Category, CurrentCategory, 0x00A535E0);
     DataPointer(byte, CurrentCategoryInt, 0x00A535E0);
@@ -2684,6 +2686,74 @@ namespace SonicMania
     {
         //TO-DO: fill out later
     };
+	struct GameOptions {
+		int GameMode;
+		int PlayerID;
+		int SpecialCleared;
+		int SpecialRingID;
+		int BlueSpheresID;
+		int BlueSpheresInit;
+		int  AtlEnabled; // Act Transition Load
+		int  AtlEntityCount; // An Entity Bank Basically
+		int  AtlEntitySlot[0x20];// Entity SlotIDs
+		int AtlEntityData[0x4000];// Entities
+		int  SaveLoaded;
+		int  SaveRAM[0x4000];
+		int  SaveSlotID;
+		int  NoSaveSlot[0x400];
+		int  MenuParam[0x4000];
+		int  ItemMode;
+		int SuppressTitlecard;
+		int SuppressAutoMusic;
+		int  CompetitionSession[0x4000];
+		int  MedalMods; // Stuff Like Instashield and etc (Bonus Stuff that medals unlock)
+		int  ParallaxOffset[256];
+		int  EnableIntro;
+		int  OptionsLoaded;
+		int  OptionsRAM[0x80];
+		int  PresenceID;
+		int  MedallionDebug;
+		int  NoSave;
+		int  NotifiedAutosave;
+		int RecallEntities;
+		int  RestartRings;
+		int  Restart1UP;
+		int  RestartShield;
+		int  RestartPos[4];
+		int  RestartSlot[4];
+		int  RestartDir[4];
+		int  RestartMinutes;
+		int  RestartSeconds;
+		int  RestartMilliseconds;
+		int  TempMinutes;
+		int  TempSeconds;
+		int  TempMilliseconds;
+		int  RestartScore;
+		int  RestartScore1UP;
+		int  RestartLives[4];
+		int  RestartMusicID;
+		int RestartFlags;
+		int  TempFlags;
+		int  Continues;
+		int  InitCoolBonus;
+		int  CoolBonus[4];
+		int  ReplayWriteBuffer[0x40000];
+		int  ReplayReadBuffer[0x40000];
+		int  ReplayTempWBuffer[0x40000];
+		int  ReplayTempRBuffer[0x40000];
+		int  ReplayTableID;
+		int  ReplayTableLoaded;
+		int  TATableID;
+		int  TATableLoaded;
+		int  Stock; // Encore Lives
+		int  CharacterFlags;
+		int  VapeMode; // Vape Mode
+		int  Secrets;
+		int  SuperSecret;
+		int  SuperMusicEnabled; // Play Super Music when going super?
+		int  LastHasPlus;
+		int  HasPlusInitial;
+	};
 
 #pragma endregion
 
