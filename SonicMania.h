@@ -59,6 +59,7 @@ namespace SonicMania
 	struct Obj_Lovetester;
 	struct Obj_PauseMenu;
 	struct Obj_FXRuby;
+	struct Obj_DebugMode;
 	struct GameOptions;
 
     //Misc
@@ -246,13 +247,17 @@ namespace SonicMania
     };
     BitFlag(GameStates, byte)
 
-    enum DrawingFX : byte
-    {
-        FX_None   = 0b0000, // 1
-        FX_Flip   = 0b0001, // 2
-        FX_Rotate = 0b0010, // 4
-        FX_Scale  = 0b0100  // 8
-    };
+	enum DrawingFX : BYTE
+	{
+		DrawingFX_None = 0,
+		DrawingFX_Flip = 1,
+		DrawingFX_Rotate_NoFlip = 2,
+		DrawingFX_Rotate = 3,
+		DrawingFX_Scale_NoFlip = 4,
+		DrawingFX_Scale = 5,
+		DrawingFX_RotoZoom_NoFlip = 6,
+		DrawingFX_RotoZoom = 7,
+	};
     BitFlag(DrawingFX, byte)
 
     enum InkEffect : byte
@@ -528,7 +533,10 @@ namespace SonicMania
 		//UI - 
 		ObjectType_UIWaitSpinner    = 0x00AC6DA0,
 		ObjectType_PauseMenu		= 0x00AC6EF0,
-		ObjectType_FXRuby			= 0x00AC6E90
+		ObjectType_FXRuby			= 0x00AC6E90,
+
+		//System
+		ObjectType_DebugMode		= 0x00AC6930
     };
 
     enum TransparencyFlag : byte
@@ -616,6 +624,7 @@ namespace SonicMania
     #define MOVESET_MIGHTY  (SonicMania::Ability)(baseAddress + 0x000C8B70)
     #define MOVESET_RAY     (SonicMania::Ability)(baseAddress + 0x000C8DF0)
     #define MOVESET_ERSS    (SonicMania::Ability)(baseAddress + 0x000C2340) // Egg Reverie Super Sonic
+	#define UpAbility_Peelout    (SonicMania::Ability)(baseAddress + 0x000C8FF0)
 
 
     #define PLAYERID1 0
@@ -1158,6 +1167,7 @@ namespace SonicMania
     DataPointer(Obj_PlaneSwitch*        , OBJ_PlaneSwitch,        0x00AC6C0C);
 	DataPointer(Obj_FXRuby*				, OBJ_FXRuby,			  0x00AC6EF0);
 	DataPointer(Obj_PauseMenu*			, OBJ_PauseMenu,		  0x00AC6E90);
+	DataPointer(Obj_DebugMode*			, OBJ_DebugMode,		  0x00AC6930);
 
 #pragma endregion
 
@@ -2311,6 +2321,46 @@ namespace SonicMania
 		/* 0000017C */ EntityAnimationData AnimData7;
 
 	};
+	struct EntityDebugMode
+	{
+		/* 0x00000000 */ int blank;
+		/* 0x00000004 */ short Sprites[0x100];
+		/* 0x00000204 */ DWORD draw[0x100];
+		/* 0x00000604 */ DWORD Spawn[0x100];
+		/* 0x00000A04 */ EntityAnimationData DebugData;
+		/* 0x00000A1C */ int ObjID;
+		/* 0x00000A20 */ int DebugItemCount;
+		/* 0x00000A24 */ DWORD PlayerActive;
+		/* 0x00000A28 */ BYTE DebugItemSubType;
+		/* 0x00000A29 */ BYTE SubTypeCount;
+		/* 0x00000A2A */ BYTE field_A2a;
+		/* 0x00000A2B */ BYTE field_A2B;
+		/* 0x00000A2C */ BYTE field_A2C;
+	};
+
+	struct EntitySpikes : Entity
+	{
+		/* 0x00000058 */ void* State;
+		/* 0x0000005C */ int Type;
+		/* 0x00000060 */ int Moving;
+		/* 0x00000064 */ BYTE Count;
+		/* 0x00000065 */ BYTE Stagger;
+		/* 0x00000066 */ short Timer;
+		/* 0x00000068 */ short PlaneFilter;
+		/* 0x0000006C */ DWORD dword6C;
+		/* 0x00000070 */ DWORD gap70;
+		/* 0x00000074 */ DWORD field_74;
+		/* 0x00000078 */ DWORD field_78;
+		/* 0x0000007C */ short field_7C;
+		/* 0x0000007E */ BYTE field_7E;
+		/* 0x0000007F */ BYTE field_7F;
+		/* 0x00000080 */ short word80;
+		/* 0x00000082 */ short word82;
+		/* 0x00000084 */ short word84;
+		/* 0x00000086 */ short word86;
+		/* 0x00000088 */ EntityAnimationData Animation;
+
+	};
 #pragma endregion
 
 #pragma region Object 
@@ -2500,6 +2550,21 @@ namespace SonicMania
 	{
 		WORD SpriteIndex;
 		WORD SFX_Whack;
+	};
+	struct Obj_DebugMode : Object
+	{
+		WORD Sprites[0x100];
+		int (*DrawPtrs[0x100])();
+		Entity* (*SpawnPtrs[0x100])();
+		EntityAnimationData DebugData;
+		DWORD ObjID;
+		DWORD DebugItemCount;
+		DWORD PlayerActive;
+		BYTE DebugItemSubType;
+		BYTE SubtypeCount;
+		BYTE field_A2A;
+		BYTE field_A2B;
+		BYTE field_A2C;
 	};
 	struct Obj_PauseMenu : Object
 	{
@@ -2880,6 +2945,16 @@ namespace SonicMania
             return 0;
         return *pointer;
     }
+	static INT GetPointer(int SpritePointer, int offset) //CnG Uses this everywhere, tired of copying it into every header. 
+	{
+		int* pointer = (int*)(baseAddress + SpritePointer);
+		if (!*pointer)
+			return 0;
+		pointer = (int*)(*pointer + offset);
+		if (!*pointer)
+			return 0;
+		return *pointer;
+	}
 #pragma endregion
 
 #pragma region ManiaHelperFunctions
