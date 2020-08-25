@@ -1,0 +1,10 @@
+root = true
+
+indent_style = space
+insert_final_newline = false:none
+
+[*.{cpp,h}]
+charset = utf-8
+indent_brace_style = Allman
+indent_style = space
+indent_size = 4

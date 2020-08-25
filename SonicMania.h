@@ -2,6 +2,7 @@
 #define _USE_MATH_DEFINES
 #include <MemAccess.h>
 #include <cmath>
+#include <cstdio>
 
 
 #pragma region PreprocessorDefines
@@ -55,12 +56,12 @@ namespace SonicMania
     struct Obj_CollapsingPlatform;
     struct Obj_ForceSpin;
     struct Obj_PlaneSwitch;
-	struct Obj_Clapperboard;
-	struct Obj_Lovetester;
-	struct Obj_PauseMenu;
-	struct Obj_FXRuby;
-	struct Obj_DebugMode;
-	struct GameOptions;
+    struct Obj_Clapperboard;
+    struct Obj_Lovetester;
+    struct Obj_PauseMenu;
+    struct Obj_FXRuby;
+    struct Obj_DebugMode;
+    struct GameOptions;
 
     //Misc
     struct Hitbox;
@@ -247,17 +248,17 @@ namespace SonicMania
     };
     BitFlag(GameStates, byte)
 
-	enum DrawingFX : BYTE
-	{
-		DrawingFX_None = 0,
-		DrawingFX_Flip = 1,
-		DrawingFX_Rotate_NoFlip = 2,
-		DrawingFX_Rotate = 3,
-		DrawingFX_Scale_NoFlip = 4,
-		DrawingFX_Scale = 5,
-		DrawingFX_RotoZoom_NoFlip = 6,
-		DrawingFX_RotoZoom = 7,
-	};
+    enum DrawingFX : BYTE
+    {
+        DrawingFX_None = 0,
+        DrawingFX_Flip = 1,
+        DrawingFX_Rotate_NoFlip = 2,
+        DrawingFX_Rotate = 3,
+        DrawingFX_Scale_NoFlip = 4,
+        DrawingFX_Scale = 5,
+        DrawingFX_RotoZoom_NoFlip = 6,
+        DrawingFX_RotoZoom = 7,
+    };
     BitFlag(DrawingFX, byte)
 
     enum InkEffect : byte
@@ -282,7 +283,7 @@ namespace SonicMania
         ACTIVE_XBOUNDS,
         ACTIVE_YBOUNDS,
         ACTIVE_BOUNDS2,
-        ACTIVE_NEVER3 = -1,
+        ACTIVE_NEVER3 = 255,
     };
 
     enum FlipFlags : byte
@@ -445,7 +446,7 @@ namespace SonicMania
         ObjectType_Grabber          = 0x00AC6648,
         ObjectType_Spiny            = 0x00AC6704,
         ObjectType_AmoebaDroid      = 0x00AC6880,
-		ObjectType_Sweep            = 0x00AC6870,
+        ObjectType_Sweep            = 0x00AC6870,
         ObjectType_CatakillerJR     = 0x00AC6798,
         // Studiopolis Zone
         ObjectType_MicDrop          = 0x00AC6DA8,
@@ -519,24 +520,24 @@ namespace SonicMania
         //Service Objects 
         ObjectType_FXFade           = 0x00AC6810,
 
-	    //UFO - SpecialStage
-		ObjectType_UFO_Dust         = 0x00AC6DB0,
-		ObjectType_UFO_Itembox      = 0x00AC66B4,
-		ObjectType_SpecialClear     = 0x00AC6CC8,
-		ObjectType_UFO_Decoration   = 0x00AC6DB0,
-		ObjectType_UFO_Springboard  = 0x00AC67D4,
-		ObjectType_UFO_Message      = 0x00AC6EBC,
-		ObjectType_UFO_Sphere       = 0x00AC667C,
-		ObjectType_UFO_Ring         = 0x00AC6700,
-		ObjectType_UFO_Player       = 0x00AC6F8C,
+        //UFO - SpecialStage
+        ObjectType_UFO_Dust         = 0x00AC6DB0,
+        ObjectType_UFO_Itembox      = 0x00AC66B4,
+        ObjectType_SpecialClear     = 0x00AC6CC8,
+        ObjectType_UFO_Decoration   = 0x00AC6DB0,
+        ObjectType_UFO_Springboard  = 0x00AC67D4,
+        ObjectType_UFO_Message      = 0x00AC6EBC,
+        ObjectType_UFO_Sphere       = 0x00AC667C,
+        ObjectType_UFO_Ring         = 0x00AC6700,
+        ObjectType_UFO_Player       = 0x00AC6F8C,
 
-		//UI - 
-		ObjectType_UIWaitSpinner    = 0x00AC6DA0,
-		ObjectType_PauseMenu		= 0x00AC6EF0,
-		ObjectType_FXRuby			= 0x00AC6E90,
+        //UI - 
+        ObjectType_UIWaitSpinner    = 0x00AC6DA0,
+        ObjectType_PauseMenu		= 0x00AC6EF0,
+        ObjectType_FXRuby			= 0x00AC6E90,
 
-		//System
-		ObjectType_DebugMode		= 0x00AC6930
+        //System
+        ObjectType_DebugMode		= 0x00AC6930
     };
 
     enum TransparencyFlag : byte
@@ -624,7 +625,7 @@ namespace SonicMania
     #define MOVESET_MIGHTY  (SonicMania::Ability)(baseAddress + 0x000C8B70)
     #define MOVESET_RAY     (SonicMania::Ability)(baseAddress + 0x000C8DF0)
     #define MOVESET_ERSS    (SonicMania::Ability)(baseAddress + 0x000C2340) // Egg Reverie Super Sonic
-	#define UpAbility_Peelout    (SonicMania::Ability)(baseAddress + 0x000C8FF0)
+    #define UpAbility_Peelout    (SonicMania::Ability)(baseAddress + 0x000C8FF0)
 
 
     #define PLAYERID1 0
@@ -653,8 +654,8 @@ namespace SonicMania
         {
             X = (short)x;
             Y = (short)y;
-            SubX = (x - (ushort)(x)) * 0x10000;
-            SubX = (y - (ushort)(y)) * 0x10000;
+            SubX = (ushort)((x - (ushort)(x)) * 0x10000);
+            SubX = (ushort)((y - (ushort)(y)) * 0x10000);
         }
 
         Vector2(int x) : Vector2()
@@ -811,13 +812,13 @@ namespace SonicMania
         void SetFullX(float x)
         {
             X = (short)x;
-            SubX = (x - (ushort)(x)) * 0x10000;
+            SubX = (ushort)((x - (ushort)(x)) * 0x10000);
         }
 
         void SetFullY(float y)
         {
             Y = (short)y;
-            SubY = (y - (ushort)(y)) * 0x10000;
+            SubY = (ushort)((y - (ushort)(y)) * 0x10000);
         }
 
         bool inline IsNull()
@@ -826,17 +827,17 @@ namespace SonicMania
         }
 
     public:
-        ushort SubX;
+        ushort SubX = 0;
         short X = 0;
 
-        ushort SubY;
+        ushort SubY = 0;
         short Y = 0;
     };
     struct Color
     {
-        byte Red;
-        byte Green;
-        byte Blue;
+        byte Red   = 0;
+        byte Green = 0;
+        byte Blue  = 0;
 
         Color()
         {
@@ -877,23 +878,23 @@ namespace SonicMania
 
         inline void Tint(float tint)
         {
-            Red   *= tint;
-            Green *= tint;
-            Blue  *= tint;
+            Red   = (byte)(Red   * tint);
+            Green = (byte)(Green * tint);
+            Blue  = (byte)(Blue  * tint);
         }
 
         inline void Blend(byte r, byte g, byte b, float a)
         {
-            Red   = a * r + (1 - a) * Red;
-            Green = a * g + (1 - a) * Green;
-            Blue  = a * b + (1 - a) * Blue;
+            Red   = (byte)(a * r + (1 - a) * Red);
+            Green = (byte)(a * g + (1 - a) * Green);
+            Blue  = (byte)(a * b + (1 - a) * Blue);
         }
 
         inline void Blend(Color color, float a)
         {
-            Red   = a * color.Red   + (1 - a) * Red;
-            Green = a * color.Green + (1 - a) * Green;
-            Blue  = a * color.Blue  + (1 - a) * Blue;
+            Red   = (byte)(a * color.Red   + (1 - a) * Red);
+            Green = (byte)(a * color.Green + (1 - a) * Green);
+            Blue  = (byte)(a * color.Blue  + (1 - a) * Blue);
         }
 
 
@@ -1013,7 +1014,7 @@ namespace SonicMania
 #pragma region Functions
 
     //New
-	FastcallFunctionPointer(bool, Player_CheckBadnikHit, (EntityPlayer* Player, Entity* Entity, Hitbox* EntityHitbox), 0x000C5E30);
+    FastcallFunctionPointer(bool, Player_CheckBadnikHit, (EntityPlayer* Player, Entity* Entity, Hitbox* EntityHitbox), 0x000C5E30);
     FunctionPointer(int, CheckObjectCollisionTouch, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BEB20);
     FunctionPointer(int, CheckObjectCollisionBox, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BEDD0);
     FunctionPointer(int, CheckObjectCollisionPlatform, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BF330);
@@ -1028,7 +1029,7 @@ namespace SonicMania
     FunctionPointer(int, GetAttribute, (int AttributeType, char* AttributeName, int ObjectID, int StoreOffset), 0x001D3B20);
     FunctionPointer(char, GetTileAngle, (__int16 TileXPos, unsigned __int8 TileYPos, char CollisionMode), 0x001C22A0);
     FunctionPointer(char, GetTileBehaviour, (__int16 TileXPos, unsigned __int8 TileYPos), 0x001C23C0);
-	FastcallFunctionPointer(int, Itembox_Break, (EntityItemBox* ItemBox, EntityPlayer* Player), 0xA9930);
+    FastcallFunctionPointer(int, Itembox_Break, (EntityItemBox* ItemBox, EntityPlayer* Player), 0xA9930);
 
     //Unknown Function Ptrs (that are used and needed
     FunctionPointer(int, RSDK_Unknown45, (), 0x00AA7744);
@@ -1055,9 +1056,9 @@ namespace SonicMania
     // Graphics
     //FunctionPointer(void, DrawRect, (short XPos, short YPos, short SizeY, short SizeX, byte R, byte G, byte B, byte Alpha), 0x00001DAC10);
     FunctionPointer(void, DrawRect, (int Xpos, int Ypos, int Width, int Height, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x001D8870);
-	FunctionPointer(void, DrawVertices, (Vector2* Verticies, int VertCount, int Red, int Green, int Blue, int Alpha, InkEffect InkEffect), 0x1DAC10);
-	FunctionPointer(void, DrawCircle, (int Xpos, int Ypos, signed int Radius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1D9890);
-	FunctionPointer(void, DrawCircleOutline, (int Xpos, int Ypos, signed int InnerRadius, signed int OuterRadius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1DA170);
+    FunctionPointer(void, DrawVertices, (Vector2* Verticies, int VertCount, int Red, int Green, int Blue, int Alpha, InkEffect InkEffect), 0x1DAC10);
+    FunctionPointer(void, DrawCircle, (int Xpos, int Ypos, signed int Radius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1D9890);
+    FunctionPointer(void, DrawCircleOutline, (int Xpos, int Ypos, signed int InnerRadius, signed int OuterRadius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1DA170);
     FunctionPointer(void*, LoadAniTiles, (const char* FilePath, Scope scope), 0x001D4CE0);
     FunctionPointer(void*, SetAniTiles, (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth, ushort FrameHeight), 0x00BDC4B0);
     FunctionPointer(void*, LoadMesh, (const char* filepath, Scope scope), 0x00BDE080);
@@ -1121,7 +1122,7 @@ namespace SonicMania
 
     // Other
     DataPointer(Scene, CurrentScene, 0x00A535C4);
-	DataPointer(GameOptions*, Options, 0x00AA763C);
+    DataPointer(GameOptions*, Options, 0x00AA763C);
     DataPointer(short, CurrentSceneInt, 0x00A535C4);
     DataPointer(Category, CurrentCategory, 0x00A535E0);
     DataPointer(byte, CurrentCategoryInt, 0x00A535E0);
@@ -1133,7 +1134,7 @@ namespace SonicMania
     DataPointer(float, Controller1RStickY, 0x43E5C4);
     DataPointer(float, Controller1LStickX, 0x43E5C8);
     DataPointer(float, Controller1LStickY, 0x43E5CC);
-    char* CurrentSceneName = (char*)(baseAddress + 0x00A5359C);
+    static char* CurrentSceneName = (char*)(baseAddress + 0x00A5359C);
 
     // Palettes
     DataArray(SHORT, Palette0, 0x00945B58, 256);
@@ -1165,9 +1166,9 @@ namespace SonicMania
     DataPointer(Obj_ItemBox*            , OBJ_ItemBox,            0x00AC6F00);
     DataPointer(Obj_SpecialRing*        , OBJ_SpecialRing,        0x00AC686C);
     DataPointer(Obj_PlaneSwitch*        , OBJ_PlaneSwitch,        0x00AC6C0C);
-	DataPointer(Obj_FXRuby*				, OBJ_FXRuby,			  0x00AC6EF0);
-	DataPointer(Obj_PauseMenu*			, OBJ_PauseMenu,		  0x00AC6E90);
-	DataPointer(Obj_DebugMode*			, OBJ_DebugMode,		  0x00AC6930);
+    DataPointer(Obj_FXRuby*				, OBJ_FXRuby,			  0x00AC6EF0);
+    DataPointer(Obj_PauseMenu*			, OBJ_PauseMenu,		  0x00AC6E90);
+    DataPointer(Obj_DebugMode*			, OBJ_DebugMode,		  0x00AC6930);
 
 #pragma endregion
 
@@ -1190,9 +1191,9 @@ namespace SonicMania
         ///* 0x00000004 */ int YPos;              // 16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
         //
         // +---------------------------------+
-        // ¦                                 ¦
-        // ¦ !! Please stop removing this !! ¦
-        // ¦                                 ¦
+        // ï¿½                                 ï¿½
+        // ï¿½ !! Please stop removing this !! ï¿½
+        // ï¿½                                 ï¿½
         // +---------------------------------+
         /* 0x00000000 */ Vector2 Position;
         /* 0x00000008 */ int ScaleX;            // 512-based (512 = 0, 1024 = 2, 256 = 1/2)
@@ -1381,28 +1382,28 @@ namespace SonicMania
             return PlayerControllers[ControllerID];
         }
     };
-	struct EntityItemBox : Entity
-	{
-		/* 0x00000058 */ void* State;
-		/* 0x0000005C */ int Type;
-		/* 0x00000060 */ int ContentsXPos;
-		/* 0x00000064 */ int ContentsYPos;
-		/* 0x00000068 */ DWORD dword68;
-		/* 0x0000006C */ DWORD dword6C;
-		/* 0x00000070 */ int ContenseSpeed;
-		/* 0x00000074 */ Entity* StoredEntity; //Entity To Grant?
-		/* 0x00000078 */ int RandomValue;
-		/* 0x0000007C */ int IsFalling;
-		/* 0x00000080 */ int isContense;
-		/* 0x00000084 */ int Hidden;
-		/* 0x00000088 */ int PlaneFilter;
-		/* 0x0000008C */ int LRZConvPhys; //Lava Reef Convayer Physics 
-		/* 0x00000090 */ EntityAnimationData BrokenData;
-		/* 0x000000A8 */ EntityAnimationData ContenseData;
-		/* 0x000000C0 */ EntityAnimationData OverlyData;
-		/* 0x000000D8 */ EntityAnimationData DebrisData;
-		/* 0x000000F0 */ int Parent;
-	};
+    struct EntityItemBox : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x0000005C */ int Type;
+        /* 0x00000060 */ int ContentsXPos;
+        /* 0x00000064 */ int ContentsYPos;
+        /* 0x00000068 */ DWORD dword68;
+        /* 0x0000006C */ DWORD dword6C;
+        /* 0x00000070 */ int ContenseSpeed;
+        /* 0x00000074 */ Entity* StoredEntity; //Entity To Grant?
+        /* 0x00000078 */ int RandomValue;
+        /* 0x0000007C */ int IsFalling;
+        /* 0x00000080 */ int isContense;
+        /* 0x00000084 */ int Hidden;
+        /* 0x00000088 */ int PlaneFilter;
+        /* 0x0000008C */ int LRZConvPhys; //Lava Reef Convayer Physics 
+        /* 0x00000090 */ EntityAnimationData BrokenData;
+        /* 0x000000A8 */ EntityAnimationData ContenseData;
+        /* 0x000000C0 */ EntityAnimationData OverlyData;
+        /* 0x000000D8 */ EntityAnimationData DebrisData;
+        /* 0x000000F0 */ int Parent;
+    };
 
     struct EntityPlatform : Entity
     {
@@ -1437,68 +1438,68 @@ namespace SonicMania
         /* 0x000000C8 */ DWORD ChildCount;
     };
 
-	struct EntityDust : Entity
-	{
-	    /* 0x00000058 */ int State;
-	    /* 0x0000005C */ DWORD Timer;
+    struct EntityDust : Entity
+    {
+        /* 0x00000058 */ int State;
+        /* 0x0000005C */ DWORD Timer;
         /* 0x00000060 */ DWORD Parent;
-	    /* 0x00000064 */ EntityAnimationData Animation;
-	};
+        /* 0x00000064 */ EntityAnimationData Animation;
+    };
 
 
-	struct EntityCamera : Entity
-	{
-		void* State;
-		Entity* CameraTarget;
-		int ActiveEntity;
-		int ClampedShakeX;
-		int ClampedShakeY;
-		int DestinationOffsetX;
-		int DestinationOffsetY;
-		int LastXPos;
-		int LastYPos;
-		int ShakeX;
-		int ShakeY;
-		int OffsetX;
-		int OffsetY;
-		int MinFollowDistanceX;
-		int GroundCamOffsetY;
-		int PlayerInAir;
-		int CustomViewHeightHalf;
-		int AdjustY;
-		int PanProgress;
-		int PanSpeed;
-		int PanType;
-		Vector2 PanToPositionEnd;
-		Vector2 PanToPositionSTart;
-		int BoundPanningSpeedX;
-		int BoundPanningSpeedY;
-		int MinX;
-		int MaxX;
-		int MinY;
-		int MaxY;
-	};
+    struct EntityCamera : Entity
+    {
+        void* State;
+        Entity* CameraTarget;
+        int ActiveEntity;
+        int ClampedShakeX;
+        int ClampedShakeY;
+        int DestinationOffsetX;
+        int DestinationOffsetY;
+        int LastXPos;
+        int LastYPos;
+        int ShakeX;
+        int ShakeY;
+        int OffsetX;
+        int OffsetY;
+        int MinFollowDistanceX;
+        int GroundCamOffsetY;
+        int PlayerInAir;
+        int CustomViewHeightHalf;
+        int AdjustY;
+        int PanProgress;
+        int PanSpeed;
+        int PanType;
+        Vector2 PanToPositionEnd;
+        Vector2 PanToPositionSTart;
+        int BoundPanningSpeedX;
+        int BoundPanningSpeedY;
+        int MinX;
+        int MaxX;
+        int MinY;
+        int MaxY;
+    };
 
-	struct EntityRing : Entity
-	{
-		/* 0x00000058 */ void* State;
-		/* 0x00000058 */ void* StateDraw;
-		/* 0x00000060 */ int Type;
-		/* 0x00000064 */ DWORD PlaneFilter;
-		/* 0x00000068 */ int RingAmount;
-		/* 0x0000006C */ DWORD Timer;
-		/* 0x00000070 */ DWORD MaxFrameCount;
-		/* 0x00000074 */ DWORD SparkleType2;
-		/* 0x00000078 */ DWORD StoredPlayer;
-		/* 0x0000007C */ DWORD MoveType;
-		/* 0x00000080 */ DWORD AmplitudeX;
-		/* 0x00000084 */ DWORD AmplitudeY;
-		/* 0x00000088 */ DWORD MoveSpeed;
-		/* 0x0000008C */ DWORD XOffset;
-		/* 0x00000090 */ DWORD YOffset;
-		/* 0x00000094 */ EntityAnimationData Animation;
-	
-	};
+    struct EntityRing : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x00000058 */ void* StateDraw;
+        /* 0x00000060 */ int Type;
+        /* 0x00000064 */ DWORD PlaneFilter;
+        /* 0x00000068 */ int RingAmount;
+        /* 0x0000006C */ DWORD Timer;
+        /* 0x00000070 */ DWORD MaxFrameCount;
+        /* 0x00000074 */ DWORD SparkleType2;
+        /* 0x00000078 */ DWORD StoredPlayer;
+        /* 0x0000007C */ DWORD MoveType;
+        /* 0x00000080 */ DWORD AmplitudeX;
+        /* 0x00000084 */ DWORD AmplitudeY;
+        /* 0x00000088 */ DWORD MoveSpeed;
+        /* 0x0000008C */ DWORD XOffset;
+        /* 0x00000090 */ DWORD YOffset;
+        /* 0x00000094 */ EntityAnimationData Animation;
+    
+    };
 
     struct EntityFXFade : Entity
     {
@@ -1519,67 +1520,67 @@ namespace SonicMania
         /* 0x00000090 */ DWORD dword90;
         /* 0x00000094 */ EntityAnimationData Animation;
     };
-	struct EntityFXRuby : Entity
-	{
-		/* 0x00000058 */ void* State;
-		/* 0x0000005C */ DWORD gap5C;
-		/* 0x00000060 */ DWORD dword60;
-		/* 0x00000064 */ DWORD gap64;
-		/* 0x00000068 */ DWORD field_68;
-		/* 0x0000006C */ int OutterRadius;
-		/* 0x00000070 */ int FadeWhite;
-		/* 0x00000074 */ int FadeBlack;
-		/* 0x00000078 */ DWORD WaitForTrigger;
-		/* 0x0000007C */ DWORD field_7C;
-		/* 0x00000080 */ DWORD dword80;
-		/* 0x00000084 */ DWORD field_84;
-		/* 0x00000088 */ DWORD field_88;
-		/* 0x0000008C */ DWORD field_8C;
-		/* 0x00000090 */ DWORD field_90;
+    struct EntityFXRuby : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x0000005C */ DWORD gap5C;
+        /* 0x00000060 */ DWORD dword60;
+        /* 0x00000064 */ DWORD gap64;
+        /* 0x00000068 */ DWORD field_68;
+        /* 0x0000006C */ int OutterRadius;
+        /* 0x00000070 */ int FadeWhite;
+        /* 0x00000074 */ int FadeBlack;
+        /* 0x00000078 */ DWORD WaitForTrigger;
+        /* 0x0000007C */ DWORD field_7C;
+        /* 0x00000080 */ DWORD dword80;
+        /* 0x00000084 */ DWORD field_84;
+        /* 0x00000088 */ DWORD field_88;
+        /* 0x0000008C */ DWORD field_8C;
+        /* 0x00000090 */ DWORD field_90;
 
-	};
-	struct EntityPauseMenu : Entity
-	{
-		/* 0x00000058 */ void* State;
-		/* 0x00000058 */ void* StateDraw;
-		/* 0x00000060 */ DWORD field_60;
-		/* 0x00000064 */ DWORD field_64;
-		/* 0x00000068 */ DWORD field_68;
-		/* 0x0000006C */ DWORD field_6C;
-		/* 0x00000070 */ DWORD field_70;
-		/* 0x00000074 */ DWORD field_74;
-		/* 0x00000078 */ DWORD field_78;
-		/* 0x0000007C */ short field_7C;
-		/* 0x0000007E */ short field_7E;
-		/* 0x00000080 */ DWORD field_80;
-		/* 0x00000084 */ DWORD field_84;
-		/* 0x00000088 */ DWORD field_88;
-		/* 0x0000008C */ DWORD field_8C;
-		/* 0x00000090 */ DWORD field_90;
-		/* 0x00000094 */ DWORD field_94;
-		/* 0x00000098 */ DWORD field_98;
-		/* 0x0000009C */ DWORD field_9C;
-		/* 0x000000A0 */ DWORD field_A0;
-		/* 0x000000A4 */ DWORD field_A4;
-		/* 0x000000A8 */ DWORD field_A8;
-		/* 0x000000AC */ DWORD field_AC;
-		/* 0x000000B0 */ DWORD field_B0;
-		/* 0x000000B4 */ EntityAnimationData Animation;
-		/* 0x000000CC */ DWORD field_CC;
-		/* 0x000000D0 */ DWORD field_D0;
-		/* 0x000000D4 */ DWORD field_D4;
+    };
+    struct EntityPauseMenu : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x00000058 */ void* StateDraw;
+        /* 0x00000060 */ DWORD field_60;
+        /* 0x00000064 */ DWORD field_64;
+        /* 0x00000068 */ DWORD field_68;
+        /* 0x0000006C */ DWORD field_6C;
+        /* 0x00000070 */ DWORD field_70;
+        /* 0x00000074 */ DWORD field_74;
+        /* 0x00000078 */ DWORD field_78;
+        /* 0x0000007C */ short field_7C;
+        /* 0x0000007E */ short field_7E;
+        /* 0x00000080 */ DWORD field_80;
+        /* 0x00000084 */ DWORD field_84;
+        /* 0x00000088 */ DWORD field_88;
+        /* 0x0000008C */ DWORD field_8C;
+        /* 0x00000090 */ DWORD field_90;
+        /* 0x00000094 */ DWORD field_94;
+        /* 0x00000098 */ DWORD field_98;
+        /* 0x0000009C */ DWORD field_9C;
+        /* 0x000000A0 */ DWORD field_A0;
+        /* 0x000000A4 */ DWORD field_A4;
+        /* 0x000000A8 */ DWORD field_A8;
+        /* 0x000000AC */ DWORD field_AC;
+        /* 0x000000B0 */ DWORD field_B0;
+        /* 0x000000B4 */ EntityAnimationData Animation;
+        /* 0x000000CC */ DWORD field_CC;
+        /* 0x000000D0 */ DWORD field_D0;
+        /* 0x000000D4 */ DWORD field_D4;
 
-	};
-	struct UIVsZoneButton : Entity
-	{
-		/* 0x00000058 */ BYTE gap[164];
-		/* 0x000000FC */ DWORD Filter; //Might not Exist 
-		/* 0x00000100 */ bool Disabled;
-		/* 0x00000104 */ DWORD ZoneID;
-		/* 0x00000108 */ DWORD Act;
-		/* 0x0000010C */ bool XOut;
+    };
+    struct UIVsZoneButton : Entity
+    {
+        /* 0x00000058 */ BYTE gap[164];
+        /* 0x000000FC */ DWORD Filter; //Might not Exist 
+        /* 0x00000100 */ bool Disabled;
+        /* 0x00000104 */ DWORD ZoneID;
+        /* 0x00000108 */ DWORD Act;
+        /* 0x0000010C */ bool XOut;
         /* 0x00000110 */ bool Obfuscate;
-	};
+    };
     struct EntityUIText : Entity
     {
         /* 0x00000058 */ void* State;
@@ -1617,750 +1618,750 @@ namespace SonicMania
         /* 0x00000090 */ DWORD dword90;
 
     };
-	struct EntityClapperboard : Entity
-	{
-		/* 0x00000058 */ void* State;
-		/* 0x0000005C */ DWORD dword5C;
-		/* 0x00000060 */ BYTE TakeID;
-		/* 0x00000061 */ BYTE Field_61;
-		/* 0x00000062 */ BYTE Field_62;
-		/* 0x00000063 */ BYTE Field_63;
-		/* 0x00000064 */ DWORD dword64;
-		/* 0x00000068 */ DWORD StarField_68;
-		/* 0x0000006C */ Hitbox Hotbox;
-		/* 0x00000074 */ DWORD dword74;
-		/* 0x00000078 */ DWORD dword78;
-		/* 0x0000007C */ DWORD dword7C;
-		/* 0x00000080 */ DWORD dword80;
-		/* 0x00000084 */ EntityAnimationData Animation84;
-		/* 0x0000009C */ EntityAnimationData Animation9C;
-		/* 0x000000B4 */ EntityAnimationData AnimationB4;
-		/* 0x000000CC */ EntityAnimationData AnimationCC;
-	};
-	struct EntityHUD : Entity
-	{
-		/* 0x00000058 */ DWORD dword58;
-		/* 0x0000005C */ DWORD dword5C;
-		/* 0x00000060 */ DWORD dword60;
-		/* 0x00000064 */ DWORD dword64;
-		/* 0x00000068 */ DWORD dword68;
-		/* 0x0000006C */ DWORD dword6C;
-		/* 0x00000070 */ DWORD dword70;
-		/* 0x00000074 */ DWORD dword74;
-		/* 0x00000078 */ DWORD dword78;
-		/* 0x0000007C */ DWORD dword7C;
-		/* 0x00000080 */ DWORD dword80;
-		/* 0x00000084 */ DWORD dword84;
-		/* 0x00000088 */ DWORD dword88;
-		/* 0x0000008C */ DWORD dword8C;
-		/* 0x00000090 */ DWORD dword90;
-		/* 0x00000094 */ DWORD dword94;
-		/* 0x00000098 */ DWORD dword98;
-		/* 0x0000009C */ DWORD dword9C;
-		/* 0x000000A0 */ DWORD dwordA0;
-		/* 0x000000A4 */ DWORD CompetitionSomething;
-		/* 0x000000A8 */ DWORD dwordA8;
-		/* 0x000000AC */ DWORD dwordAC;
-		/* 0x000000B0 */ DWORD dwordB0;
-		/* 0x000000B4 */ DWORD dwordB4;
-		/* 0x000000B8 */ DWORD dwordB8;
-		/* 0x000000BC */ DWORD dwordBC;
+    struct EntityClapperboard : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x0000005C */ DWORD dword5C;
+        /* 0x00000060 */ BYTE TakeID;
+        /* 0x00000061 */ BYTE Field_61;
+        /* 0x00000062 */ BYTE Field_62;
+        /* 0x00000063 */ BYTE Field_63;
+        /* 0x00000064 */ DWORD dword64;
+        /* 0x00000068 */ DWORD StarField_68;
+        /* 0x0000006C */ Hitbox Hotbox;
+        /* 0x00000074 */ DWORD dword74;
+        /* 0x00000078 */ DWORD dword78;
+        /* 0x0000007C */ DWORD dword7C;
+        /* 0x00000080 */ DWORD dword80;
+        /* 0x00000084 */ EntityAnimationData Animation84;
+        /* 0x0000009C */ EntityAnimationData Animation9C;
+        /* 0x000000B4 */ EntityAnimationData AnimationB4;
+        /* 0x000000CC */ EntityAnimationData AnimationCC;
+    };
+    struct EntityHUD : Entity
+    {
+        /* 0x00000058 */ DWORD dword58;
+        /* 0x0000005C */ DWORD dword5C;
+        /* 0x00000060 */ DWORD dword60;
+        /* 0x00000064 */ DWORD dword64;
+        /* 0x00000068 */ DWORD dword68;
+        /* 0x0000006C */ DWORD dword6C;
+        /* 0x00000070 */ DWORD dword70;
+        /* 0x00000074 */ DWORD dword74;
+        /* 0x00000078 */ DWORD dword78;
+        /* 0x0000007C */ DWORD dword7C;
+        /* 0x00000080 */ DWORD dword80;
+        /* 0x00000084 */ DWORD dword84;
+        /* 0x00000088 */ DWORD dword88;
+        /* 0x0000008C */ DWORD dword8C;
+        /* 0x00000090 */ DWORD dword90;
+        /* 0x00000094 */ DWORD dword94;
+        /* 0x00000098 */ DWORD dword98;
+        /* 0x0000009C */ DWORD dword9C;
+        /* 0x000000A0 */ DWORD dwordA0;
+        /* 0x000000A4 */ DWORD CompetitionSomething;
+        /* 0x000000A8 */ DWORD dwordA8;
+        /* 0x000000AC */ DWORD dwordAC;
+        /* 0x000000B0 */ DWORD dwordB0;
+        /* 0x000000B4 */ DWORD dwordB4;
+        /* 0x000000B8 */ DWORD dwordB8;
+        /* 0x000000BC */ DWORD dwordBC;
 
 
 
-	};
-	struct EntitySpring : Entity
-	{
-		/* 0x00000058 */ void* State;
-		/* 0x0000005C */ int Type;
-		/* 0x00000060 */ int FlipFlag;
-		/* 0x00000064 */ BYTE PlaneFilter;
-		/* 0x00000065 */ BYTE gap65;
-		/* 0x00000066 */ BYTE field_66;
-		/* 0x00000067 */ BYTE field_67;
-		/* 0x00000068 */ DWORD field_68;
-		/* 0x0000006C */ EntityAnimationData Animation;
-		/* 0x00000084 */ DWORD dword84;
-		/* 0x00000088 */ DWORD dword88;
-	};
-	struct EntityUFOSphere : Entity
-	{
-		/* 0x00000058 */ void* State;
-		/* 0x0000005C */ int Type;
-		/* 0x00000060 */ int Behavior;
-		/* 0x00000064 */ int Height;
-		/* 0x00000068 */ int Speed;
-		/* 0x0000006C */ int MatAngleX;
-		/* 0x00000070 */ int MatAngleY;
-		/* 0x00000074 */ int AmplitudeX;
-		/* 0x00000078 */ int AmplitudeY;
-		/* 0x0000007C */ DWORD field7C;
-		/* 0x00000080 */ DWORD dword80;
-		/* 0x00000084 */ DWORD dword84;
-		/* 0x00000088 */ DWORD dword88;
-		/* 0x0000008C */ DWORD dword8C;
-		/* 0x00000090 */ DWORD dword90;
-		/* 0x00000094 */ DWORD dword94;
-		/* 0x00000098 */ DWORD dword98;
-		/* 0x0000009C */ DWORD dword9C;
-		/* 0x000000A0 */ BYTE gapC0[148];
-		/* 0x00000140 */ EntityAnimationData Animation;
-	};
-	struct EntityUFOPlayer : Entity
-	{
-		/* 0x00000058 */ void* State;
-		/* 0x00000058 */ int MachQuota1;
-		/* 0x00000060 */ int MachQuota4;
-		/* 0x00000064 */ int MachQuota3;
-		/* 0x00000068 */ int StartingRings;
-		/* 0x0000006C */ DWORD field_6C;
-		/* 0x00000070 */ DWORD field_70;
-		/* 0x00000074 */ DWORD field_74;
-		/* 0x00000078 */ DWORD field_78;
-		/* 0x0000007C */ DWORD field_7C;
-		/* 0x00000080 */ DWORD field_80;
-		/* 0x00000084 */ DWORD field_84;
-		/* 0x00000088 */ int BumperSFXTimer;
-		/* 0x0000008C */ DWORD field_8C;
-		/* 0x00000090 */ DWORD field_90;
-		/* 0x00000094 */ DWORD field_94;
-		/* 0x00000098 */ DWORD field_98;
-		/* 0x0000009C */ DWORD field_9C;
-		/* 0x000000A0 */ DWORD field_A0;
-		/* 0x000000A4 */ DWORD field_A4;
-		/* 0x000000A8 */ DWORD field_A8;
-		/* 0x000000AC */ DWORD field_AC;
-		/* 0x000000B0 */ DWORD field_B0;
-		/* 0x000000B4 */ DWORD field_B4;
-		/* 0x000000B8 */ DWORD field_B8;
-		/* 0x000000BC */ DWORD field_BC;
-		/* 0x000000C0 */ DWORD field_C0;
-		/* 0x000000C4 */ DWORD field_C4;
-		/* 0x000000C8 */ DWORD field_C8;
-		/* 0x000000CC */ DWORD field_CC;
-		/* 0x000000D0 */ DWORD field_D0;
-		/* 0x000000D4 */ DWORD field_D4;
-		/* 0x000000D8 */ DWORD field_D8;
-		/* 0x000000DC */ DWORD field_DC;
-		/* 0x000000E0 */ DWORD field_E0;
-		/* 0x000000E4 */ DWORD field_E4;
-		/* 0x000000E8 */ DWORD field_E8;
-		/* 0x000000EC */ DWORD field_EC;
-		/* 0x000000F0 */ DWORD field_F0;
-		/* 0x000000F4 */ DWORD field_F4;
-		/* 0x000000F8 */ DWORD field_F8;
-		/* 0x000000FC */ DWORD field_FC;
-		/* 0x00000100 */ DWORD field_100;
-		/* 0x00000104 */ DWORD field_104;
-		/* 0x00000108 */ DWORD field_108;
-		/* 0x0000010C */ DWORD field_10C;
-		/* 0x00000110 */ DWORD field_110;
-		/* 0x00000114 */ DWORD field_114;
-		/* 0x00000118 */ DWORD field_118;
-		/* 0x0000011C */ DWORD field_11C;
-		/* 0x00000120 */ DWORD field_120;
-		/* 0x00000124 */ DWORD field_124;
-		/* 0x00000128 */ DWORD field_128;
-		/* 0x0000012C */ DWORD field_12C;
-		/* 0x00000130 */ DWORD field_130;
-		/* 0x00000134 */ DWORD field_134;
-		/* 0x00000138 */ DWORD field_138;
-		/* 0x0000013C */ DWORD field_13C;
-		/* 0x00000140 */ DWORD field_140;
-		/* 0x00000144 */ DWORD field_144;
-		/* 0x00000148 */ DWORD field_148;
-		/* 0x0000014C */ DWORD field_14C;
-		/* 0x00000150 */ DWORD field_150;
-		/* 0x00000154 */ DWORD field_154;
-		/* 0x00000158 */ DWORD field_158;
-		/* 0x0000015C */ DWORD field_15C;
-		/* 0x00000160 */ DWORD field_160;
-		/* 0x00000164 */ DWORD field_164;
-		/* 0x00000168 */ DWORD field_168;
-		/* 0x0000016C */ DWORD field_16C;
-		/* 0x00000170 */ DWORD field_170;
-		/* 0x00000174 */ DWORD field_174;
-		/* 0x00000178 */ DWORD field_178;
-		/* 0x0000017C */ DWORD field_17C;
-		/* 0x00000180 */ DWORD field_180;
-		/* 0x00000184 */ DWORD field_184;
-		/* 0x00000188 */ DWORD field_188;
-		/* 0x0000018C */ DWORD field_18C;
-		/* 0x00000190 */ DWORD field_190;
-		/* 0x00000194 */ DWORD field_194;
-		/* 0x00000198 */ DWORD field_198;
-		/* 0x0000019C */ InputStatus InputState;
-		/* 0x000001A0 */ DWORD field_1A0;
-		/* 0x000001A4 */ BOOL Up;
-		/* 0x000001A8 */ BOOL Down;
-		/* 0x000001AC */ BOOL Left;
-		/* 0x000001B0 */ BOOL Right;
-		/* 0x000001B4 */ BOOL JumpPress;
-		/* 0x000001B8 */ BOOL JumpHold;
-		/* 0x000001BC */ EntityAnimationData Animation;
-	};
+    };
+    struct EntitySpring : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x0000005C */ int Type;
+        /* 0x00000060 */ int FlipFlag;
+        /* 0x00000064 */ BYTE PlaneFilter;
+        /* 0x00000065 */ BYTE gap65;
+        /* 0x00000066 */ BYTE field_66;
+        /* 0x00000067 */ BYTE field_67;
+        /* 0x00000068 */ DWORD field_68;
+        /* 0x0000006C */ EntityAnimationData Animation;
+        /* 0x00000084 */ DWORD dword84;
+        /* 0x00000088 */ DWORD dword88;
+    };
+    struct EntityUFOSphere : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x0000005C */ int Type;
+        /* 0x00000060 */ int Behavior;
+        /* 0x00000064 */ int Height;
+        /* 0x00000068 */ int Speed;
+        /* 0x0000006C */ int MatAngleX;
+        /* 0x00000070 */ int MatAngleY;
+        /* 0x00000074 */ int AmplitudeX;
+        /* 0x00000078 */ int AmplitudeY;
+        /* 0x0000007C */ DWORD field7C;
+        /* 0x00000080 */ DWORD dword80;
+        /* 0x00000084 */ DWORD dword84;
+        /* 0x00000088 */ DWORD dword88;
+        /* 0x0000008C */ DWORD dword8C;
+        /* 0x00000090 */ DWORD dword90;
+        /* 0x00000094 */ DWORD dword94;
+        /* 0x00000098 */ DWORD dword98;
+        /* 0x0000009C */ DWORD dword9C;
+        /* 0x000000A0 */ BYTE gapC0[148];
+        /* 0x00000140 */ EntityAnimationData Animation;
+    };
+    struct EntityUFOPlayer : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x00000058 */ int MachQuota1;
+        /* 0x00000060 */ int MachQuota4;
+        /* 0x00000064 */ int MachQuota3;
+        /* 0x00000068 */ int StartingRings;
+        /* 0x0000006C */ DWORD field_6C;
+        /* 0x00000070 */ DWORD field_70;
+        /* 0x00000074 */ DWORD field_74;
+        /* 0x00000078 */ DWORD field_78;
+        /* 0x0000007C */ DWORD field_7C;
+        /* 0x00000080 */ DWORD field_80;
+        /* 0x00000084 */ DWORD field_84;
+        /* 0x00000088 */ int BumperSFXTimer;
+        /* 0x0000008C */ DWORD field_8C;
+        /* 0x00000090 */ DWORD field_90;
+        /* 0x00000094 */ DWORD field_94;
+        /* 0x00000098 */ DWORD field_98;
+        /* 0x0000009C */ DWORD field_9C;
+        /* 0x000000A0 */ DWORD field_A0;
+        /* 0x000000A4 */ DWORD field_A4;
+        /* 0x000000A8 */ DWORD field_A8;
+        /* 0x000000AC */ DWORD field_AC;
+        /* 0x000000B0 */ DWORD field_B0;
+        /* 0x000000B4 */ DWORD field_B4;
+        /* 0x000000B8 */ DWORD field_B8;
+        /* 0x000000BC */ DWORD field_BC;
+        /* 0x000000C0 */ DWORD field_C0;
+        /* 0x000000C4 */ DWORD field_C4;
+        /* 0x000000C8 */ DWORD field_C8;
+        /* 0x000000CC */ DWORD field_CC;
+        /* 0x000000D0 */ DWORD field_D0;
+        /* 0x000000D4 */ DWORD field_D4;
+        /* 0x000000D8 */ DWORD field_D8;
+        /* 0x000000DC */ DWORD field_DC;
+        /* 0x000000E0 */ DWORD field_E0;
+        /* 0x000000E4 */ DWORD field_E4;
+        /* 0x000000E8 */ DWORD field_E8;
+        /* 0x000000EC */ DWORD field_EC;
+        /* 0x000000F0 */ DWORD field_F0;
+        /* 0x000000F4 */ DWORD field_F4;
+        /* 0x000000F8 */ DWORD field_F8;
+        /* 0x000000FC */ DWORD field_FC;
+        /* 0x00000100 */ DWORD field_100;
+        /* 0x00000104 */ DWORD field_104;
+        /* 0x00000108 */ DWORD field_108;
+        /* 0x0000010C */ DWORD field_10C;
+        /* 0x00000110 */ DWORD field_110;
+        /* 0x00000114 */ DWORD field_114;
+        /* 0x00000118 */ DWORD field_118;
+        /* 0x0000011C */ DWORD field_11C;
+        /* 0x00000120 */ DWORD field_120;
+        /* 0x00000124 */ DWORD field_124;
+        /* 0x00000128 */ DWORD field_128;
+        /* 0x0000012C */ DWORD field_12C;
+        /* 0x00000130 */ DWORD field_130;
+        /* 0x00000134 */ DWORD field_134;
+        /* 0x00000138 */ DWORD field_138;
+        /* 0x0000013C */ DWORD field_13C;
+        /* 0x00000140 */ DWORD field_140;
+        /* 0x00000144 */ DWORD field_144;
+        /* 0x00000148 */ DWORD field_148;
+        /* 0x0000014C */ DWORD field_14C;
+        /* 0x00000150 */ DWORD field_150;
+        /* 0x00000154 */ DWORD field_154;
+        /* 0x00000158 */ DWORD field_158;
+        /* 0x0000015C */ DWORD field_15C;
+        /* 0x00000160 */ DWORD field_160;
+        /* 0x00000164 */ DWORD field_164;
+        /* 0x00000168 */ DWORD field_168;
+        /* 0x0000016C */ DWORD field_16C;
+        /* 0x00000170 */ DWORD field_170;
+        /* 0x00000174 */ DWORD field_174;
+        /* 0x00000178 */ DWORD field_178;
+        /* 0x0000017C */ DWORD field_17C;
+        /* 0x00000180 */ DWORD field_180;
+        /* 0x00000184 */ DWORD field_184;
+        /* 0x00000188 */ DWORD field_188;
+        /* 0x0000018C */ DWORD field_18C;
+        /* 0x00000190 */ DWORD field_190;
+        /* 0x00000194 */ DWORD field_194;
+        /* 0x00000198 */ DWORD field_198;
+        /* 0x0000019C */ InputStatus InputState;
+        /* 0x000001A0 */ DWORD field_1A0;
+        /* 0x000001A4 */ BOOL Up;
+        /* 0x000001A8 */ BOOL Down;
+        /* 0x000001AC */ BOOL Left;
+        /* 0x000001B0 */ BOOL Right;
+        /* 0x000001B4 */ BOOL JumpPress;
+        /* 0x000001B8 */ BOOL JumpHold;
+        /* 0x000001BC */ EntityAnimationData Animation;
+    };
 
-	struct EntityTitleCard : Entity
-	{
-		/* 00000058 */ void* State;
-		/* 0000005C */ void* StateDraw;
-		/* 00000060 */ DWORD gap60;
-		/* 00000064 */ DWORD field_64;
-		/* 00000068 */ DWORD dword68;
-		/* 0000006C */ DWORD dword6C;
-		/* 00000070 */ DWORD dword70;
-		/* 00000074 */ DWORD dword74;
-		/* 00000078 */ DWORD dword78;
-		/* 0000007C */ DWORD dword7C;
-		/* 00000080 */ DWORD gap80;
-		/* 00000084 */ DWORD field_84;
-		/* 00000088 */ DWORD field_88;
-		/* 0000008C */ DWORD field_8C;
-		/* 00000090 */ DWORD field_90;
-		/* 00000094 */ DWORD field_94;
-		/* 00000098 */ DWORD field_98;
-		/* 0000009C */ DWORD field_9C;
-		/* 000000A0 */ Vector2 Points1;
-		/* 000000C0 */ Vector2 Points2;
-		/* 000000E0 */ Vector2 Points3;
-		/* 00000100 */ DWORD field_100;
-		/* 00000104 */ DWORD field_104;
-		/* 00000108 */ DWORD field_108;
-		/* 0000010C */ DWORD field_10C;
-		/* 00000110 */ DWORD field_110;
-		/* 00000114 */ DWORD field_114;
-		/* 00000118 */ DWORD field_118;
-		/* 0000011C */ BYTE field_11C;
-		/* 0000011D */ BYTE field_11D;
-		/* 0000011E */ BYTE field_11E;
-		/* 0000011F */ BYTE field_11F;
-		/* 00000120 */ BYTE field_120;
-		/* 00000121 */ BYTE field_121;
-		/* 00000122 */ BYTE field_122;
-		/* 00000123 */ BYTE field_123;
-		/* 00000124 */ BYTE field_124;
-		/* 00000125 */ BYTE field_125;
-		/* 00000126 */ BYTE field_126;
-		/* 00000127 */ BYTE field_127;
-		/* 00000128 */ BYTE field_128;
-		/* 00000129 */ BYTE field_129;
-		/* 0000012A */ BYTE field_12A;
-		/* 0000012B */ BYTE field_12B;
-		/* 0000012C */ BYTE field_12C;
-		/* 0000012D */ BYTE field_12D;
-		/* 0000012E */ BYTE field_12E;
-		/* 0000012F */ BYTE field_12F;
-		/* 00000130 */ BYTE field_130;
-		/* 00000131 */ BYTE field_131;
-		/* 00000132 */ BYTE field_132;
-		/* 00000133 */ BYTE field_133;
-		/* 00000134 */ BYTE field_134;
-		/* 00000135 */ BYTE field_135;
-		/* 00000136 */ BYTE field_136;
-		/* 00000137 */ BYTE field_137;
-		/* 00000138 */ BYTE field_138;
-		/* 00000139 */ BYTE field_139;
-		/* 0000013A */ BYTE field_13A;
-		/* 0000013B */ BYTE field_13B;
-		/* 0000013C */ BYTE field_13C;
-		/* 0000013D */ BYTE field_13D;
-		/* 0000013E */ BYTE field_13E;
-		/* 0000013F */ BYTE field_13F;
-		/* 00000140 */ BYTE field_140;
-		/* 00000141 */ BYTE field_141;
-		/* 00000142 */ BYTE field_142;
-		/* 00000143 */ BYTE field_143;
-		/* 00000144 */ BYTE field_144;
-		/* 00000145 */ BYTE field_145;
-		/* 00000146 */ BYTE field_146;
-		/* 00000147 */ BYTE field_147;
-		/* 00000148 */ BYTE field_148;
-		/* 00000149 */ BYTE field_149;
-		/* 0000014A */ BYTE field_14A;
-		/* 0000014B */ BYTE field_14B;
-		/* 0000014C */ BYTE field_14C;
-		/* 0000014D */ BYTE field_14D;
-		/* 0000014E */ BYTE field_14E;
-		/* 0000014F */ BYTE field_14F;
-		/* 00000150 */ BYTE field_150;
-		/* 00000151 */ BYTE field_151;
-		/* 00000152 */ BYTE field_152;
-		/* 00000153 */ BYTE field_153;
-		/* 00000154 */ BYTE field_154;
-		/* 00000155 */ BYTE field_155;
-		/* 00000156 */ BYTE field_156;
-		/* 00000157 */ BYTE field_157;
-		/* 00000158 */ BYTE field_158;
-		/* 00000159 */ BYTE field_159;
-		/* 0000015A */ BYTE field_15A;
-		/* 0000015B */ BYTE field_15B;
-		/* 0000015C */ BYTE field_15C;
-		/* 0000015D */ BYTE field_15D;
-		/* 0000015E */ BYTE field_15E;
-		/* 0000015F */ BYTE field_15F;
-		/* 00000160 */ BYTE field_160;
-		/* 00000161 */ BYTE field_161;
-		/* 00000162 */ BYTE field_162;
-		/* 00000163 */ BYTE field_163;
-		/* 00000164 */ BYTE field_164;
-		/* 00000165 */ BYTE field_165;
-		/* 00000166 */ BYTE field_166;
-		/* 00000167 */ BYTE field_167;
-		/* 00000168 */ BYTE field_168;
-		/* 00000169 */ BYTE field_169;
-		/* 0000016A */ BYTE field_16A;
-		/* 0000016B */ BYTE field_16B;
-		/* 0000016C */ BYTE field_16C;
-		/* 0000016D */ BYTE field_16D;
-		/* 0000016E */ BYTE field_16E;
-		/* 0000016F */ BYTE field_16F;
-		/* 00000170 */ BYTE field_170;
-		/* 00000171 */ BYTE field_171;
-		/* 00000172 */ BYTE field_172;
-		/* 00000173 */ BYTE field_173;
-		/* 00000174 */ BYTE field_174;
-		/* 00000175 */ BYTE field_175;
-		/* 00000176 */ BYTE field_176;
-		/* 00000177 */ BYTE field_177;
-		/* 00000178 */ BYTE field_178;
-		/* 00000179 */ BYTE field_179;
-		/* 0000017A */ BYTE field_17A;
-		/* 0000017B */ BYTE field_17B;
-		/* 0000017C */ BYTE field_17C;
-		/* 0000017D */ BYTE field_17D;
-		/* 0000017E */ BYTE field_17E;
-		/* 0000017F */ BYTE field_17F;
-		/* 00000180 */ BYTE field_180;
-		/* 00000181 */ BYTE field_181;
-		/* 00000182 */ BYTE field_182;
-		/* 00000183 */ BYTE field_183;
-		/* 00000184 */ BYTE field_184;
-		/* 00000185 */ BYTE field_185;
-		/* 00000186 */ BYTE field_186;
-		/* 00000187 */ BYTE field_187;
-		/* 00000188 */ BYTE field_188;
-		/* 00000189 */ BYTE field_189;
-		/* 0000018A */ BYTE field_18A;
-		/* 0000018B */ BYTE field_18B;
-		/* 0000018C */ BYTE field_18C;
-		/* 0000018D */ BYTE field_18D;
-		/* 0000018E */ BYTE field_18E;
-		/* 0000018F */ BYTE field_18F;
-		/* 00000190 */ BYTE field_190;
-		/* 00000191 */ BYTE field_191;
-		/* 00000192 */ BYTE field_192;
-		/* 00000193 */ BYTE field_193;
-		/* 00000194 */ BYTE field_194;
-		/* 00000195 */ BYTE field_195;
-		/* 00000196 */ BYTE field_196;
-		/* 00000197 */ BYTE field_197;
-		/* 00000198 */ BYTE field_198;
-		/* 00000199 */ BYTE field_199;
-		/* 0000019A */ BYTE field_19A;
-		/* 0000019B */ BYTE field_19B;
-		/* 0000019C */ BYTE field_19C;
-		/* 0000019D */ BYTE field_19D;
-		/* 0000019E */ BYTE field_19E;
-		/* 0000019F */ BYTE field_19F;
-		/* 000001A0 */ BYTE field_1A0;
-		/* 000001A1 */ BYTE field_1A1;
-		/* 000001A2 */ BYTE field_1A2;
-		/* 000001A3 */ BYTE field_1A3;
-		/* 000001A4 */ BYTE field_1A4;
-		/* 000001A5 */ BYTE field_1A5;
-		/* 000001A6 */ BYTE field_1A6;
-		/* 000001A7 */ BYTE field_1A7;
-		/* 000001A8 */ BYTE field_1A8;
-		/* 000001A9 */ BYTE field_1A9;
-		/* 000001AA */ BYTE field_1AA;
-		/* 000001AB */ BYTE field_1AB;
-		/* 000001AC */ BYTE field_1AC;
-		/* 000001AD */ BYTE field_1AD;
-		/* 000001AE */ BYTE field_1AE;
-		/* 000001AF */ BYTE field_1AF;
-		/* 000001B0 */ BYTE field_1B0;
-		/* 000001B1 */ BYTE field_1B1;
-		/* 000001B2 */ BYTE field_1B2;
-		/* 000001B3 */ BYTE field_1B3;
-		/* 000001B4 */ BYTE field_1B4;
-		/* 000001B5 */ BYTE field_1B5;
-		/* 000001B6 */ BYTE field_1B6;
-		/* 000001B7 */ BYTE field_1B7;
-		/* 000001B8 */ BYTE field_1B8;
-		/* 000001B9 */ BYTE field_1B9;
-		/* 000001BA */ BYTE field_1BA;
-		/* 000001BB */ BYTE field_1BB;
-		/* 000001BC */ BYTE field_1BC;
-		/* 000001BD */ BYTE field_1BD;
-		/* 000001BE */ BYTE field_1BE;
-		/* 000001BF */ BYTE field_1BF;
-		/* 000001C0 */ WCHAR* ZoneName;
-		/* 000001C4 */ BYTE field_1C4;
-		/* 000001C5 */ BYTE field_1C5;
-		/* 000001C6 */ BYTE field_1C6;
-		/* 000001C7 */ BYTE field_1C7;
-		/* 000001C8 */ BYTE field_1C8;
-		/* 000001C9 */ BYTE field_1C9;
-		/* 000001CA */ BYTE field_1CA;
-		/* 000001CB */ BYTE field_1CB;
-		/* 000001CC */ BYTE field_1CC;
-		/* 000001CD */ BYTE field_1CD;
-		/* 000001CE */ BYTE field_1CE;
-		/* 000001CF */ BYTE field_1CF;
-		/* 000001D0 */ BYTE field_1D0;
-		/* 000001D1 */ BYTE field_1D1;
-		/* 000001D2 */ BYTE field_1D2;
-		/* 000001D3 */ BYTE field_1D3;
-		/* 000001D4 */ BYTE field_1D4;
-		/* 000001D5 */ BYTE field_1D5;
-		/* 000001D6 */ BYTE field_1D6;
-		/* 000001D7 */ BYTE field_1D7;
-		/* 000001D8 */ BYTE field_1D8;
-		/* 000001D9 */ BYTE field_1D9;
-		/* 000001DA */ BYTE field_1DA;
-		/* 000001DB */ BYTE field_1DB;
-		/* 000001DC */ BYTE field_1DC;
-		/* 000001DD */ BYTE field_1DD;
-		/* 000001DE */ BYTE field_1DE;
-		/* 000001DF */ BYTE field_1DF;
-		/* 000001E0 */ BYTE field_1E0;
-		/* 000001E1 */ BYTE field_1E1;
-		/* 000001E2 */ BYTE field_1E2;
-		/* 000001E3 */ BYTE field_1E3;
-		/* 000001E4 */ BYTE field_1E4;
-		/* 000001E5 */ BYTE field_1E5;
-		/* 000001E6 */ BYTE field_1E6;
-		/* 000001E7 */ BYTE field_1E7;
-		/* 000001E8 */ DWORD dword1E8;
-		/* 000001EC */ DWORD gap1EC;
-		/* 000001F0 */ BYTE field_1F0;
-		/* 000001F1 */ BYTE field_1F1;
-		/* 000001F2 */ BYTE field_1F2;
-		/* 000001F3 */ BYTE field_1F3;
-		/* 000001F4 */ BYTE field_1F4;
-		/* 000001F5 */ BYTE field_1F5;
-		/* 000001F6 */ BYTE field_1F6;
-		/* 000001F7 */ BYTE field_1F7;
-		/* 000001F8 */ BYTE field_1F8;
-		/* 000001F9 */ BYTE field_1F9;
-		/* 000001FA */ BYTE field_1FA;
-		/* 000001FB */ BYTE field_1FB;
-		/* 000001FC */ BYTE field_1FC;
-		/* 000001FD */ BYTE field_1FD;
-		/* 000001FE */ BYTE field_1FE;
-		/* 000001FF */ BYTE field_1FF;
-		/* 00000200 */ BYTE field_200;
-		/* 00000201 */ BYTE field_201;
-		/* 00000202 */ BYTE field_202;
-		/* 00000203 */ BYTE field_203;
-		/* 00000204 */ BYTE field_204;
-		/* 00000205 */ BYTE field_205;
-		/* 00000206 */ BYTE field_206;
-		/* 00000207 */ BYTE field_207;
-		/* 00000208 */ BYTE field_208;
-		/* 00000209 */ BYTE field_209;
-		/* 0000020A */ BYTE field_20A;
-		/* 0000020B */ BYTE field_20B;
-		/* 0000020C */ BYTE field_20C;
-		/* 0000020D */ BYTE field_20D;
-		/* 0000020E */ BYTE field_20E;
-		/* 0000020F */ BYTE field_20F;
-		/* 00000210 */ BYTE field_210;
-		/* 00000211 */ BYTE field_211;
-		/* 00000212 */ BYTE field_212;
-		/* 00000213 */ BYTE field_213;
-		/* 00000214 */ BYTE field_214;
-		/* 00000215 */ BYTE field_215;
-		/* 00000216 */ BYTE field_216;
-		/* 00000217 */ BYTE field_217;
-		/* 00000218 */ BYTE field_218;
-		/* 00000219 */ BYTE field_219;
-		/* 0000021A */ BYTE field_21A;
-		/* 0000021B */ BYTE field_21B;
-		/* 0000021C */ BYTE field_21C;
-		/* 0000021D */ BYTE field_21D;
-		/* 0000021E */ BYTE field_21E;
-		/* 0000021F */ BYTE field_21F;
-		/* 00000220 */ BYTE field_220;
-		/* 00000221 */ BYTE field_221;
-		/* 00000222 */ BYTE field_222;
-		/* 00000223 */ BYTE field_223;
-		/* 00000224 */ BYTE field_224;
-		/* 00000225 */ BYTE field_225;
-		/* 00000226 */ BYTE field_226;
-		/* 00000227 */ BYTE field_227;
-		/* 00000228 */ BYTE field_228;
-		/* 00000229 */ BYTE field_229;
-		/* 0000022A */ BYTE field_22A;
-		/* 0000022B */ BYTE field_22B;
-		/* 0000022C */ BYTE field_22C;
-		/* 0000022D */ BYTE field_22D;
-		/* 0000022E */ BYTE field_22E;
-		/* 0000022F */ BYTE field_22F;
-		/* 00000230 */ BYTE field_230;
-		/* 00000231 */ BYTE field_231;
-		/* 00000232 */ BYTE field_232;
-		/* 00000233 */ BYTE field_233;
-		/* 00000234 */ BYTE field_234;
-		/* 00000235 */ BYTE field_235;
-		/* 00000236 */ BYTE field_236;
-		/* 00000237 */ BYTE field_237;
-		/* 00000238 */ BYTE field_238;
-		/* 00000239 */ BYTE field_239;
-		/* 0000023A */ BYTE field_23A;
-		/* 0000023B */ BYTE field_23B;
-		/* 0000023C */ BYTE field_23C;
-		/* 0000023D */ BYTE field_23D;
-		/* 0000023E */ BYTE field_23E;
-		/* 0000023F */ BYTE field_23F;
-		/* 00000240 */ BYTE field_240;
-		/* 00000241 */ BYTE field_241;
-		/* 00000242 */ BYTE field_242;
-		/* 00000243 */ BYTE field_243;
-		/* 00000244 */ BYTE field_244;
-		/* 00000245 */ BYTE field_245;
-		/* 00000246 */ BYTE field_246;
-		/* 00000247 */ BYTE field_247;
-		/* 00000248 */ BYTE field_248;
-		/* 00000249 */ BYTE field_249;
-		/* 0000024A */ BYTE field_24A;
-		/* 0000024B */ BYTE field_24B;
-		/* 0000024C */ BYTE field_24C;
-		/* 0000024D */ BYTE field_24D;
-		/* 0000024E */ BYTE field_24E;
-		/* 0000024F */ BYTE field_24F;
-		/* 00000250 */ BYTE field_250;
-		/* 00000251 */ BYTE field_251;
-		/* 00000252 */ BYTE field_252;
-		/* 00000253 */ BYTE field_253;
-		/* 00000254 */ BYTE field_254;
-		/* 00000255 */ BYTE field_255;
-		/* 00000256 */ BYTE field_256;
-		/* 00000257 */ BYTE field_257;
-		/* 00000258 */ BYTE field_258;
-		/* 00000259 */ BYTE field_259;
-		/* 0000025A */ BYTE field_25A;
-		/* 0000025B */ BYTE field_25B;
-		/* 0000025C */ BYTE field_25C;
-		/* 0000025D */ BYTE field_25D;
-		/* 0000025E */ BYTE field_25E;
-		/* 0000025F */ BYTE field_25F;
-		/* 00000260 */ BYTE field_260;
-		/* 00000261 */ BYTE field_261;
-		/* 00000262 */ BYTE field_262;
-		/* 00000263 */ BYTE field_263;
-		/* 00000264 */ BYTE field_264;
-		/* 00000265 */ BYTE field_265;
-		/* 00000266 */ BYTE field_266;
-		/* 00000267 */ BYTE field_267;
-		/* 00000268 */ BYTE field_268;
-		/* 00000269 */ BYTE field_269;
-		/* 0000026A */ BYTE field_26A;
-		/* 0000026B */ BYTE field_26B;
-		/* 0000026C */ BYTE field_26C;
-		/* 0000026D */ BYTE field_26D;
-		/* 0000026E */ BYTE field_26E;
-		/* 0000026F */ BYTE field_26F;
-		/* 00000270 */ BYTE field_270;
-		/* 00000271 */ BYTE field_271;
-		/* 00000272 */ BYTE field_272;
-		/* 00000273 */ BYTE field_273;
-		/* 00000274 */ BYTE field_274;
-		/* 00000275 */ BYTE field_275;
-		/* 00000276 */ BYTE field_276;
-		/* 00000277 */ BYTE field_277;
-		/* 00000278 */ BYTE field_278;
-		/* 00000279 */ BYTE field_279;
-		/* 0000027A */ BYTE field_27A;
-		/* 0000027B */ BYTE field_27B;
-		/* 0000027C */ BYTE field_27C;
-		/* 0000027D */ BYTE field_27D;
-		/* 0000027E */ BYTE field_27E;
-		/* 0000027F */ BYTE field_27F;
-		/* 00000280 */ BYTE field_280;
-		/* 00000281 */ BYTE field_281;
-		/* 00000282 */ BYTE field_282;
-		/* 00000283 */ BYTE field_283;
-		/* 00000284 */ BYTE field_284;
-		/* 00000285 */ BYTE field_285;
-		/* 00000286 */ BYTE field_286;
-		/* 00000287 */ BYTE field_287;
-		/* 00000288 */ BYTE field_288;
-		/* 00000289 */ BYTE field_289;
-		/* 0000028A */ BYTE field_28A;
-		/* 0000028B */ BYTE field_28B;
-		/* 0000028C */ BYTE field_28C;
-		/* 0000028D */ BYTE field_28D;
-		/* 0000028E */ BYTE field_28E;
-		/* 0000028F */ BYTE field_28F;
-		/* 00000290 */ BYTE field_290;
-		/* 00000291 */ BYTE field_291;
-		/* 00000292 */ BYTE field_292;
-		/* 00000293 */ BYTE field_293;
-		/* 00000294 */ BYTE field_294;
-		/* 00000295 */ BYTE field_295;
-		/* 00000296 */ BYTE field_296;
-		/* 00000297 */ BYTE field_297;
-		/* 00000298 */ BYTE field_298;
-		/* 00000299 */ BYTE field_299;
-		/* 0000029A */ BYTE field_29A;
-		/* 0000029B */ BYTE field_29B;
-		/* 0000029C */ BYTE field_29C;
-		/* 0000029D */ BYTE field_29D;
-		/* 0000029E */ BYTE field_29E;
-		/* 0000029F */ BYTE field_29F;
-		/* 000002A0 */ BYTE field_2A0;
-		/* 000002A1 */ BYTE field_2A1;
-		/* 000002A2 */ BYTE field_2A2;
-		/* 000002A3 */ BYTE field_2A3;
-		/* 000002A4 */ BYTE field_2A4;
-		/* 000002A5 */ BYTE field_2A5;
-		/* 000002A6 */ BYTE field_2A6;
-		/* 000002A7 */ BYTE field_2A7;
-		/* 000002A8 */ BYTE field_2A8;
-		/* 000002A9 */ BYTE field_2A9;
-		/* 000002AA */ BYTE field_2AA;
-		/* 000002AB */ BYTE field_2AB;
-		/* 000002AC */ BYTE field_2AC;
-		/* 000002AD */ BYTE field_2AD;
-		/* 000002AE */ BYTE field_2AE;
-		/* 000002AF */ BYTE field_2AF;
-		/* 000002B0 */ BYTE field_2B0;
-		/* 000002B1 */ BYTE field_2B1;
-		/* 000002B2 */ BYTE field_2B2;
-		/* 000002B3 */ BYTE field_2B3;
-		/* 000002B4 */ BYTE field_2B4;
-		/* 000002B5 */ BYTE field_2B5;
-		/* 000002B6 */ BYTE field_2B6;
-		/* 000002B7 */ BYTE field_2B7;
-		/* 000002B8 */ BYTE field_2B8;
-		/* 000002B9 */ BYTE field_2B9;
-		/* 000002BA */ BYTE field_2BA;
-		/* 000002BB */ BYTE field_2BB;
-		/* 000002BC */ BYTE field_2BC;
-		/* 000002BD */ BYTE field_2BD;
-		/* 000002BE */ BYTE field_2BE;
-		/* 000002BF */ BYTE field_2BF;
-		/* 000002C0 */ BYTE field_2C0;
-		/* 000002C1 */ BYTE field_2C1;
-		/* 000002C2 */ BYTE field_2C2;
-		/* 000002C3 */ BYTE field_2C3;
-		/* 000002C4 */ BYTE field_2C4;
-		/* 000002C5 */ BYTE field_2C5;
-		/* 000002C6 */ BYTE field_2C6;
-		/* 000002C7 */ BYTE field_2C7;
-		/* 000002C8 */ BYTE field_2C8;
-		/* 000002C9 */ BYTE field_2C9;
-		/* 000002CA */ BYTE field_2CA;
-		/* 000002CB */ BYTE field_2CB;
-		/* 000002CC */ BYTE field_2CC;
-		/* 000002CD */ BYTE field_2CD;
-		/* 000002CE */ BYTE field_2CE;
-		/* 000002CF */ BYTE field_2CF;
-		/* 000002D0 */ BYTE field_2D0;
-		/* 000002D1 */ BYTE field_2D1;
-		/* 000002D2 */ BYTE field_2D2;
-		/* 000002D3 */ BYTE field_2D3;
-		/* 000002D4 */ BYTE field_2D4;
-		/* 000002D5 */ BYTE field_2D5;
-		/* 000002D6 */ BYTE field_2D6;
-		/* 000002D7 */ BYTE field_2D7;
-		/* 000002D8 */ BYTE field_2D8;
-		/* 000002D9 */ BYTE field_2D9;
-		/* 000002DA */ BYTE field_2DA;
-		/* 000002DB */ BYTE field_2DB;
-		/* 000002DC */ DWORD field_2DC;
-		/* 000002E0 */ DWORD field_2E0;
-		/* 000002E4 */ DWORD dword2E4;
-		/* 000002E8 */ DWORD dword2E8;
-		/* 000002EC */ DWORD dword2EC;
-		/* 000002F0 */ BYTE ActID;
-		/* 000002F2 */ BYTE field_2F2;
-		/* 000002F1 */ BYTE field_2F1;
-		/* 000002F3 */ BYTE field_2F3;
-		/* 000002F4 */ DWORD dword2F4;
-		/* 000002F8 */ DWORD dword2F8;
-		/* 000002FC */ DWORD dword2FC;
-		/* 00000300 */ DWORD dword300;
-		/* 00000304 */ EntityAnimationData DecorationData;
-		/* 0000031C */ EntityAnimationData NameLetterData;
-		/* 00000334 */ EntityAnimationData ZoneLetterData;
-		/* 0000034C */ EntityAnimationData ActNumbersData;
-	};
-	struct EntityLoveTester : Entity
-	{
-		/* 00000058 */ void* State;
-		/* 0000005C */ DWORD field_5C;
-		/* 00000060 */ BYTE field_60;
-		/* 00000061 */ BYTE field_61;
-		/* 00000062 */ BYTE field_62;
-		/* 00000063 */ BYTE field_63;
-		/* 00000064 */ Vector2 StoredPos;
-		/* 0000006C */ DWORD field_6C;
-		/* 00000070 */ DWORD field_70;
-		/* 00000074 */ DWORD field_74;
-		/* 00000078 */ SHORT field_78;
-		/* 0000007A */ BYTE field_7A;
-		/* 0000007B */ BYTE field_7B;
-		/* 0000007C */ DWORD field_7C;
-		/* 00000080 */ SHORT field_80;
-		/* 00000082 */ BYTE field_82;
-		/* 00000083 */ BYTE field_83;
-		/* 00000084 */ INT  Timer;
-		/* 00000088 */ DWORD field_88;
-		/* 0000008C */ EntityAnimationData AnimData2;
-		/* 000000A4 */ EntityAnimationData AnimData0;
-		/* 000000BC */ EntityAnimationData AnimData3;
-		/* 000000D4 */ EntityAnimationData AnimData11;
-		/* 000000EC*/ EntityAnimationData AnimData4;
-		/* 00000104 */ EntityAnimationData AnimData10;
-		/* 0000011C */ EntityAnimationData AnimData5;
-		/* 00000134 */ EntityAnimationData AnimData9;
-		/* 0000014C */ EntityAnimationData AnimData6;
-		/* 00000164 */ EntityAnimationData AnimData8;
-		/* 0000017C */ EntityAnimationData AnimData7;
+    struct EntityTitleCard : Entity
+    {
+        /* 00000058 */ void* State;
+        /* 0000005C */ void* StateDraw;
+        /* 00000060 */ DWORD gap60;
+        /* 00000064 */ DWORD field_64;
+        /* 00000068 */ DWORD dword68;
+        /* 0000006C */ DWORD dword6C;
+        /* 00000070 */ DWORD dword70;
+        /* 00000074 */ DWORD dword74;
+        /* 00000078 */ DWORD dword78;
+        /* 0000007C */ DWORD dword7C;
+        /* 00000080 */ DWORD gap80;
+        /* 00000084 */ DWORD field_84;
+        /* 00000088 */ DWORD field_88;
+        /* 0000008C */ DWORD field_8C;
+        /* 00000090 */ DWORD field_90;
+        /* 00000094 */ DWORD field_94;
+        /* 00000098 */ DWORD field_98;
+        /* 0000009C */ DWORD field_9C;
+        /* 000000A0 */ Vector2 Points1;
+        /* 000000C0 */ Vector2 Points2;
+        /* 000000E0 */ Vector2 Points3;
+        /* 00000100 */ DWORD field_100;
+        /* 00000104 */ DWORD field_104;
+        /* 00000108 */ DWORD field_108;
+        /* 0000010C */ DWORD field_10C;
+        /* 00000110 */ DWORD field_110;
+        /* 00000114 */ DWORD field_114;
+        /* 00000118 */ DWORD field_118;
+        /* 0000011C */ BYTE field_11C;
+        /* 0000011D */ BYTE field_11D;
+        /* 0000011E */ BYTE field_11E;
+        /* 0000011F */ BYTE field_11F;
+        /* 00000120 */ BYTE field_120;
+        /* 00000121 */ BYTE field_121;
+        /* 00000122 */ BYTE field_122;
+        /* 00000123 */ BYTE field_123;
+        /* 00000124 */ BYTE field_124;
+        /* 00000125 */ BYTE field_125;
+        /* 00000126 */ BYTE field_126;
+        /* 00000127 */ BYTE field_127;
+        /* 00000128 */ BYTE field_128;
+        /* 00000129 */ BYTE field_129;
+        /* 0000012A */ BYTE field_12A;
+        /* 0000012B */ BYTE field_12B;
+        /* 0000012C */ BYTE field_12C;
+        /* 0000012D */ BYTE field_12D;
+        /* 0000012E */ BYTE field_12E;
+        /* 0000012F */ BYTE field_12F;
+        /* 00000130 */ BYTE field_130;
+        /* 00000131 */ BYTE field_131;
+        /* 00000132 */ BYTE field_132;
+        /* 00000133 */ BYTE field_133;
+        /* 00000134 */ BYTE field_134;
+        /* 00000135 */ BYTE field_135;
+        /* 00000136 */ BYTE field_136;
+        /* 00000137 */ BYTE field_137;
+        /* 00000138 */ BYTE field_138;
+        /* 00000139 */ BYTE field_139;
+        /* 0000013A */ BYTE field_13A;
+        /* 0000013B */ BYTE field_13B;
+        /* 0000013C */ BYTE field_13C;
+        /* 0000013D */ BYTE field_13D;
+        /* 0000013E */ BYTE field_13E;
+        /* 0000013F */ BYTE field_13F;
+        /* 00000140 */ BYTE field_140;
+        /* 00000141 */ BYTE field_141;
+        /* 00000142 */ BYTE field_142;
+        /* 00000143 */ BYTE field_143;
+        /* 00000144 */ BYTE field_144;
+        /* 00000145 */ BYTE field_145;
+        /* 00000146 */ BYTE field_146;
+        /* 00000147 */ BYTE field_147;
+        /* 00000148 */ BYTE field_148;
+        /* 00000149 */ BYTE field_149;
+        /* 0000014A */ BYTE field_14A;
+        /* 0000014B */ BYTE field_14B;
+        /* 0000014C */ BYTE field_14C;
+        /* 0000014D */ BYTE field_14D;
+        /* 0000014E */ BYTE field_14E;
+        /* 0000014F */ BYTE field_14F;
+        /* 00000150 */ BYTE field_150;
+        /* 00000151 */ BYTE field_151;
+        /* 00000152 */ BYTE field_152;
+        /* 00000153 */ BYTE field_153;
+        /* 00000154 */ BYTE field_154;
+        /* 00000155 */ BYTE field_155;
+        /* 00000156 */ BYTE field_156;
+        /* 00000157 */ BYTE field_157;
+        /* 00000158 */ BYTE field_158;
+        /* 00000159 */ BYTE field_159;
+        /* 0000015A */ BYTE field_15A;
+        /* 0000015B */ BYTE field_15B;
+        /* 0000015C */ BYTE field_15C;
+        /* 0000015D */ BYTE field_15D;
+        /* 0000015E */ BYTE field_15E;
+        /* 0000015F */ BYTE field_15F;
+        /* 00000160 */ BYTE field_160;
+        /* 00000161 */ BYTE field_161;
+        /* 00000162 */ BYTE field_162;
+        /* 00000163 */ BYTE field_163;
+        /* 00000164 */ BYTE field_164;
+        /* 00000165 */ BYTE field_165;
+        /* 00000166 */ BYTE field_166;
+        /* 00000167 */ BYTE field_167;
+        /* 00000168 */ BYTE field_168;
+        /* 00000169 */ BYTE field_169;
+        /* 0000016A */ BYTE field_16A;
+        /* 0000016B */ BYTE field_16B;
+        /* 0000016C */ BYTE field_16C;
+        /* 0000016D */ BYTE field_16D;
+        /* 0000016E */ BYTE field_16E;
+        /* 0000016F */ BYTE field_16F;
+        /* 00000170 */ BYTE field_170;
+        /* 00000171 */ BYTE field_171;
+        /* 00000172 */ BYTE field_172;
+        /* 00000173 */ BYTE field_173;
+        /* 00000174 */ BYTE field_174;
+        /* 00000175 */ BYTE field_175;
+        /* 00000176 */ BYTE field_176;
+        /* 00000177 */ BYTE field_177;
+        /* 00000178 */ BYTE field_178;
+        /* 00000179 */ BYTE field_179;
+        /* 0000017A */ BYTE field_17A;
+        /* 0000017B */ BYTE field_17B;
+        /* 0000017C */ BYTE field_17C;
+        /* 0000017D */ BYTE field_17D;
+        /* 0000017E */ BYTE field_17E;
+        /* 0000017F */ BYTE field_17F;
+        /* 00000180 */ BYTE field_180;
+        /* 00000181 */ BYTE field_181;
+        /* 00000182 */ BYTE field_182;
+        /* 00000183 */ BYTE field_183;
+        /* 00000184 */ BYTE field_184;
+        /* 00000185 */ BYTE field_185;
+        /* 00000186 */ BYTE field_186;
+        /* 00000187 */ BYTE field_187;
+        /* 00000188 */ BYTE field_188;
+        /* 00000189 */ BYTE field_189;
+        /* 0000018A */ BYTE field_18A;
+        /* 0000018B */ BYTE field_18B;
+        /* 0000018C */ BYTE field_18C;
+        /* 0000018D */ BYTE field_18D;
+        /* 0000018E */ BYTE field_18E;
+        /* 0000018F */ BYTE field_18F;
+        /* 00000190 */ BYTE field_190;
+        /* 00000191 */ BYTE field_191;
+        /* 00000192 */ BYTE field_192;
+        /* 00000193 */ BYTE field_193;
+        /* 00000194 */ BYTE field_194;
+        /* 00000195 */ BYTE field_195;
+        /* 00000196 */ BYTE field_196;
+        /* 00000197 */ BYTE field_197;
+        /* 00000198 */ BYTE field_198;
+        /* 00000199 */ BYTE field_199;
+        /* 0000019A */ BYTE field_19A;
+        /* 0000019B */ BYTE field_19B;
+        /* 0000019C */ BYTE field_19C;
+        /* 0000019D */ BYTE field_19D;
+        /* 0000019E */ BYTE field_19E;
+        /* 0000019F */ BYTE field_19F;
+        /* 000001A0 */ BYTE field_1A0;
+        /* 000001A1 */ BYTE field_1A1;
+        /* 000001A2 */ BYTE field_1A2;
+        /* 000001A3 */ BYTE field_1A3;
+        /* 000001A4 */ BYTE field_1A4;
+        /* 000001A5 */ BYTE field_1A5;
+        /* 000001A6 */ BYTE field_1A6;
+        /* 000001A7 */ BYTE field_1A7;
+        /* 000001A8 */ BYTE field_1A8;
+        /* 000001A9 */ BYTE field_1A9;
+        /* 000001AA */ BYTE field_1AA;
+        /* 000001AB */ BYTE field_1AB;
+        /* 000001AC */ BYTE field_1AC;
+        /* 000001AD */ BYTE field_1AD;
+        /* 000001AE */ BYTE field_1AE;
+        /* 000001AF */ BYTE field_1AF;
+        /* 000001B0 */ BYTE field_1B0;
+        /* 000001B1 */ BYTE field_1B1;
+        /* 000001B2 */ BYTE field_1B2;
+        /* 000001B3 */ BYTE field_1B3;
+        /* 000001B4 */ BYTE field_1B4;
+        /* 000001B5 */ BYTE field_1B5;
+        /* 000001B6 */ BYTE field_1B6;
+        /* 000001B7 */ BYTE field_1B7;
+        /* 000001B8 */ BYTE field_1B8;
+        /* 000001B9 */ BYTE field_1B9;
+        /* 000001BA */ BYTE field_1BA;
+        /* 000001BB */ BYTE field_1BB;
+        /* 000001BC */ BYTE field_1BC;
+        /* 000001BD */ BYTE field_1BD;
+        /* 000001BE */ BYTE field_1BE;
+        /* 000001BF */ BYTE field_1BF;
+        /* 000001C0 */ WCHAR* ZoneName;
+        /* 000001C4 */ BYTE field_1C4;
+        /* 000001C5 */ BYTE field_1C5;
+        /* 000001C6 */ BYTE field_1C6;
+        /* 000001C7 */ BYTE field_1C7;
+        /* 000001C8 */ BYTE field_1C8;
+        /* 000001C9 */ BYTE field_1C9;
+        /* 000001CA */ BYTE field_1CA;
+        /* 000001CB */ BYTE field_1CB;
+        /* 000001CC */ BYTE field_1CC;
+        /* 000001CD */ BYTE field_1CD;
+        /* 000001CE */ BYTE field_1CE;
+        /* 000001CF */ BYTE field_1CF;
+        /* 000001D0 */ BYTE field_1D0;
+        /* 000001D1 */ BYTE field_1D1;
+        /* 000001D2 */ BYTE field_1D2;
+        /* 000001D3 */ BYTE field_1D3;
+        /* 000001D4 */ BYTE field_1D4;
+        /* 000001D5 */ BYTE field_1D5;
+        /* 000001D6 */ BYTE field_1D6;
+        /* 000001D7 */ BYTE field_1D7;
+        /* 000001D8 */ BYTE field_1D8;
+        /* 000001D9 */ BYTE field_1D9;
+        /* 000001DA */ BYTE field_1DA;
+        /* 000001DB */ BYTE field_1DB;
+        /* 000001DC */ BYTE field_1DC;
+        /* 000001DD */ BYTE field_1DD;
+        /* 000001DE */ BYTE field_1DE;
+        /* 000001DF */ BYTE field_1DF;
+        /* 000001E0 */ BYTE field_1E0;
+        /* 000001E1 */ BYTE field_1E1;
+        /* 000001E2 */ BYTE field_1E2;
+        /* 000001E3 */ BYTE field_1E3;
+        /* 000001E4 */ BYTE field_1E4;
+        /* 000001E5 */ BYTE field_1E5;
+        /* 000001E6 */ BYTE field_1E6;
+        /* 000001E7 */ BYTE field_1E7;
+        /* 000001E8 */ DWORD dword1E8;
+        /* 000001EC */ DWORD gap1EC;
+        /* 000001F0 */ BYTE field_1F0;
+        /* 000001F1 */ BYTE field_1F1;
+        /* 000001F2 */ BYTE field_1F2;
+        /* 000001F3 */ BYTE field_1F3;
+        /* 000001F4 */ BYTE field_1F4;
+        /* 000001F5 */ BYTE field_1F5;
+        /* 000001F6 */ BYTE field_1F6;
+        /* 000001F7 */ BYTE field_1F7;
+        /* 000001F8 */ BYTE field_1F8;
+        /* 000001F9 */ BYTE field_1F9;
+        /* 000001FA */ BYTE field_1FA;
+        /* 000001FB */ BYTE field_1FB;
+        /* 000001FC */ BYTE field_1FC;
+        /* 000001FD */ BYTE field_1FD;
+        /* 000001FE */ BYTE field_1FE;
+        /* 000001FF */ BYTE field_1FF;
+        /* 00000200 */ BYTE field_200;
+        /* 00000201 */ BYTE field_201;
+        /* 00000202 */ BYTE field_202;
+        /* 00000203 */ BYTE field_203;
+        /* 00000204 */ BYTE field_204;
+        /* 00000205 */ BYTE field_205;
+        /* 00000206 */ BYTE field_206;
+        /* 00000207 */ BYTE field_207;
+        /* 00000208 */ BYTE field_208;
+        /* 00000209 */ BYTE field_209;
+        /* 0000020A */ BYTE field_20A;
+        /* 0000020B */ BYTE field_20B;
+        /* 0000020C */ BYTE field_20C;
+        /* 0000020D */ BYTE field_20D;
+        /* 0000020E */ BYTE field_20E;
+        /* 0000020F */ BYTE field_20F;
+        /* 00000210 */ BYTE field_210;
+        /* 00000211 */ BYTE field_211;
+        /* 00000212 */ BYTE field_212;
+        /* 00000213 */ BYTE field_213;
+        /* 00000214 */ BYTE field_214;
+        /* 00000215 */ BYTE field_215;
+        /* 00000216 */ BYTE field_216;
+        /* 00000217 */ BYTE field_217;
+        /* 00000218 */ BYTE field_218;
+        /* 00000219 */ BYTE field_219;
+        /* 0000021A */ BYTE field_21A;
+        /* 0000021B */ BYTE field_21B;
+        /* 0000021C */ BYTE field_21C;
+        /* 0000021D */ BYTE field_21D;
+        /* 0000021E */ BYTE field_21E;
+        /* 0000021F */ BYTE field_21F;
+        /* 00000220 */ BYTE field_220;
+        /* 00000221 */ BYTE field_221;
+        /* 00000222 */ BYTE field_222;
+        /* 00000223 */ BYTE field_223;
+        /* 00000224 */ BYTE field_224;
+        /* 00000225 */ BYTE field_225;
+        /* 00000226 */ BYTE field_226;
+        /* 00000227 */ BYTE field_227;
+        /* 00000228 */ BYTE field_228;
+        /* 00000229 */ BYTE field_229;
+        /* 0000022A */ BYTE field_22A;
+        /* 0000022B */ BYTE field_22B;
+        /* 0000022C */ BYTE field_22C;
+        /* 0000022D */ BYTE field_22D;
+        /* 0000022E */ BYTE field_22E;
+        /* 0000022F */ BYTE field_22F;
+        /* 00000230 */ BYTE field_230;
+        /* 00000231 */ BYTE field_231;
+        /* 00000232 */ BYTE field_232;
+        /* 00000233 */ BYTE field_233;
+        /* 00000234 */ BYTE field_234;
+        /* 00000235 */ BYTE field_235;
+        /* 00000236 */ BYTE field_236;
+        /* 00000237 */ BYTE field_237;
+        /* 00000238 */ BYTE field_238;
+        /* 00000239 */ BYTE field_239;
+        /* 0000023A */ BYTE field_23A;
+        /* 0000023B */ BYTE field_23B;
+        /* 0000023C */ BYTE field_23C;
+        /* 0000023D */ BYTE field_23D;
+        /* 0000023E */ BYTE field_23E;
+        /* 0000023F */ BYTE field_23F;
+        /* 00000240 */ BYTE field_240;
+        /* 00000241 */ BYTE field_241;
+        /* 00000242 */ BYTE field_242;
+        /* 00000243 */ BYTE field_243;
+        /* 00000244 */ BYTE field_244;
+        /* 00000245 */ BYTE field_245;
+        /* 00000246 */ BYTE field_246;
+        /* 00000247 */ BYTE field_247;
+        /* 00000248 */ BYTE field_248;
+        /* 00000249 */ BYTE field_249;
+        /* 0000024A */ BYTE field_24A;
+        /* 0000024B */ BYTE field_24B;
+        /* 0000024C */ BYTE field_24C;
+        /* 0000024D */ BYTE field_24D;
+        /* 0000024E */ BYTE field_24E;
+        /* 0000024F */ BYTE field_24F;
+        /* 00000250 */ BYTE field_250;
+        /* 00000251 */ BYTE field_251;
+        /* 00000252 */ BYTE field_252;
+        /* 00000253 */ BYTE field_253;
+        /* 00000254 */ BYTE field_254;
+        /* 00000255 */ BYTE field_255;
+        /* 00000256 */ BYTE field_256;
+        /* 00000257 */ BYTE field_257;
+        /* 00000258 */ BYTE field_258;
+        /* 00000259 */ BYTE field_259;
+        /* 0000025A */ BYTE field_25A;
+        /* 0000025B */ BYTE field_25B;
+        /* 0000025C */ BYTE field_25C;
+        /* 0000025D */ BYTE field_25D;
+        /* 0000025E */ BYTE field_25E;
+        /* 0000025F */ BYTE field_25F;
+        /* 00000260 */ BYTE field_260;
+        /* 00000261 */ BYTE field_261;
+        /* 00000262 */ BYTE field_262;
+        /* 00000263 */ BYTE field_263;
+        /* 00000264 */ BYTE field_264;
+        /* 00000265 */ BYTE field_265;
+        /* 00000266 */ BYTE field_266;
+        /* 00000267 */ BYTE field_267;
+        /* 00000268 */ BYTE field_268;
+        /* 00000269 */ BYTE field_269;
+        /* 0000026A */ BYTE field_26A;
+        /* 0000026B */ BYTE field_26B;
+        /* 0000026C */ BYTE field_26C;
+        /* 0000026D */ BYTE field_26D;
+        /* 0000026E */ BYTE field_26E;
+        /* 0000026F */ BYTE field_26F;
+        /* 00000270 */ BYTE field_270;
+        /* 00000271 */ BYTE field_271;
+        /* 00000272 */ BYTE field_272;
+        /* 00000273 */ BYTE field_273;
+        /* 00000274 */ BYTE field_274;
+        /* 00000275 */ BYTE field_275;
+        /* 00000276 */ BYTE field_276;
+        /* 00000277 */ BYTE field_277;
+        /* 00000278 */ BYTE field_278;
+        /* 00000279 */ BYTE field_279;
+        /* 0000027A */ BYTE field_27A;
+        /* 0000027B */ BYTE field_27B;
+        /* 0000027C */ BYTE field_27C;
+        /* 0000027D */ BYTE field_27D;
+        /* 0000027E */ BYTE field_27E;
+        /* 0000027F */ BYTE field_27F;
+        /* 00000280 */ BYTE field_280;
+        /* 00000281 */ BYTE field_281;
+        /* 00000282 */ BYTE field_282;
+        /* 00000283 */ BYTE field_283;
+        /* 00000284 */ BYTE field_284;
+        /* 00000285 */ BYTE field_285;
+        /* 00000286 */ BYTE field_286;
+        /* 00000287 */ BYTE field_287;
+        /* 00000288 */ BYTE field_288;
+        /* 00000289 */ BYTE field_289;
+        /* 0000028A */ BYTE field_28A;
+        /* 0000028B */ BYTE field_28B;
+        /* 0000028C */ BYTE field_28C;
+        /* 0000028D */ BYTE field_28D;
+        /* 0000028E */ BYTE field_28E;
+        /* 0000028F */ BYTE field_28F;
+        /* 00000290 */ BYTE field_290;
+        /* 00000291 */ BYTE field_291;
+        /* 00000292 */ BYTE field_292;
+        /* 00000293 */ BYTE field_293;
+        /* 00000294 */ BYTE field_294;
+        /* 00000295 */ BYTE field_295;
+        /* 00000296 */ BYTE field_296;
+        /* 00000297 */ BYTE field_297;
+        /* 00000298 */ BYTE field_298;
+        /* 00000299 */ BYTE field_299;
+        /* 0000029A */ BYTE field_29A;
+        /* 0000029B */ BYTE field_29B;
+        /* 0000029C */ BYTE field_29C;
+        /* 0000029D */ BYTE field_29D;
+        /* 0000029E */ BYTE field_29E;
+        /* 0000029F */ BYTE field_29F;
+        /* 000002A0 */ BYTE field_2A0;
+        /* 000002A1 */ BYTE field_2A1;
+        /* 000002A2 */ BYTE field_2A2;
+        /* 000002A3 */ BYTE field_2A3;
+        /* 000002A4 */ BYTE field_2A4;
+        /* 000002A5 */ BYTE field_2A5;
+        /* 000002A6 */ BYTE field_2A6;
+        /* 000002A7 */ BYTE field_2A7;
+        /* 000002A8 */ BYTE field_2A8;
+        /* 000002A9 */ BYTE field_2A9;
+        /* 000002AA */ BYTE field_2AA;
+        /* 000002AB */ BYTE field_2AB;
+        /* 000002AC */ BYTE field_2AC;
+        /* 000002AD */ BYTE field_2AD;
+        /* 000002AE */ BYTE field_2AE;
+        /* 000002AF */ BYTE field_2AF;
+        /* 000002B0 */ BYTE field_2B0;
+        /* 000002B1 */ BYTE field_2B1;
+        /* 000002B2 */ BYTE field_2B2;
+        /* 000002B3 */ BYTE field_2B3;
+        /* 000002B4 */ BYTE field_2B4;
+        /* 000002B5 */ BYTE field_2B5;
+        /* 000002B6 */ BYTE field_2B6;
+        /* 000002B7 */ BYTE field_2B7;
+        /* 000002B8 */ BYTE field_2B8;
+        /* 000002B9 */ BYTE field_2B9;
+        /* 000002BA */ BYTE field_2BA;
+        /* 000002BB */ BYTE field_2BB;
+        /* 000002BC */ BYTE field_2BC;
+        /* 000002BD */ BYTE field_2BD;
+        /* 000002BE */ BYTE field_2BE;
+        /* 000002BF */ BYTE field_2BF;
+        /* 000002C0 */ BYTE field_2C0;
+        /* 000002C1 */ BYTE field_2C1;
+        /* 000002C2 */ BYTE field_2C2;
+        /* 000002C3 */ BYTE field_2C3;
+        /* 000002C4 */ BYTE field_2C4;
+        /* 000002C5 */ BYTE field_2C5;
+        /* 000002C6 */ BYTE field_2C6;
+        /* 000002C7 */ BYTE field_2C7;
+        /* 000002C8 */ BYTE field_2C8;
+        /* 000002C9 */ BYTE field_2C9;
+        /* 000002CA */ BYTE field_2CA;
+        /* 000002CB */ BYTE field_2CB;
+        /* 000002CC */ BYTE field_2CC;
+        /* 000002CD */ BYTE field_2CD;
+        /* 000002CE */ BYTE field_2CE;
+        /* 000002CF */ BYTE field_2CF;
+        /* 000002D0 */ BYTE field_2D0;
+        /* 000002D1 */ BYTE field_2D1;
+        /* 000002D2 */ BYTE field_2D2;
+        /* 000002D3 */ BYTE field_2D3;
+        /* 000002D4 */ BYTE field_2D4;
+        /* 000002D5 */ BYTE field_2D5;
+        /* 000002D6 */ BYTE field_2D6;
+        /* 000002D7 */ BYTE field_2D7;
+        /* 000002D8 */ BYTE field_2D8;
+        /* 000002D9 */ BYTE field_2D9;
+        /* 000002DA */ BYTE field_2DA;
+        /* 000002DB */ BYTE field_2DB;
+        /* 000002DC */ DWORD field_2DC;
+        /* 000002E0 */ DWORD field_2E0;
+        /* 000002E4 */ DWORD dword2E4;
+        /* 000002E8 */ DWORD dword2E8;
+        /* 000002EC */ DWORD dword2EC;
+        /* 000002F0 */ BYTE ActID;
+        /* 000002F2 */ BYTE field_2F2;
+        /* 000002F1 */ BYTE field_2F1;
+        /* 000002F3 */ BYTE field_2F3;
+        /* 000002F4 */ DWORD dword2F4;
+        /* 000002F8 */ DWORD dword2F8;
+        /* 000002FC */ DWORD dword2FC;
+        /* 00000300 */ DWORD dword300;
+        /* 00000304 */ EntityAnimationData DecorationData;
+        /* 0000031C */ EntityAnimationData NameLetterData;
+        /* 00000334 */ EntityAnimationData ZoneLetterData;
+        /* 0000034C */ EntityAnimationData ActNumbersData;
+    };
+    struct EntityLoveTester : Entity
+    {
+        /* 00000058 */ void* State;
+        /* 0000005C */ DWORD field_5C;
+        /* 00000060 */ BYTE field_60;
+        /* 00000061 */ BYTE field_61;
+        /* 00000062 */ BYTE field_62;
+        /* 00000063 */ BYTE field_63;
+        /* 00000064 */ Vector2 StoredPos;
+        /* 0000006C */ DWORD field_6C;
+        /* 00000070 */ DWORD field_70;
+        /* 00000074 */ DWORD field_74;
+        /* 00000078 */ SHORT field_78;
+        /* 0000007A */ BYTE field_7A;
+        /* 0000007B */ BYTE field_7B;
+        /* 0000007C */ DWORD field_7C;
+        /* 00000080 */ SHORT field_80;
+        /* 00000082 */ BYTE field_82;
+        /* 00000083 */ BYTE field_83;
+        /* 00000084 */ INT  Timer;
+        /* 00000088 */ DWORD field_88;
+        /* 0000008C */ EntityAnimationData AnimData2;
+        /* 000000A4 */ EntityAnimationData AnimData0;
+        /* 000000BC */ EntityAnimationData AnimData3;
+        /* 000000D4 */ EntityAnimationData AnimData11;
+        /* 000000EC*/ EntityAnimationData AnimData4;
+        /* 00000104 */ EntityAnimationData AnimData10;
+        /* 0000011C */ EntityAnimationData AnimData5;
+        /* 00000134 */ EntityAnimationData AnimData9;
+        /* 0000014C */ EntityAnimationData AnimData6;
+        /* 00000164 */ EntityAnimationData AnimData8;
+        /* 0000017C */ EntityAnimationData AnimData7;
 
-	};
-	struct EntityDebugMode
-	{
-		/* 0x00000000 */ int blank;
-		/* 0x00000004 */ short Sprites[0x100];
-		/* 0x00000204 */ DWORD draw[0x100];
-		/* 0x00000604 */ DWORD Spawn[0x100];
-		/* 0x00000A04 */ EntityAnimationData DebugData;
-		/* 0x00000A1C */ int ObjID;
-		/* 0x00000A20 */ int DebugItemCount;
-		/* 0x00000A24 */ DWORD PlayerActive;
-		/* 0x00000A28 */ BYTE DebugItemSubType;
-		/* 0x00000A29 */ BYTE SubTypeCount;
-		/* 0x00000A2A */ BYTE field_A2a;
-		/* 0x00000A2B */ BYTE field_A2B;
-		/* 0x00000A2C */ BYTE field_A2C;
-	};
+    };
+    struct EntityDebugMode
+    {
+        /* 0x00000000 */ int blank;
+        /* 0x00000004 */ short Sprites[0x100];
+        /* 0x00000204 */ DWORD draw[0x100];
+        /* 0x00000604 */ DWORD Spawn[0x100];
+        /* 0x00000A04 */ EntityAnimationData DebugData;
+        /* 0x00000A1C */ int ObjID;
+        /* 0x00000A20 */ int DebugItemCount;
+        /* 0x00000A24 */ DWORD PlayerActive;
+        /* 0x00000A28 */ BYTE DebugItemSubType;
+        /* 0x00000A29 */ BYTE SubTypeCount;
+        /* 0x00000A2A */ BYTE field_A2a;
+        /* 0x00000A2B */ BYTE field_A2B;
+        /* 0x00000A2C */ BYTE field_A2C;
+    };
 
-	struct EntitySpikes : Entity
-	{
-		/* 0x00000058 */ void* State;
-		/* 0x0000005C */ int Type;
-		/* 0x00000060 */ int Moving;
-		/* 0x00000064 */ BYTE Count;
-		/* 0x00000065 */ BYTE Stagger;
-		/* 0x00000066 */ short Timer;
-		/* 0x00000068 */ short PlaneFilter;
-		/* 0x0000006C */ DWORD dword6C;
-		/* 0x00000070 */ DWORD gap70;
-		/* 0x00000074 */ DWORD field_74;
-		/* 0x00000078 */ DWORD field_78;
-		/* 0x0000007C */ short field_7C;
-		/* 0x0000007E */ BYTE field_7E;
-		/* 0x0000007F */ BYTE field_7F;
-		/* 0x00000080 */ short word80;
-		/* 0x00000082 */ short word82;
-		/* 0x00000084 */ short word84;
-		/* 0x00000086 */ short word86;
-		/* 0x00000088 */ EntityAnimationData Animation;
+    struct EntitySpikes : Entity
+    {
+        /* 0x00000058 */ void* State;
+        /* 0x0000005C */ int Type;
+        /* 0x00000060 */ int Moving;
+        /* 0x00000064 */ BYTE Count;
+        /* 0x00000065 */ BYTE Stagger;
+        /* 0x00000066 */ short Timer;
+        /* 0x00000068 */ short PlaneFilter;
+        /* 0x0000006C */ DWORD dword6C;
+        /* 0x00000070 */ DWORD gap70;
+        /* 0x00000074 */ DWORD field_74;
+        /* 0x00000078 */ DWORD field_78;
+        /* 0x0000007C */ short field_7C;
+        /* 0x0000007E */ BYTE field_7E;
+        /* 0x0000007F */ BYTE field_7F;
+        /* 0x00000080 */ short word80;
+        /* 0x00000082 */ short word82;
+        /* 0x00000084 */ short word84;
+        /* 0x00000086 */ short word86;
+        /* 0x00000088 */ EntityAnimationData Animation;
 
-	};
+    };
 #pragma endregion
 
 #pragma region Object 
@@ -2384,23 +2385,23 @@ namespace SonicMania
         int XPos;
         int YPos;
     };
-	struct Obj_Hud : Object
-	{
-		int Base;
-		WORD HUDMappings;
-		WORD SuperButtonMappings;
-		WORD SFX_Click;
-		WORD SFX_Starpost;
-		DWORD dwordC;
-		DWORD gap10;
-		DWORD dword14; //Offset should be 14, but next jumps to 24!?
-		DWORD field_24;
-		DWORD field_28;
-		DWORD field_2C;
-		DWORD field_30;
-		DWORD field_34;
+    struct Obj_Hud : Object
+    {
+        int Base;
+        WORD HUDMappings;
+        WORD SuperButtonMappings;
+        WORD SFX_Click;
+        WORD SFX_Starpost;
+        DWORD dwordC;
+        DWORD gap10;
+        DWORD dword14; //Offset should be 14, but next jumps to 24!?
+        DWORD field_24;
+        DWORD field_28;
+        DWORD field_2C;
+        DWORD field_30;
+        DWORD field_34;
 
-	};
+    };
     struct Obj_Player : Object
     {
         int    SonicPhysicsTable[64];
@@ -2503,33 +2504,33 @@ namespace SonicMania
         void*  field_A6C;
         int    field_A70;
     };
-	struct Obj_UFO_Player : Object
-	{
-		int Base;
-		DWORD field_4;
-		BYTE field_8;
-		BYTE field_9;
-		BYTE field_A;
-		BYTE field_B;
-		WORD SFX_Jump;
-		WORD SFX_Charge;
-		WORD SFX_Release;
-		WORD SFX_LoseRings;
-		WORD SFX_Drop;
-		WORD SFX_Bumper;
-		WORD SFX_Spring;
-		WORD SFX_Skid;
-		WORD SFX_GrittyGround;
-		WORD JogModel;
-		WORD DashModel;
-		WORD JumpModel;
-		WORD BallMOdel;
-		WORD TumbleModel;
-		WORD ModelID;
-		BYTE field_2A;
-		BYTE field_2B;
+    struct Obj_UFO_Player : Object
+    {
+        int Base;
+        DWORD field_4;
+        BYTE field_8;
+        BYTE field_9;
+        BYTE field_A;
+        BYTE field_B;
+        WORD SFX_Jump;
+        WORD SFX_Charge;
+        WORD SFX_Release;
+        WORD SFX_LoseRings;
+        WORD SFX_Drop;
+        WORD SFX_Bumper;
+        WORD SFX_Spring;
+        WORD SFX_Skid;
+        WORD SFX_GrittyGround;
+        WORD JogModel;
+        WORD DashModel;
+        WORD JumpModel;
+        WORD BallMOdel;
+        WORD TumbleModel;
+        WORD ModelID;
+        BYTE field_2A;
+        BYTE field_2B;
 
-	};
+    };
     struct Obj_Platform : Object
     {
         short SpriteIndex;
@@ -2542,117 +2543,117 @@ namespace SonicMania
         int   dword30;
         int   dword34;
     };
-	struct Obj_Dust : Object
-	{
-	    WORD SpriteIndex;
-	};
-	struct Obj_Clapperboard : Object
-	{
-		WORD SpriteIndex;
-		WORD SFX_Whack;
-	};
-	struct Obj_DebugMode : Object
-	{
-		WORD Sprites[0x100];
-		int (*DrawPtrs[0x100])();
-		Entity* (*SpawnPtrs[0x100])();
-		EntityAnimationData DebugData;
-		DWORD ObjID;
-		DWORD DebugItemCount;
-		DWORD PlayerActive;
-		BYTE DebugItemSubType;
-		BYTE SubtypeCount;
-		BYTE field_A2A;
-		BYTE field_A2B;
-		BYTE field_A2C;
-	};
-	struct Obj_PauseMenu : Object
-	{
-		short SFX_Bleep;
-		short SFX_Accept;
-		DWORD dword8;
-		DWORD dwordC;
-		DWORD dword10;
-		DWORD dword14;
-		DWORD dword18;
-		BYTE field_1C;
-		BYTE field_1D;
-		BYTE field_1E;
-		BYTE field_1F;
-		BYTE field_20;
-		BYTE field_21;
-		BYTE field_22;
-		BYTE field_23;
-		BYTE field_24;
-		BYTE field_25;
-		BYTE field_26;
-		BYTE field_27;
-		BYTE field_28;
-		BYTE field_29;
-		BYTE field_2A;
-		BYTE field_2B;
-		BYTE field_2C;
-		BYTE field_30;
-		BYTE field_31;
-		BYTE field_32;
-		BYTE field_33;
-		BYTE field_34;
-		BYTE field_35;
-		BYTE field_36;
-		BYTE field_37;
-		BYTE field_38;
-		BYTE field_39;
-		BYTE field_3A;
-		BYTE field_3B;
-		BYTE field_3C;
-		BYTE field_40;
-		BYTE field_41;
-		BYTE field_42;
-		BYTE field_43;
-		BYTE field_44;
-		BYTE field_45;
-		BYTE field_46;
-		BYTE field_47;
-		BYTE field_48;
-		BYTE field_49;
-		BYTE field_4A;
-		BYTE field_4B;
-		BYTE field_4C;
-		BYTE field_50;
-		BYTE field_51;
-		BYTE field_52;
-		BYTE field_53;
-		BYTE field_54;
-		BYTE field_55;
-		BYTE field_56;
-		BYTE field_57;
-		BYTE field_58;
-		BYTE field_59;
-		BYTE field_5A;
-		BYTE field_5B;
-		DWORD InkValues[0xFFFF];
-	};
-	struct Obj_FXRuby : Object
-	{
-		DWORD UnknownArray[0x200];
-		short InkValues[0xFFFF];
-		DWORD FGLow;
-		DWORD FGHigh;
-	};
-	struct Obj_LoveTester : Object
-	{
-		Hitbox Hitbox1;
-		Hitbox Hitbox2;
-		Hitbox Hitbox3;
-		short SpriteIndex;
-		short SFXScore;
-		DWORD Field_20;
-		DWORD Field_24;
-		DWORD Field_28;
-		DWORD Field_2C;
-		Vector2 Positions;
+    struct Obj_Dust : Object
+    {
+        WORD SpriteIndex;
+    };
+    struct Obj_Clapperboard : Object
+    {
+        WORD SpriteIndex;
+        WORD SFX_Whack;
+    };
+    struct Obj_DebugMode : Object
+    {
+        WORD Sprites[0x100];
+        int (*DrawPtrs[0x100])();
+        Entity* (*SpawnPtrs[0x100])();
+        EntityAnimationData DebugData;
+        DWORD ObjID;
+        DWORD DebugItemCount;
+        DWORD PlayerActive;
+        BYTE DebugItemSubType;
+        BYTE SubtypeCount;
+        BYTE field_A2A;
+        BYTE field_A2B;
+        BYTE field_A2C;
+    };
+    struct Obj_PauseMenu : Object
+    {
+        short SFX_Bleep;
+        short SFX_Accept;
+        DWORD dword8;
+        DWORD dwordC;
+        DWORD dword10;
+        DWORD dword14;
+        DWORD dword18;
+        BYTE field_1C;
+        BYTE field_1D;
+        BYTE field_1E;
+        BYTE field_1F;
+        BYTE field_20;
+        BYTE field_21;
+        BYTE field_22;
+        BYTE field_23;
+        BYTE field_24;
+        BYTE field_25;
+        BYTE field_26;
+        BYTE field_27;
+        BYTE field_28;
+        BYTE field_29;
+        BYTE field_2A;
+        BYTE field_2B;
+        BYTE field_2C;
+        BYTE field_30;
+        BYTE field_31;
+        BYTE field_32;
+        BYTE field_33;
+        BYTE field_34;
+        BYTE field_35;
+        BYTE field_36;
+        BYTE field_37;
+        BYTE field_38;
+        BYTE field_39;
+        BYTE field_3A;
+        BYTE field_3B;
+        BYTE field_3C;
+        BYTE field_40;
+        BYTE field_41;
+        BYTE field_42;
+        BYTE field_43;
+        BYTE field_44;
+        BYTE field_45;
+        BYTE field_46;
+        BYTE field_47;
+        BYTE field_48;
+        BYTE field_49;
+        BYTE field_4A;
+        BYTE field_4B;
+        BYTE field_4C;
+        BYTE field_50;
+        BYTE field_51;
+        BYTE field_52;
+        BYTE field_53;
+        BYTE field_54;
+        BYTE field_55;
+        BYTE field_56;
+        BYTE field_57;
+        BYTE field_58;
+        BYTE field_59;
+        BYTE field_5A;
+        BYTE field_5B;
+        DWORD InkValues[0xFFFF];
+    };
+    struct Obj_FXRuby : Object
+    {
+        DWORD UnknownArray[0x200];
+        short InkValues[0xFFFF];
+        DWORD FGLow;
+        DWORD FGHigh;
+    };
+    struct Obj_LoveTester : Object
+    {
+        Hitbox Hitbox1;
+        Hitbox Hitbox2;
+        Hitbox Hitbox3;
+        short SpriteIndex;
+        short SFXScore;
+        DWORD Field_20;
+        DWORD Field_24;
+        DWORD Field_28;
+        DWORD Field_2C;
+        Vector2 Positions;
 
-	};
+    };
     struct Obj_ForceSpin : Object
     {
         //TODO: fill out later
@@ -2751,74 +2752,74 @@ namespace SonicMania
     {
         //TO-DO: fill out later
     };
-	struct GameOptions {
-		int GameMode;
-		int PlayerID;
-		int SpecialCleared;
-		int SpecialRingID;
-		int BlueSpheresID;
-		int BlueSpheresInit;
-		int  AtlEnabled; // Act Transition Load
-		int  AtlEntityCount; // An Entity Bank Basically
-		int  AtlEntitySlot[0x20];// Entity SlotIDs
-		int AtlEntityData[0x4000];// Entities
-		int  SaveLoaded;
-		int  SaveRAM[0x4000];
-		int  SaveSlotID;
-		int  NoSaveSlot[0x400];
-		int  MenuParam[0x4000];
-		int  ItemMode;
-		int SuppressTitlecard;
-		int SuppressAutoMusic;
-		int  CompetitionSession[0x4000];
-		int  MedalMods; // Stuff Like Instashield and etc (Bonus Stuff that medals unlock)
-		int  ParallaxOffset[256];
-		int  EnableIntro;
-		int  OptionsLoaded;
-		int  OptionsRAM[0x80];
-		int  PresenceID;
-		int  MedallionDebug;
-		int  NoSave;
-		int  NotifiedAutosave;
-		int RecallEntities;
-		int  RestartRings;
-		int  Restart1UP;
-		int  RestartShield;
-		int  RestartPos[4];
-		int  RestartSlot[4];
-		int  RestartDir[4];
-		int  RestartMinutes;
-		int  RestartSeconds;
-		int  RestartMilliseconds;
-		int  TempMinutes;
-		int  TempSeconds;
-		int  TempMilliseconds;
-		int  RestartScore;
-		int  RestartScore1UP;
-		int  RestartLives[4];
-		int  RestartMusicID;
-		int RestartFlags;
-		int  TempFlags;
-		int  Continues;
-		int  InitCoolBonus;
-		int  CoolBonus[4];
-		int  ReplayWriteBuffer[0x40000];
-		int  ReplayReadBuffer[0x40000];
-		int  ReplayTempWBuffer[0x40000];
-		int  ReplayTempRBuffer[0x40000];
-		int  ReplayTableID;
-		int  ReplayTableLoaded;
-		int  TATableID;
-		int  TATableLoaded;
-		int  Stock; // Encore Lives
-		int  CharacterFlags;
-		int  VapeMode; // Vape Mode
-		int  Secrets;
-		int  SuperSecret;
-		int  SuperMusicEnabled; // Play Super Music when going super?
-		int  LastHasPlus;
-		int  HasPlusInitial;
-	};
+    struct GameOptions {
+        int GameMode;
+        int PlayerID;
+        int SpecialCleared;
+        int SpecialRingID;
+        int BlueSpheresID;
+        int BlueSpheresInit;
+        int  AtlEnabled; // Act Transition Load
+        int  AtlEntityCount; // An Entity Bank Basically
+        int  AtlEntitySlot[0x20];// Entity SlotIDs
+        int AtlEntityData[0x4000];// Entities
+        int  SaveLoaded;
+        int  SaveRAM[0x4000];
+        int  SaveSlotID;
+        int  NoSaveSlot[0x400];
+        int  MenuParam[0x4000];
+        int  ItemMode;
+        int SuppressTitlecard;
+        int SuppressAutoMusic;
+        int  CompetitionSession[0x4000];
+        int  MedalMods; // Stuff Like Instashield and etc (Bonus Stuff that medals unlock)
+        int  ParallaxOffset[256];
+        int  EnableIntro;
+        int  OptionsLoaded;
+        int  OptionsRAM[0x80];
+        int  PresenceID;
+        int  MedallionDebug;
+        int  NoSave;
+        int  NotifiedAutosave;
+        int RecallEntities;
+        int  RestartRings;
+        int  Restart1UP;
+        int  RestartShield;
+        int  RestartPos[4];
+        int  RestartSlot[4];
+        int  RestartDir[4];
+        int  RestartMinutes;
+        int  RestartSeconds;
+        int  RestartMilliseconds;
+        int  TempMinutes;
+        int  TempSeconds;
+        int  TempMilliseconds;
+        int  RestartScore;
+        int  RestartScore1UP;
+        int  RestartLives[4];
+        int  RestartMusicID;
+        int RestartFlags;
+        int  TempFlags;
+        int  Continues;
+        int  InitCoolBonus;
+        int  CoolBonus[4];
+        int  ReplayWriteBuffer[0x40000];
+        int  ReplayReadBuffer[0x40000];
+        int  ReplayTempWBuffer[0x40000];
+        int  ReplayTempRBuffer[0x40000];
+        int  ReplayTableID;
+        int  ReplayTableLoaded;
+        int  TATableID;
+        int  TATableLoaded;
+        int  Stock; // Encore Lives
+        int  CharacterFlags;
+        int  VapeMode; // Vape Mode
+        int  Secrets;
+        int  SuperSecret;
+        int  SuperMusicEnabled; // Play Super Music when going super?
+        int  LastHasPlus;
+        int  HasPlusInitial;
+    };
 
 #pragma endregion
 
@@ -2858,7 +2859,7 @@ namespace SonicMania
         return (B >> 3) | ((G >> 2) << 5) | ((R >> 3) << 11);
     }
 
-    SHORT ManiaRGB565(byte R, byte G, byte B)
+    inline SHORT ManiaRGB565(byte R, byte G, byte B)
     {
         int v9 = 0;
         SHORT result;
@@ -2945,16 +2946,16 @@ namespace SonicMania
             return 0;
         return *pointer;
     }
-	static INT GetPointer(int SpritePointer, int offset) //CnG Uses this everywhere, tired of copying it into every header. 
-	{
-		int* pointer = (int*)(baseAddress + SpritePointer);
-		if (!*pointer)
-			return 0;
-		pointer = (int*)(*pointer + offset);
-		if (!*pointer)
-			return 0;
-		return *pointer;
-	}
+    static INT GetPointer(int SpritePointer, int offset) //CnG Uses this everywhere, tired of copying it into every header. 
+    {
+        int* pointer = (int*)(baseAddress + SpritePointer);
+        if (!*pointer)
+            return 0;
+        pointer = (int*)(*pointer + offset);
+        if (!*pointer)
+            return 0;
+        return *pointer;
+    }
 #pragma endregion
 
 #pragma region ManiaHelperFunctions
@@ -3176,7 +3177,7 @@ namespace SonicMania
     FunctionPointer(char, Devmenu_Options, ()    , 0x001C3090);
 
 
-    int DrawDevText(int x, int y, DevMenu_Alignment CenterText, int color, const char* format, ...)
+    inline int DrawDevText(int x, int y, DevMenu_Alignment CenterText, int color, const char* format, ...)
     {
         return DevMenu_DrawText(x, format, y, CenterText, color);
     }
