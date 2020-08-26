@@ -440,12 +440,12 @@ namespace SonicMania
         ObjectType_NewTron          = 0x00AC6F84,
         ObjectType_BatBrain         = 0x00AC6F90,
         ObjectType_Splats           = 0x00AC6900,
-        ObjectType_DDWrecker        = 0x00AC67F0,
-        ObjectType_DERobot          = 0x00AC6D70,
+        ObjectType_DDWrecker        = 0x00AC67F0, //Boss Act 1
+        ObjectType_DERobot          = 0x00AC6D70, //Boss Act 2
         // Chemical Plant Zone
         ObjectType_Grabber          = 0x00AC6648,
         ObjectType_Spiny            = 0x00AC6704,
-        ObjectType_AmoebaDroid      = 0x00AC6880,
+        ObjectType_AmoebaDroid      = 0x00AC6880, //Boss Act 1
         ObjectType_Sweep            = 0x00AC6870,
         ObjectType_CatakillerJR     = 0x00AC6798,
         // Studiopolis Zone
@@ -453,8 +453,9 @@ namespace SonicMania
         ObjectType_ShutterBug       = 0x00AC6E58,
         ObjectType_Tubinaut         = 0x00AC6AD0,
         ObjectType_WallCrawl        = 0x00AC6B14,
-        ObjectType_HeavyGunner      = 0x00AC6C2C,
-        ObjectType_WeatherMobile    = 0x00AC6A80,
+        ObjectType_HeavyGunner      = 0x00AC6C2C, //Boss Act 1
+        ObjectType_WeatherMobile    = 0x00AC6A80, //Boss Act 2
+        ObjectType_CircleBumper     = 0x00AC6904,
         // Flying Battery
         ObjectType_TechnoSqueek     = 0x00AC69FC,
         ObjectType_Blaster          = 0x00AC6A6C,
@@ -472,6 +473,7 @@ namespace SonicMania
         ObjectType_Kanabun          = 0x00AC67FC,
         ObjectType_Kabasira         = 0x004ACF50,
         ObjectType_SilverSonic      = 0x00AC679C,
+        ObjectType_MetalSonic       = 0x00AC6B34, //Boss Act2 M
         // HydroCity Zone
         ObjectType_Jellygnite       = 0x00AC6B9C,
         ObjectType_Pointdexter      = 0x00AC6A2C,
