@@ -466,7 +466,7 @@ namespace SonicMania
         ObjectType_SplatsJar        = 0x004ACF50,
         ObjectType_Woodrow          = 0x00AC6674,
         ObjectType_IceBomba         = 0x00AC6E5C,
-        ObjectType_HeavyShinobi     = 0x00AC6E18,
+        ObjectType_HeavyShinobi     = 0x00AC6B08,
         // StarDust Speed Way
         ObjectType_Hotaru           = 0x00AC6808,
         ObjectType_Dango            = 0x00AC6F34,
