@@ -906,7 +906,7 @@ namespace SonicMania
     {
         /* 0x00000000 */ BOOL Down;
         /* 0x00000004 */ BOOL Press;
-        /* 0x00000008 */ BOOL Release;
+        /* 0x00000008 */ DWORD Key;
     };
     struct Controller
     {
@@ -2754,6 +2754,69 @@ namespace SonicMania
     {
         //TO-DO: fill out later
     };
+
+    struct CompetitionSession
+    {
+        int Unknown_Gap_0[22];
+        int inMatch;
+        int NumberOfPlayers;
+        int Unknown_60;
+        int Unknown_64;
+        int Unknown_68;
+        int CurrentRound;
+        int TotalRounds;
+        int MonitorMode;
+        int Unknown_78;
+        int Unknown_Gap_7C[12];
+        int CharacterFlags;
+        int WinnerFlag;
+        int Unknown_B4;
+        int Unknown_B8;
+        int Rings_P1;
+        int Rings_P2;
+        int Rings_P3;
+        int Rings_P4;
+        int Score_P1;
+        int Score_P2;
+        int Score_P3;
+        int Score_P4;
+        int Items_P1;
+        int Items_P2;
+        int Items_P3;
+        int Items_P4;
+        int TimeMinutes_P1;
+        int TimeSeconds_P1;
+        int TimeCentiseconds_P1;
+        int TimeMinutes_P2;
+        int TimeSeconds_P2;
+        int TimeCentiseconds_P2;
+        int TimeMinutes_P3;
+        int TimeSeconds_P3;
+        int TimeCentiseconds_P3;
+        int TimeMinutes_P4;
+        int TimeSeconds_P4;
+        int TimeCentiseconds_P4;
+        int FinishFlags;
+        int TotalRings_P1;
+        int TotalRings_P2;
+        int TotalRings_P3;
+        int TotalRings_P4;
+        int Wins_P1;
+        int Wins_P2;
+        int Wins_P3;
+        int Wins_P4;
+        int InitalLives_P1;
+        int InitalLives_P2;
+        int InitalLives_P3;
+        int InitalLives_P4;
+        int Unknown_150;
+        int Unknown_154;
+        int Unknown_156;
+        int Unknown_15C;
+        int ReadOnlyDisplayMode;
+        int Unknown_Gap_164[4007];
+    };
+
     struct GameOptions {
         int GameMode;
         int PlayerID;
@@ -2773,7 +2836,7 @@ namespace SonicMania
         int  ItemMode;
         int SuppressTitlecard;
         int SuppressAutoMusic;
-        int  CompetitionSession[0x4000];
+        CompetitionSession  CompetitionSession;
         int  MedalMods; // Stuff Like Instashield and etc (Bonus Stuff that medals unlock)
         int  ParallaxOffset[256];
         int  EnableIntro;
