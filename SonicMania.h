@@ -1295,8 +1295,8 @@ namespace SonicMania
         /* 0x000000E0 */ DWORD Timer;
         /* 0x000000E4 */ DWORD OuttaHereTimer;
         /* 0x000000E8 */ DWORD AbilityTimer;
-        /* 0x000000EC */ DWORD field_EC;
-        /* 0x000000F0 */ DWORD field_F0;
+        /* 0x000000EC */ DWORD SpindashRevCharge;
+        /* 0x000000F0 */ DWORD GlideTurnCos;
         /* 0x000000F4 */ DWORD AirLeft;
         /* 0x000000F8 */ DWORD Invincibility;
         /* 0x000000FC */ DWORD SpeedShoesTTL;
