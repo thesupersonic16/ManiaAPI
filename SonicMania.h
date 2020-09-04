@@ -56,6 +56,9 @@ namespace SonicMania
     struct Obj_CollapsingPlatform;
     struct Obj_ForceSpin;
     struct Obj_PlaneSwitch;
+    struct Obj_GHZSetup;
+    struct Obj_LRZ1Setup;
+    struct Obj_ZONE;
     struct Obj_Clapperboard;
     struct Obj_Lovetester;
     struct Obj_PauseMenu;
@@ -577,39 +580,39 @@ namespace SonicMania
     #define PLAYERSTATE_LOOKUP            (SonicMania::PlayerStatus)(baseAddress + 0x000CBAA0)
     #define PLAYERSTATE_SPINDASH          (SonicMania::PlayerStatus)(baseAddress + 0x000CBD80)
     #define PLAYERSTATE_Roll              (SonicMania::PlayerStatus)(baseAddress + 0x000CB850)
-    #define PLAYERSTATE_HURT              (SonicMania::PlayerStatus)(baseAddress + 0x004CCA00)
+    #define PLAYERSTATE_HURT              (SonicMania::PlayerStatus)(baseAddress + 0x000CCA00)
     #define PLAYERSTATE_DIE               (SonicMania::PlayerStatus)(baseAddress + 0x000CCAC0)
     #define PLAYERSTATE_OUTTAHERE         (SonicMania::PlayerStatus)(baseAddress + 0x000CCE90)
     #define PLAYERSTATE_Gimmick           (SonicMania::PlayerStatus)(baseAddress + 0x000CAD70)
-    #define PLAYERSTATE_Gimmick2          (SonicMania::PlayerStatus)(baseAddress + 0x004CBA90) // TODO: needs updating
-    #define PLAYERSTATE_Hanging           (SonicMania::PlayerStatus)(baseAddress + 0x004CAD70) // TODO: needs updating
-    #define PLAYERSTATE_SpiningTube_PGZ   (SonicMania::PlayerStatus)(baseAddress + 0x0041F7F0) // TODO: needs updating
-    #define PLAYERSTATE_Frozen_PGZ        (SonicMania::PlayerStatus)(baseAddress + 0x004A3410) // TODO: needs updating
-    #define PLAYERSTATE_Sliding_OOZ       (SonicMania::PlayerStatus)(baseAddress + 0x0042EB10) // TODO: needs updating
-    #define PLAYERSTATE_SwitchingToBG_MMZ (SonicMania::PlayerStatus)(baseAddress + 0x004304A0) // TODO: needs updating
-    #define PLAYERSTATE_SwitchingToFG_MMZ (SonicMania::PlayerStatus)(baseAddress + 0x004305B0) // TODO: needs updating
-    #define PLAYERSTATE_TurningSmall_MMZ  (SonicMania::PlayerStatus)(baseAddress + 0x00431560) // TODO: needs updating
-    #define PLAYERSTATE_TurningBig_MMZ    (SonicMania::PlayerStatus)(baseAddress + 0x00431690) // TODO: needs updating
-    #define PLAYERSTATE_P2FLYIN           (SonicMania::PlayerStatus)(baseAddress + 0x004CD150)
-    #define PLAYERSTATE_P2JUMPIN          (SonicMania::PlayerStatus)(baseAddress + 0x004CD560) 
+    #define PLAYERSTATE_Gimmick2          (SonicMania::PlayerStatus)(baseAddress + 0x000CBA90) // TODO: needs updating
+    #define PLAYERSTATE_Hanging           (SonicMania::PlayerStatus)(baseAddress + 0x000CAD70) // TODO: needs updating
+    #define PLAYERSTATE_SpiningTube_PGZ   (SonicMania::PlayerStatus)(baseAddress + 0x0001F7F0) // TODO: needs updating
+    #define PLAYERSTATE_Frozen_PGZ        (SonicMania::PlayerStatus)(baseAddress + 0x000A3410) // TODO: needs updating
+    #define PLAYERSTATE_Sliding_OOZ       (SonicMania::PlayerStatus)(baseAddress + 0x0002EB10) // TODO: needs updating
+    #define PLAYERSTATE_SwitchingToBG_MMZ (SonicMania::PlayerStatus)(baseAddress + 0x000304A0) // TODO: needs updating
+    #define PLAYERSTATE_SwitchingToFG_MMZ (SonicMania::PlayerStatus)(baseAddress + 0x000305B0) // TODO: needs updating
+    #define PLAYERSTATE_TurningSmall_MMZ  (SonicMania::PlayerStatus)(baseAddress + 0x00031560) // TODO: needs updating
+    #define PLAYERSTATE_TurningBig_MMZ    (SonicMania::PlayerStatus)(baseAddress + 0x00031690) // TODO: needs updating
+    #define PLAYERSTATE_P2FLYIN           (SonicMania::PlayerStatus)(baseAddress + 0x000CD150)
+    #define PLAYERSTATE_P2JUMPIN          (SonicMania::PlayerStatus)(baseAddress + 0x000CD560) 
     #define PLAYERSTATE_SpringBasic       (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
     #define PLAYERSTATE_ScoreCard         (SonicMania::PlayerStatus)(baseAddress + 0x000CCD30)
     #define PLAYERSTATE_TransportTube_CPZ (SonicMania::PlayerStatus)(baseAddress + 0x000CBA90)
 
     // Sonic
-    #define PLAYERSTATE_DROPDASH          (SonicMania::PlayerStatus)(baseAddress + 0x004CC1F0)
-    #define PLAYERSTATE_PEELOUT           (SonicMania::PlayerStatus)(baseAddress + 0x004CBF70)
+    #define PLAYERSTATE_DROPDASH          (SonicMania::PlayerStatus)(baseAddress + 0x000CC1F0)
+    #define PLAYERSTATE_PEELOUT           (SonicMania::PlayerStatus)(baseAddress + 0x000CBF70)
 
     // Tails
     #define PLAYERSTATE_FLYING            (SonicMania::PlayerStatus)(baseAddress + 0x000CCF30)
-    #define PLAYERSTATE_FLYCARRIED        (SonicMania::PlayerStatus)(baseAddress + 0x004CDA60)
+    #define PLAYERSTATE_FLYCARRIED        (SonicMania::PlayerStatus)(baseAddress + 0x000CDA60)
 
     // Knuckles
     #define PLAYERSTATE_GLIDELEFT         (SonicMania::PlayerStatus)(baseAddress + 0x000CDB10)
     #define PLAYERSTATE_GLIDERIGHT        (SonicMania::PlayerStatus)(baseAddress + 0x000CDE10)
-    #define PLAYERSTATE_GLIDESLIDE        (SonicMania::PlayerStatus)(baseAddress + 0x004CE230)
+    #define PLAYERSTATE_GLIDESLIDE        (SonicMania::PlayerStatus)(baseAddress + 0x000CE230)
     #define PLAYERSTATE_CLIMB             (SonicMania::PlayerStatus)(baseAddress + 0x000CE380)
-    #define PLAYERSTATE_LEDGEPULLUP       (SonicMania::PlayerStatus)(baseAddress + 0x004CE6F0)
+    #define PLAYERSTATE_LEDGEPULLUP       (SonicMania::PlayerStatus)(baseAddress + 0x000CE6F0)
     #define PLAYERSTATE_GLIDEDROP         (SonicMania::PlayerStatus)(baseAddress + 0x000CE110)
 
     // Mighty
@@ -634,6 +637,9 @@ namespace SonicMania
     #define PLAYERID2 1
     #define PLAYERID3 2
     #define PLAYERID4 3
+
+    //not a state but calling this will hit a player, it has no checks, not even for invincible frames
+    ThiscallFunctionPointer(int, Player_Hit, (EntityPlayer* Player), 0x000C5970);
 
 #pragma endregion
 
@@ -1095,6 +1101,9 @@ namespace SonicMania
     FunctionPointer(int, LoadGameScene, (char* CategoryName, char* SceneName), 0x001F23C0);
     FunctionPointer(char, LoadTileconfig, (), 0x001BE440);
     FunctionPointer(void, LoadGameconfig, (int ths), 0x001C6510);
+    FunctionPointer(int, GetSceneLayerID, (const char* name), 0x001E1600);
+    FunctionPointer(void*, GetSceneLayerInfo, (unsigned __int16 LayerID), 0x001E16B0); //Actually returns SceneLayer* but thats not added yet
+    FunctionPointer(__int16, GetLayerSize, (unsigned __int16 LayerID, Vector2* Size, DWORD PixelSize), 0x001E16E0);
 
     // MATRICIES - Untested
     FunctionPointer(void*, MatrixTranslateXYZ, (Matrix* Matrix, int X, int Y, int Z), 0x001DD3F0);
@@ -1118,6 +1127,9 @@ namespace SonicMania
     DataPointer(EntityPlayer, Player2, 0x00469E68);
     DataPointer(EntityPlayer, Player3, 0x0046A2C0);
     DataPointer(EntityPlayer, Player4, 0x0046A718);
+
+    //Probably is just 0,0,0,0 (used as default for player if OuterBox/InnerBox isn't found)
+    DataPointer(Hitbox, DefaultHitbox, 0x0026B804);
 
     //Currently Running Entity
     DataPointer(ActiveEntityInfo*, EntityInfo, 0x00AA7634);
@@ -1168,6 +1180,9 @@ namespace SonicMania
     DataPointer(Obj_ItemBox*            , OBJ_ItemBox,            0x00AC6F00);
     DataPointer(Obj_SpecialRing*        , OBJ_SpecialRing,        0x00AC686C);
     DataPointer(Obj_PlaneSwitch*        , OBJ_PlaneSwitch,        0x00AC6C0C);
+    DataPointer(Obj_GHZSetup*           , OBJ_GHZSetup,           0x00AC6C0C);
+    DataPointer(Obj_LRZ1Setup*          , OBJ_LRZ1Setup,          0x00AC6DF4);
+    DataPointer(Obj_ZONE*               , OBJ_ZONE,               0x00AC690C);
     DataPointer(Obj_FXRuby*				, OBJ_FXRuby,			  0x00AC6EF0);
     DataPointer(Obj_PauseMenu*			, OBJ_PauseMenu,		  0x00AC6E90);
     DataPointer(Obj_DebugMode*			, OBJ_DebugMode,		  0x00AC6930);
@@ -2377,7 +2392,7 @@ namespace SonicMania
     struct Obj_Ring : Object
     {
         Hitbox Hitbox;
-        WORD Pan;
+        DWORD Pan;
         WORD SpriteIndex;
         WORD SFX_Ring;
     };
@@ -2753,6 +2768,149 @@ namespace SonicMania
     struct Obj_PlaneSwitch : Object
     {
         //TO-DO: fill out later
+    };
+    struct Obj_GHZSetup : Object
+    {
+        int WaterFadeAmount;
+        int DelayA;
+        int FrameA;
+        int DelayListA[0x08];
+        int DelayB;
+        int FrameB;
+        int DelayListB[16];
+        ushort AniTiles;
+    };
+    struct Obj_LRZ1Setup : Object
+    {
+        int PalTimer;
+        int FadeTimer;
+        DWORD* BG1;
+        DWORD* BG2;
+        DWORD* FGLow;
+        DWORD* FGHigh;
+        int FGArray[0x20];
+        int BGArray[0x20];
+    };
+    struct Obj_ZONE : Object
+    {
+        DWORD Act2;
+        void* PostStageFinishEvent;
+        DWORD field_C;
+        DWORD field_10;
+        DWORD field_14;
+        DWORD field_18;
+        DWORD field_1C;
+        DWORD field_20;
+        DWORD field_24;
+        DWORD field_28;
+        DWORD field_2C;
+        DWORD field_30;
+        DWORD field_34;
+        DWORD field_38;
+        DWORD field_3C;
+        DWORD field_40;
+        DWORD field_44;
+        DWORD field_48;
+        DWORD field_4C;
+        DWORD field_50;
+        DWORD field_54;
+        DWORD field_58;
+        DWORD field_5C;
+        DWORD field_60;
+        DWORD field_64;
+        DWORD field_68;
+        DWORD field_6C;
+        DWORD field_70;
+        DWORD field_74;
+        DWORD RingFrame;
+        DWORD Timer;
+        DWORD Timer2;
+        DWORD field_84[4];
+        DWORD field_94[4];
+        DWORD field_A4[4];
+        DWORD field_B4[4];
+        DWORD field_C4[4];
+        DWORD field_D4[4];
+        DWORD field_E4[4];
+        DWORD field_F4[4];
+        DWORD field_104[4];
+        DWORD field_114;
+        BYTE field_118;
+        BYTE field_119;
+        BYTE field_11A;
+        BYTE field_11B;
+        BYTE field_11C;
+        BYTE field_11D;
+        BYTE field_11E;
+        BYTE field_11F;
+        BYTE field_120;
+        BYTE field_121;
+        BYTE field_122;
+        BYTE field_123;
+        DWORD field_124;
+        DWORD field_128;
+        BYTE field_12C;
+        BYTE field_12D;
+        BYTE field_12E;
+        BYTE field_12F;
+        BYTE field_130;
+        BYTE field_131;
+        BYTE field_132;
+        BYTE field_133;
+        BYTE field_134;
+        BYTE field_135;
+        BYTE field_136;
+        BYTE field_137;
+        BYTE field_138;
+        BYTE field_139;
+        BYTE field_13A;
+        BYTE field_13B;
+        BYTE field_13C;
+        BYTE field_13D;
+        BYTE field_13E;
+        BYTE field_13F;
+        BYTE field_140;
+        BYTE field_141;
+        BYTE field_142;
+        BYTE field_143;
+        DWORD field_144;
+        BYTE field_148;
+        BYTE field_149;
+        BYTE field_14A;
+        BYTE field_14B;
+        BYTE field_14C;
+        BYTE field_14D;
+        BYTE field_14E;
+        BYTE field_14F;
+        BYTE field_150;
+        BYTE field_151;
+        BYTE field_152;
+        BYTE field_153;
+        DWORD field_154;
+        DWORD field_158;
+        DWORD field_15C;
+        DWORD field_160;
+        WORD FGLayers;
+        WORD FGLow;
+        WORD FGHigh;
+        WORD MoveLayer;
+        WORD ScratchLayer;
+        WORD FGLow_ID;
+        WORD FGHigh_ID;
+        WORD Move_ID;
+        BYTE field_174;
+        BYTE field_175;
+        BYTE DrawOrderLow;
+        BYTE DrawOrderHigh;
+        BYTE PlayerHighLayer;
+        BYTE PlayerLowLayer;
+        BYTE field_17A;
+        BYTE field_17B;
+        WORD SFX_Fail;
+        BYTE data[17826];
+        DWORD field_4720;
+        DWORD field_4724;
+        DWORD TimeStart;
     };
 
     struct CompetitionSession
