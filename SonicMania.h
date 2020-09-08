@@ -1209,7 +1209,7 @@ namespace SonicMania
         int anonymous_6;
         int hasLoop;
         __int16 anonymous_8;
-        _BYTE gap22[1];
+        BYTE gap22[1];
         char playStatus;
     };
     DataArray(struct_0, stru_26B818, 0x0026B818, 16);
@@ -3312,16 +3312,16 @@ namespace SonicMania
         WriteData((BYTE*)baseAddress + 0xA530FC, (BYTE)count);
     }
 
+    inline BYTE* GetUIBGPointer()
+    {
+        return *(BYTE**)(baseAddress + 0xAC68E4);
+    }
+
     inline void WriteUIBG_Color(int offset, int r, int g, int b)
     {
         unsigned int color = r << 16
             | g << 8 | b; // idk if this is reversed
         WriteData((unsigned int*)(GetUIBGPointer() + offset), color);
-    }
-
-    inline BYTE* GetUIBGPointer()
-    {
-        return *(BYTE**)(baseAddress + 0xAC68E4);
     }
 
     inline void SetUIBG_BGColor(int r, int g, int b)
