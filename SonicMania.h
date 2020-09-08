@@ -216,12 +216,12 @@ namespace SonicMania
 
     enum Character : int
     {
-        Character_None   = 0b00000,
-        Character_Sonic  = 0b00001, // 1 << 0 ( 1)
-        Character_Tails  = 0b00010, // 1 << 1 ( 2)
-        Character_Knux   = 0b00100, // 1 << 2 ( 4)
+        Character_None = 0b00000,
+        Character_Sonic = 0b00001, // 1 << 0 ( 1)
+        Character_Tails = 0b00010, // 1 << 1 ( 2)
+        Character_Knux = 0b00100, // 1 << 2 ( 4)
         Character_Mighty = 0b01000, // 1 << 3 ( 8)
-        Character_Ray    = 0b10000  // 1 << 4 (16)
+        Character_Ray = 0b10000  // 1 << 4 (16)
     };
 
     enum GameMode : int
@@ -234,24 +234,24 @@ namespace SonicMania
 
     enum Filter : byte
     {
-        Filter_None       = 0b0000, // 0
-        Filter_ManiaMode  = 0b0001, // 1
-        Filter_Unknown    = 0b0010, // 2
+        Filter_None = 0b0000, // 0
+        Filter_ManiaMode = 0b0001, // 1
+        Filter_Unknown = 0b0010, // 2
         Filter_EncoreMode = 0b0100  // 4
     };
     BitFlag(Filter, byte)
 
-    enum GameStates : byte
+        enum GameStates : byte
     {
         GameState_NotRunning = 0b0000, // 0
-        GameState_Running    = 0b0001, // 1
-        GameState_SoftPause  = 0b0010, // 2
-        GameState_HardPause  = 0b0100, // 4
-        GameState_DevMenu    = 0b1000  // 8
+        GameState_Running = 0b0001, // 1
+        GameState_SoftPause = 0b0010, // 2
+        GameState_HardPause = 0b0100, // 4
+        GameState_DevMenu = 0b1000  // 8
     };
     BitFlag(GameStates, byte)
 
-    enum DrawingFX : BYTE
+        enum DrawingFX : BYTE
     {
         DrawingFX_None = 0,
         DrawingFX_Flip = 1,
@@ -264,7 +264,7 @@ namespace SonicMania
     };
     BitFlag(DrawingFX, byte)
 
-    enum InkEffect : byte
+        enum InkEffect : byte
     {
         Ink_None,
         Ink_Blend,
@@ -416,133 +416,133 @@ namespace SonicMania
         //ObjectType_CrabMeat         = 0x00EBBF34,
         //ObjectType_Toxomister       = 0x00EBBF38
         //General
-        ObjectType_Player             = 0x00AC6838,
-        ObjectType_Ring               = 0x00AC67E0,
-        ObjectType_Platform           = 0x00AC6CB4,
-        ObjectType_SSRing             = 0x00AC686C,
-        ObjectType_ItemBox            = 0x00AC6F00,
-        ObjectType_Spring             = 0x00AC6BD8,
-        ObjectType_Spikes             = 0x00AC67BC,
-        ObjectType_Button             = 0x00AC68BC,
-        ObjectType_Door               = 0x00AC68B0,
-        ObjectType_LRZBreakableWall   = 0x00AC6C80,
-        ObjectType_BreakableWall      = 0x00AC6A34,
+        ObjectType_Player = 0x00AC6838,
+        ObjectType_Ring = 0x00AC67E0,
+        ObjectType_Platform = 0x00AC6CB4,
+        ObjectType_SSRing = 0x00AC686C,
+        ObjectType_ItemBox = 0x00AC6F00,
+        ObjectType_Spring = 0x00AC6BD8,
+        ObjectType_Spikes = 0x00AC67BC,
+        ObjectType_Button = 0x00AC68BC,
+        ObjectType_Door = 0x00AC68B0,
+        ObjectType_LRZBreakableWall = 0x00AC6C80,
+        ObjectType_BreakableWall = 0x00AC6A34,
         ObjectType_CollapsingPlatform = 0x00AC66EC,
-        ObjectType_ForcedSpin         = 0x00AC6CB4,
-        ObjectType_StarPost           = 0x00AC672C,
-        ObjectType_Animals            = 0x00AC6D78,
-        ObjectType_ScoreBonus         = 0x00AC6D80,
-        ObjectType_Explosion          = 0x00AC6D84,
-        ObjectType_PlathSwapper       = 0x00AC6C0C,
+        ObjectType_ForcedSpin = 0x00AC6CB4,
+        ObjectType_StarPost = 0x00AC672C,
+        ObjectType_Animals = 0x00AC6D78,
+        ObjectType_ScoreBonus = 0x00AC6D80,
+        ObjectType_Explosion = 0x00AC6D84,
+        ObjectType_PlathSwapper = 0x00AC6C0C,
 
         // Green Hill Zone
-        ObjectType_Motobug          = 0x00AC6B60,
-        ObjectType_CrabMeat         = 0x00AC6F9C,
-        ObjectType_Chopper          = 0x00AC6A8C,
-        ObjectType_BuzzBomber       = 0x00AC6F2C,
-        ObjectType_NewTron          = 0x00AC6F84,
-        ObjectType_BatBrain         = 0x00AC6F90,
-        ObjectType_Splats           = 0x00AC6900,
-        ObjectType_DDWrecker        = 0x00AC67F0, //Boss Act 1
-        ObjectType_DERobot          = 0x00AC6D70, //Boss Act 2
+        ObjectType_Motobug = 0x00AC6B60,
+        ObjectType_CrabMeat = 0x00AC6F9C,
+        ObjectType_Chopper = 0x00AC6A8C,
+        ObjectType_BuzzBomber = 0x00AC6F2C,
+        ObjectType_NewTron = 0x00AC6F84,
+        ObjectType_BatBrain = 0x00AC6F90,
+        ObjectType_Splats = 0x00AC6900,
+        ObjectType_DDWrecker = 0x00AC67F0, //Boss Act 1
+        ObjectType_DERobot = 0x00AC6D70, //Boss Act 2
         // Chemical Plant Zone
-        ObjectType_Grabber          = 0x00AC6648,
-        ObjectType_Spiny            = 0x00AC6704,
-        ObjectType_AmoebaDroid      = 0x00AC6880, //Boss Act 1
-        ObjectType_Sweep            = 0x00AC6870,
-        ObjectType_CatakillerJR     = 0x00AC6798,
+        ObjectType_Grabber = 0x00AC6648,
+        ObjectType_Spiny = 0x00AC6704,
+        ObjectType_AmoebaDroid = 0x00AC6880, //Boss Act 1
+        ObjectType_Sweep = 0x00AC6870,
+        ObjectType_CatakillerJR = 0x00AC6798,
         // Studiopolis Zone
-        ObjectType_MicDrop          = 0x00AC6DA8,
-        ObjectType_ShutterBug       = 0x00AC6E58,
-        ObjectType_Tubinaut         = 0x00AC6AD0,
-        ObjectType_WallCrawl        = 0x00AC6B14,
-        ObjectType_HeavyGunner      = 0x00AC6C2C, //Boss Act 1
-        ObjectType_WeatherMobile    = 0x00AC6A80, //Boss Act 2
-        ObjectType_CircleBumper     = 0x00AC6904,
+        ObjectType_MicDrop = 0x00AC6DA8,
+        ObjectType_ShutterBug = 0x00AC6E58,
+        ObjectType_Tubinaut = 0x00AC6AD0,
+        ObjectType_WallCrawl = 0x00AC6B14,
+        ObjectType_HeavyGunner = 0x00AC6C2C, //Boss Act 1
+        ObjectType_WeatherMobile = 0x00AC6A80, //Boss Act 2
+        ObjectType_CircleBumper = 0x00AC6904,
         // Flying Battery
-        ObjectType_TechnoSqueek     = 0x00AC69FC,
-        ObjectType_Blaster          = 0x00AC6A6C,
-        ObjectType_Clucker          = 0x00AC6C88,
+        ObjectType_TechnoSqueek = 0x00AC69FC,
+        ObjectType_Blaster = 0x00AC6A6C,
+        ObjectType_Clucker = 0x00AC6C88,
         // Press Garden Zone
-        ObjectType_Dragonfly        = 0x00AC6928,
-        ObjectType_Jugglesaw        = 0x00AC6688,
-        ObjectType_SplatsJar        = 0x004ACF50,
-        ObjectType_Woodrow          = 0x00AC6674,
-        ObjectType_IceBomba         = 0x00AC6E5C,
-        ObjectType_HeavyShinobi     = 0x00AC6B08,
+        ObjectType_Dragonfly = 0x00AC6928,
+        ObjectType_Jugglesaw = 0x00AC6688,
+        ObjectType_SplatsJar = 0x004ACF50,
+        ObjectType_Woodrow = 0x00AC6674,
+        ObjectType_IceBomba = 0x00AC6E5C,
+        ObjectType_HeavyShinobi = 0x00AC6B08,
         // StarDust Speed Way
-        ObjectType_Hotaru           = 0x00AC6808,
-        ObjectType_Dango            = 0x00AC6F34,
-        ObjectType_Kanabun          = 0x00AC67FC,
-        ObjectType_Kabasira         = 0x004ACF50,
-        ObjectType_SilverSonic      = 0x00AC679C,
-        ObjectType_MetalSonic       = 0x00AC6B34, //Boss Act2 M
+        ObjectType_Hotaru = 0x00AC6808,
+        ObjectType_Dango = 0x00AC6F34,
+        ObjectType_Kanabun = 0x00AC67FC,
+        ObjectType_Kabasira = 0x004ACF50,
+        ObjectType_SilverSonic = 0x00AC679C,
+        ObjectType_MetalSonic = 0x00AC6B34, //Boss Act2 M
         // HydroCity Zone
-        ObjectType_Jellygnite       = 0x00AC6B9C,
-        ObjectType_Pointdexter      = 0x00AC6A2C,
-        ObjectType_Blastoid         = 0x00AC66F4,
-        ObjectType_Jawz             = 0x00AC6D10,
-        ObjectType_MovingDust       = 0x00AC6D18, // Mighty - Ground Pound
-        ObjectType_MegaChopper      = 0x00AC6DB8,
-        ObjectType_TurboSpiker      = 0x00AC6DF0,
-        ObjectType_Buggernaut       = 0x00AC6728,
+        ObjectType_Jellygnite = 0x00AC6B9C,
+        ObjectType_Pointdexter = 0x00AC6A2C,
+        ObjectType_Blastoid = 0x00AC66F4,
+        ObjectType_Jawz = 0x00AC6D10,
+        ObjectType_MovingDust = 0x00AC6D18, // Mighty - Ground Pound
+        ObjectType_MegaChopper = 0x00AC6DB8,
+        ObjectType_TurboSpiker = 0x00AC6DF0,
+        ObjectType_Buggernaut = 0x00AC6728,
         //MirageSaloonZone
-        ObjectType_Vultron          = 0x00AC67CC,
-        ObjectType_Cactula          = 0x00AC6EC4,
-        ObjectType_Bumpalo          = 0x00AC66A4,
-        ObjectType_Rattlekiller     = 0x00AC6748,
-        ObjectType_BallHog          = 0x00AC69A0,
-        ObjectType_Armadiloid       = 0x00AC68A4,
+        ObjectType_Vultron = 0x00AC67CC,
+        ObjectType_Cactula = 0x00AC6EC4,
+        ObjectType_Bumpalo = 0x00AC66A4,
+        ObjectType_Rattlekiller = 0x00AC6748,
+        ObjectType_BallHog = 0x00AC69A0,
+        ObjectType_Armadiloid = 0x00AC68A4,
         //Oil Ocean Zone
-        ObjectType_Aquis            = 0x00AC6EE4,
-        ObjectType_Octus            = 0x00AC6DC4,
-        ObjectType_Sol              = 0x00AC6778,
+        ObjectType_Aquis = 0x00AC6EE4,
+        ObjectType_Octus = 0x00AC6DC4,
+        ObjectType_Sol = 0x00AC6778,
         // Lave Reef Zone
-        ObjectType_Toxomister       = 0x00AC6FA0,
-        ObjectType_Fireworm         = 0x00AC6A40,
-        ObjectType_Iwamodoki        = 0x00AC6638,
-        ObjectType_Rexon            = 0x00AC6DD4,
+        ObjectType_Toxomister = 0x00AC6FA0,
+        ObjectType_Fireworm = 0x00AC6A40,
+        ObjectType_Iwamodoki = 0x00AC6638,
+        ObjectType_Rexon = 0x00AC6DD4,
         // Metallic Madness Zone
-        ObjectType_MechaBu          = 0x00AC6888,
-        ObjectType_MatryoshkaBom    = 0x00AC6C30,
-        ObjectType_Scarab           = 0x00AC69A8,
-        ObjectType_PohBee           = 0x00AC6950,
+        ObjectType_MechaBu = 0x00AC6888,
+        ObjectType_MatryoshkaBom = 0x00AC6C30,
+        ObjectType_Scarab = 0x00AC69A8,
+        ObjectType_PohBee = 0x00AC6950,
         // Titanic Monarch Zone
-        ObjectType_SentryBug        = 0x00AC6E70,
-        ObjectType_TurboTurtle      = 0x00AC683C,
-        ObjectType_FlasherMkII      = 0x00AC670C,
-        ObjectType_BallHog2         = 0x00AC6678,
+        ObjectType_SentryBug = 0x00AC6E70,
+        ObjectType_TurboTurtle = 0x00AC683C,
+        ObjectType_FlasherMkII = 0x00AC670C,
+        ObjectType_BallHog2 = 0x00AC6678,
 
         // Angel Island Zone 
-        ObjectType_MonkeyDude       = 0x00AC6784,
-        ObjectType_Rhinobot         = 0x00AC6C24,
-        ObjectType_Bloominator      = 0x00AC6F48,
+        ObjectType_MonkeyDude = 0x00AC6784,
+        ObjectType_Rhinobot = 0x00AC6C24,
+        ObjectType_Bloominator = 0x00AC6F48,
 
         //Unused - Other
-        ObjectType_S1Orbinaught     = 0x00AC6A00,
-        ObjectType_S1Catakiller     = 0x00AC6B78,
+        ObjectType_S1Orbinaught = 0x00AC6A00,
+        ObjectType_S1Catakiller = 0x00AC6B78,
 
         //Service Objects 
-        ObjectType_FXFade           = 0x00AC6810,
+        ObjectType_FXFade = 0x00AC6810,
 
         //UFO - SpecialStage
-        ObjectType_UFO_Dust         = 0x00AC6DB0,
-        ObjectType_UFO_Itembox      = 0x00AC66B4,
-        ObjectType_SpecialClear     = 0x00AC6CC8,
-        ObjectType_UFO_Decoration   = 0x00AC6DB0,
-        ObjectType_UFO_Springboard  = 0x00AC67D4,
-        ObjectType_UFO_Message      = 0x00AC6EBC,
-        ObjectType_UFO_Sphere       = 0x00AC667C,
-        ObjectType_UFO_Ring         = 0x00AC6700,
-        ObjectType_UFO_Player       = 0x00AC6F8C,
+        ObjectType_UFO_Dust = 0x00AC6DB0,
+        ObjectType_UFO_Itembox = 0x00AC66B4,
+        ObjectType_SpecialClear = 0x00AC6CC8,
+        ObjectType_UFO_Decoration = 0x00AC6DB0,
+        ObjectType_UFO_Springboard = 0x00AC67D4,
+        ObjectType_UFO_Message = 0x00AC6EBC,
+        ObjectType_UFO_Sphere = 0x00AC667C,
+        ObjectType_UFO_Ring = 0x00AC6700,
+        ObjectType_UFO_Player = 0x00AC6F8C,
 
         //UI - 
-        ObjectType_UIWaitSpinner    = 0x00AC6DA0,
-        ObjectType_PauseMenu		= 0x00AC6EF0,
-        ObjectType_FXRuby			= 0x00AC6E90,
+        ObjectType_UIWaitSpinner = 0x00AC6DA0,
+        ObjectType_PauseMenu = 0x00AC6EF0,
+        ObjectType_FXRuby = 0x00AC6E90,
 
         //System
-        ObjectType_DebugMode		= 0x00AC6930
+        ObjectType_DebugMode = 0x00AC6930
     };
 
     enum TransparencyFlag : byte
@@ -565,80 +565,82 @@ namespace SonicMania
     // TODO: needs updating
 #pragma region Constents
 
-    // Player Status
-    #define CONTROL_NONE                  (SonicMania::PlayerStatus)(0x00000000)
-    #define CONTROL_NORMAL                (SonicMania::PlayerStatus)(baseAddress + 0x000C3E00)
-    #define CONTROL_P2                    (SonicMania::PlayerStatus)(baseAddress + 0x000C4340)
+// Player Status
+#define CONTROL_NONE                  (SonicMania::PlayerStatus)(0x00000000)
+#define CONTROL_NORMAL                (SonicMania::PlayerStatus)(baseAddress + 0x000C3E00)
+#define CONTROL_P2                    (SonicMania::PlayerStatus)(baseAddress + 0x000C4340)
 
 
-    // Player Status
-    #define PLAYERSTATE_NONE              (SonicMania::PlayerStatus)(0x00000000)
-    #define PLAYERSTATE_GROUND            (SonicMania::PlayerStatus)(baseAddress + 0x000CAD80)
-    #define PLAYERSTATE_AIR               (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
-    #define PLAYERSTATE_JUMP              (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
-    #define PLAYERSTATE_LOOKDOWN          (SonicMania::PlayerStatus)(baseAddress + 0x000CBBD0)
-    #define PLAYERSTATE_LOOKUP            (SonicMania::PlayerStatus)(baseAddress + 0x000CBAA0)
-    #define PLAYERSTATE_SPINDASH          (SonicMania::PlayerStatus)(baseAddress + 0x000CBD80)
-    #define PLAYERSTATE_Roll              (SonicMania::PlayerStatus)(baseAddress + 0x000CB850)
-    #define PLAYERSTATE_HURT              (SonicMania::PlayerStatus)(baseAddress + 0x000CCA00)
-    #define PLAYERSTATE_DIE               (SonicMania::PlayerStatus)(baseAddress + 0x000CCAC0)
-    #define PLAYERSTATE_OUTTAHERE         (SonicMania::PlayerStatus)(baseAddress + 0x000CCE90)
-    #define PLAYERSTATE_Gimmick           (SonicMania::PlayerStatus)(baseAddress + 0x000CAD70)
-    #define PLAYERSTATE_Gimmick2          (SonicMania::PlayerStatus)(baseAddress + 0x000CBA90) // TODO: needs updating
-    #define PLAYERSTATE_Hanging           (SonicMania::PlayerStatus)(baseAddress + 0x000CAD70) // TODO: needs updating
-    #define PLAYERSTATE_SpiningTube_PGZ   (SonicMania::PlayerStatus)(baseAddress + 0x0001F7F0) // TODO: needs updating
-    #define PLAYERSTATE_Frozen_PGZ        (SonicMania::PlayerStatus)(baseAddress + 0x000A3410) // TODO: needs updating
-    #define PLAYERSTATE_Sliding_OOZ       (SonicMania::PlayerStatus)(baseAddress + 0x0002EB10) // TODO: needs updating
-    #define PLAYERSTATE_SwitchingToBG_MMZ (SonicMania::PlayerStatus)(baseAddress + 0x000304A0) // TODO: needs updating
-    #define PLAYERSTATE_SwitchingToFG_MMZ (SonicMania::PlayerStatus)(baseAddress + 0x000305B0) // TODO: needs updating
-    #define PLAYERSTATE_TurningSmall_MMZ  (SonicMania::PlayerStatus)(baseAddress + 0x00031560) // TODO: needs updating
-    #define PLAYERSTATE_TurningBig_MMZ    (SonicMania::PlayerStatus)(baseAddress + 0x00031690) // TODO: needs updating
-    #define PLAYERSTATE_P2FLYIN           (SonicMania::PlayerStatus)(baseAddress + 0x000CD150)
-    #define PLAYERSTATE_P2JUMPIN          (SonicMania::PlayerStatus)(baseAddress + 0x000CD560) 
-    #define PLAYERSTATE_SpringBasic       (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
-    #define PLAYERSTATE_ScoreCard         (SonicMania::PlayerStatus)(baseAddress + 0x000CCD30)
-    #define PLAYERSTATE_TransportTube_CPZ (SonicMania::PlayerStatus)(baseAddress + 0x000CBA90)
-
-    // Sonic
-    #define PLAYERSTATE_DROPDASH          (SonicMania::PlayerStatus)(baseAddress + 0x000CC1F0)
-    #define PLAYERSTATE_PEELOUT           (SonicMania::PlayerStatus)(baseAddress + 0x000CBF70)
-
-    // Tails
-    #define PLAYERSTATE_FLYING            (SonicMania::PlayerStatus)(baseAddress + 0x000CCF30)
-    #define PLAYERSTATE_FLYCARRIED        (SonicMania::PlayerStatus)(baseAddress + 0x000CDA60)
-
-    // Knuckles
-    #define PLAYERSTATE_GLIDELEFT         (SonicMania::PlayerStatus)(baseAddress + 0x000CDB10)
-    #define PLAYERSTATE_GLIDERIGHT        (SonicMania::PlayerStatus)(baseAddress + 0x000CDE10)
-    #define PLAYERSTATE_GLIDESLIDE        (SonicMania::PlayerStatus)(baseAddress + 0x000CE230)
-    #define PLAYERSTATE_CLIMB             (SonicMania::PlayerStatus)(baseAddress + 0x000CE380)
-    #define PLAYERSTATE_LEDGEPULLUP       (SonicMania::PlayerStatus)(baseAddress + 0x000CE6F0)
-    #define PLAYERSTATE_GLIDEDROP         (SonicMania::PlayerStatus)(baseAddress + 0x000CE110)
-
-    // Mighty
-    #define PLAYERSTATE_HAMMERDROP        (SonicMania::PlayerStatus)(baseAddress + 0x000CC580)
-    #define PLAYERSTATE_UNSPIN            (SonicMania::PlayerStatus)(baseAddress + 0x000CC990) //Unspin after bouncing on hazard
-
-    // Ray
-    #define PLAYERSTATE_RAYGLIDE          (SonicMania::PlayerStatus)(baseAddress + 0x000CD660)
-
-    // Move Sets
-    #define MOVESET_NONE    (SonicMania::Ability)(0x00000000)
-    #define MOVESET_SONIC   (SonicMania::Ability)(baseAddress + 0x000C8630)
-    #define MOVESET_TAILS   (SonicMania::Ability)(baseAddress + 0x000C8990)
-    #define MOVESET_KNUX    (SonicMania::Ability)(baseAddress + 0x000C8A70)
-    #define MOVESET_MIGHTY  (SonicMania::Ability)(baseAddress + 0x000C8B70)
-    #define MOVESET_RAY     (SonicMania::Ability)(baseAddress + 0x000C8DF0)
-    #define MOVESET_ERSS    (SonicMania::Ability)(baseAddress + 0x000C2340) // Egg Reverie Super Sonic
-    #define UpAbility_Peelout    (SonicMania::Ability)(baseAddress + 0x000C8FF0)
+// Player Status
+#define PLAYERSTATE_NONE              (SonicMania::PlayerStatus)(0x00000000)
+#define PLAYERSTATE_GROUND            (SonicMania::PlayerStatus)(baseAddress + 0x000CAD80)
+#define PLAYERSTATE_AIR               (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
+#define PLAYERSTATE_JUMP              (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
+#define PLAYERSTATE_LOOKDOWN          (SonicMania::PlayerStatus)(baseAddress + 0x000CBBD0)
+#define PLAYERSTATE_LOOKUP            (SonicMania::PlayerStatus)(baseAddress + 0x000CBAA0)
+#define PLAYERSTATE_SPINDASH          (SonicMania::PlayerStatus)(baseAddress + 0x000CBD80)
+#define PLAYERSTATE_Roll              (SonicMania::PlayerStatus)(baseAddress + 0x000CB850)
+#define PLAYERSTATE_HURT              (SonicMania::PlayerStatus)(baseAddress + 0x000CCA00)
+#define PLAYERSTATE_DIE               (SonicMania::PlayerStatus)(baseAddress + 0x000CCAC0)
+#define PLAYERSTATE_OUTTAHERE         (SonicMania::PlayerStatus)(baseAddress + 0x000CCE90)
+#define PLAYERSTATE_Gimmick           (SonicMania::PlayerStatus)(baseAddress + 0x000CAD70)
+#define PLAYERSTATE_Gimmick2          (SonicMania::PlayerStatus)(baseAddress + 0x000CBA90) // TODO: needs updating
+#define PLAYERSTATE_Hanging           (SonicMania::PlayerStatus)(baseAddress + 0x000CAD70) // TODO: needs updating
+#define PLAYERSTATE_SpiningTube_PGZ   (SonicMania::PlayerStatus)(baseAddress + 0x0001F7F0) // TODO: needs updating
+#define PLAYERSTATE_Frozen_PGZ        (SonicMania::PlayerStatus)(baseAddress + 0x000A3410) // TODO: needs updating
+#define PLAYERSTATE_Sliding_OOZ       (SonicMania::PlayerStatus)(baseAddress + 0x0002EB10) // TODO: needs updating
+#define PLAYERSTATE_SwitchingToBG_MMZ (SonicMania::PlayerStatus)(baseAddress + 0x000304A0) // TODO: needs updating
+#define PLAYERSTATE_SwitchingToFG_MMZ (SonicMania::PlayerStatus)(baseAddress + 0x000305B0) // TODO: needs updating
+#define PLAYERSTATE_TurningSmall_MMZ  (SonicMania::PlayerStatus)(baseAddress + 0x00031560) // TODO: needs updating
+#define PLAYERSTATE_TurningBig_MMZ    (SonicMania::PlayerStatus)(baseAddress + 0x00031690) // TODO: needs updating
+#define PLAYERSTATE_P2FLYIN           (SonicMania::PlayerStatus)(baseAddress + 0x000CD150)
+#define PLAYERSTATE_P2JUMPIN          (SonicMania::PlayerStatus)(baseAddress + 0x000CD560) 
+#define PLAYERSTATE_SpringBasic       (SonicMania::PlayerStatus)(baseAddress + 0x000CB6C0)
+#define PLAYERSTATE_ScoreCard         (SonicMania::PlayerStatus)(baseAddress + 0x000CCD30)
+#define PLAYERSTATE_TransportTube_CPZ (SonicMania::PlayerStatus)(baseAddress + 0x000CBA90)
+#define PLAYERSTATE_HCZSlide          (SonicMania::PlayerStatus)(baseAddress + 0x000B9970); //Added from LHPZ Mod
 
 
-    #define PLAYERID1 0
-    #define PLAYERID2 1
-    #define PLAYERID3 2
-    #define PLAYERID4 3
+// Sonic
+#define PLAYERSTATE_DROPDASH          (SonicMania::PlayerStatus)(baseAddress + 0x000CC1F0)
+#define PLAYERSTATE_PEELOUT           (SonicMania::PlayerStatus)(baseAddress + 0x000CBF70)
 
-    //not a state but calling this will hit a player, it has no checks, not even for invincible frames
+// Tails
+#define PLAYERSTATE_FLYING            (SonicMania::PlayerStatus)(baseAddress + 0x000CCF30)
+#define PLAYERSTATE_FLYCARRIED        (SonicMania::PlayerStatus)(baseAddress + 0x000CDA60)
+
+// Knuckles
+#define PLAYERSTATE_GLIDELEFT         (SonicMania::PlayerStatus)(baseAddress + 0x000CDB10)
+#define PLAYERSTATE_GLIDERIGHT        (SonicMania::PlayerStatus)(baseAddress + 0x000CDE10)
+#define PLAYERSTATE_GLIDESLIDE        (SonicMania::PlayerStatus)(baseAddress + 0x000CE230)
+#define PLAYERSTATE_CLIMB             (SonicMania::PlayerStatus)(baseAddress + 0x000CE380)
+#define PLAYERSTATE_LEDGEPULLUP       (SonicMania::PlayerStatus)(baseAddress + 0x000CE6F0)
+#define PLAYERSTATE_GLIDEDROP         (SonicMania::PlayerStatus)(baseAddress + 0x000CE110)
+
+// Mighty
+#define PLAYERSTATE_HAMMERDROP        (SonicMania::PlayerStatus)(baseAddress + 0x000CC580)
+#define PLAYERSTATE_UNSPIN            (SonicMania::PlayerStatus)(baseAddress + 0x000CC990) //Unspin after bouncing on hazard
+
+// Ray
+#define PLAYERSTATE_RAYGLIDE          (SonicMania::PlayerStatus)(baseAddress + 0x000CD660)
+
+// Move Sets
+#define MOVESET_NONE    (SonicMania::Ability)(0x00000000)
+#define MOVESET_SONIC   (SonicMania::Ability)(baseAddress + 0x000C8630)
+#define MOVESET_TAILS   (SonicMania::Ability)(baseAddress + 0x000C8990)
+#define MOVESET_KNUX    (SonicMania::Ability)(baseAddress + 0x000C8A70)
+#define MOVESET_MIGHTY  (SonicMania::Ability)(baseAddress + 0x000C8B70)
+#define MOVESET_RAY     (SonicMania::Ability)(baseAddress + 0x000C8DF0)
+#define MOVESET_ERSS    (SonicMania::Ability)(baseAddress + 0x000C2340) // Egg Reverie Super Sonic
+#define UpAbility_Peelout    (SonicMania::Ability)(baseAddress + 0x000C8FF0)
+
+
+#define PLAYERID1 0
+#define PLAYERID2 1
+#define PLAYERID3 2
+#define PLAYERID4 3
+
+//not a state but calling this will hit a player, it has no checks, not even for invincible frames
     ThiscallFunctionPointer(int, Player_Hit, (EntityPlayer* Player), 0x000C5970);
 
 #pragma endregion
@@ -843,9 +845,9 @@ namespace SonicMania
     };
     struct Color
     {
-        byte Red   = 0;
+        byte Red = 0;
         byte Green = 0;
-        byte Blue  = 0;
+        byte Blue = 0;
 
         Color()
         {
@@ -854,9 +856,9 @@ namespace SonicMania
 
         Color(int rgb)
         {
-            Red   = (rgb >> 16) & 0xFF;
+            Red = (rgb >> 16) & 0xFF;
             Green = (rgb >> 8) & 0xFF;
-            Blue  = rgb & 0xFF;
+            Blue = rgb & 0xFF;
         }
 
         inline SHORT ToRGB565()
@@ -872,37 +874,37 @@ namespace SonicMania
 
         inline void FromRGB565(SHORT RGB565)
         {
-            Red   = (RGB565 & 0b1111100000000000) >> 8;
+            Red = (RGB565 & 0b1111100000000000) >> 8;
             Green = (RGB565 & 0b0000011111100000) >> 3;
-            Blue  = (RGB565 & 0b0000000000011111) << 3;
+            Blue = (RGB565 & 0b0000000000011111) << 3;
         }
 
         inline void FromINT(int rgb)
         {
-            Red   = (rgb >> 16) & 0xFF;
+            Red = (rgb >> 16) & 0xFF;
             Green = (rgb >> 8) & 0xFF;
-            Blue  = rgb & 0xFF;
+            Blue = rgb & 0xFF;
         }
 
         inline void Tint(float tint)
         {
-            Red   = (byte)(Red   * tint);
+            Red = (byte)(Red * tint);
             Green = (byte)(Green * tint);
-            Blue  = (byte)(Blue  * tint);
+            Blue = (byte)(Blue * tint);
         }
 
         inline void Blend(byte r, byte g, byte b, float a)
         {
-            Red   = (byte)(a * r + (1 - a) * Red);
+            Red = (byte)(a * r + (1 - a) * Red);
             Green = (byte)(a * g + (1 - a) * Green);
-            Blue  = (byte)(a * b + (1 - a) * Blue);
+            Blue = (byte)(a * b + (1 - a) * Blue);
         }
 
         inline void Blend(Color color, float a)
         {
-            Red   = (byte)(a * color.Red   + (1 - a) * Red);
+            Red = (byte)(a * color.Red + (1 - a) * Red);
             Green = (byte)(a * color.Green + (1 - a) * Green);
-            Blue  = (byte)(a * color.Blue  + (1 - a) * Blue);
+            Blue = (byte)(a * color.Blue + (1 - a) * Blue);
         }
 
 
@@ -1134,6 +1136,10 @@ namespace SonicMania
     //Currently Running Entity
     DataPointer(ActiveEntityInfo*, EntityInfo, 0x00AA7634);
 
+    //Audio/Sound
+    DataPointer(float, StreamVolume, 0xA53078);
+    DataPointer(float, SFXVolume, 0xA5307C);
+
     // Other
     DataPointer(Scene, CurrentScene, 0x00A535C4);
     DataPointer(GameOptions*, Options, 0x00AA763C);
@@ -1161,31 +1167,52 @@ namespace SonicMania
     DataArray(SHORT, Palette7, 0x00946958, 256);
 
     // Objects
-    DataPointer(Obj_Ring*               , OBJ_Ring,               0x00AC67E0);
-    DataPointer(Obj_Player*             , OBJ_Player,             0x00AC6838);
-    DataPointer(Obj_Camera*             , OBJ_Camera,             0x00AC6AA4);
-    DataPointer(Obj_Platform*           , OBJ_Platform,           0x00AC6CB4);
-    DataPointer(Obj_ForceSpin*          , OBJ_ForceSpin,          0x00AC6CB4); // TODO: Check if the address is correct.
-    DataPointer(Obj_CollapsingPlatform* , OBJ_CollapsingPlatform, 0x00AC66EC);
-    DataPointer(Obj_LRZBreakableWall*   , OBJ_LRZBreakableWall,   0x00AC6C80);
-    DataPointer(Obj_BreakableWall*      , OBJ_BreakableWall,      0x00AC6A34);
-    DataPointer(Obj_StarPost*           , OBJ_StarPost,           0x00AC672C);
-    DataPointer(Obj_Button*             , OBJ_Button,             0x00AC68BC);
-    DataPointer(Obj_Door*               , OBJ_Door,               0x00AC68BC);
-    DataPointer(Obj_Spikes*             , OBJ_Spikes,             0x00AC67BC);
-    DataPointer(Obj_Explosion*          , OBJ_Explosion,          0x00AC6D84);
-    DataPointer(Obj_ScoreBonus*         , OBJ_ScoreBonus,         0x00AC6D80);
-    DataPointer(Obj_Animals*            , OBJ_Animals,            0x00AC6D78);
-    DataPointer(Obj_Spring*             , OBJ_Spring,             0x00AC6BD8);
-    DataPointer(Obj_ItemBox*            , OBJ_ItemBox,            0x00AC6F00);
-    DataPointer(Obj_SpecialRing*        , OBJ_SpecialRing,        0x00AC686C);
-    DataPointer(Obj_PlaneSwitch*        , OBJ_PlaneSwitch,        0x00AC6C0C);
-    DataPointer(Obj_GHZSetup*           , OBJ_GHZSetup,           0x00AC6C0C);
-    DataPointer(Obj_LRZ1Setup*          , OBJ_LRZ1Setup,          0x00AC6DF4);
-    DataPointer(Obj_ZONE*               , OBJ_ZONE,               0x00AC690C);
-    DataPointer(Obj_FXRuby*				, OBJ_FXRuby,			  0x00AC6EF0);
-    DataPointer(Obj_PauseMenu*			, OBJ_PauseMenu,		  0x00AC6E90);
-    DataPointer(Obj_DebugMode*			, OBJ_DebugMode,		  0x00AC6930);
+    DataPointer(Obj_Ring*, OBJ_Ring, 0x00AC67E0);
+    DataPointer(Obj_Player*, OBJ_Player, 0x00AC6838);
+    DataPointer(Obj_Camera*, OBJ_Camera, 0x00AC6AA4);
+    DataPointer(Obj_Platform*, OBJ_Platform, 0x00AC6CB4);
+    DataPointer(Obj_ForceSpin*, OBJ_ForceSpin, 0x00AC6CB4); // TODO: Check if the address is correct.
+    DataPointer(Obj_CollapsingPlatform*, OBJ_CollapsingPlatform, 0x00AC66EC);
+    DataPointer(Obj_LRZBreakableWall*, OBJ_LRZBreakableWall, 0x00AC6C80);
+    DataPointer(Obj_BreakableWall*, OBJ_BreakableWall, 0x00AC6A34);
+    DataPointer(Obj_StarPost*, OBJ_StarPost, 0x00AC672C);
+    DataPointer(Obj_Button*, OBJ_Button, 0x00AC68BC);
+    DataPointer(Obj_Door*, OBJ_Door, 0x00AC68BC);
+    DataPointer(Obj_Spikes*, OBJ_Spikes, 0x00AC67BC);
+    DataPointer(Obj_Explosion*, OBJ_Explosion, 0x00AC6D84);
+    DataPointer(Obj_ScoreBonus*, OBJ_ScoreBonus, 0x00AC6D80);
+    DataPointer(Obj_Animals*, OBJ_Animals, 0x00AC6D78);
+    DataPointer(Obj_Spring*, OBJ_Spring, 0x00AC6BD8);
+    DataPointer(Obj_ItemBox*, OBJ_ItemBox, 0x00AC6F00);
+    DataPointer(Obj_SpecialRing*, OBJ_SpecialRing, 0x00AC686C);
+    DataPointer(Obj_PlaneSwitch*, OBJ_PlaneSwitch, 0x00AC6C0C);
+    DataPointer(Obj_GHZSetup*, OBJ_GHZSetup, 0x00AC6C0C);
+    DataPointer(Obj_LRZ1Setup*, OBJ_LRZ1Setup, 0x00AC6DF4);
+    DataPointer(Obj_ZONE*, OBJ_ZONE, 0x00AC690C);
+    DataPointer(Obj_FXRuby*, OBJ_FXRuby, 0x00AC6EF0);
+    DataPointer(Obj_PauseMenu*, OBJ_PauseMenu, 0x00AC6E90);
+    DataPointer(Obj_DebugMode*, OBJ_DebugMode, 0x00AC6930);
+
+#pragma endregion
+
+#pragma region Misc
+
+    // Music struct
+    struct struct_0
+    {
+        int anonymous_0;
+        int anonymous_1;
+        float volume;
+        int anonymous_3;
+        int anonymous_4;
+        int anonymous_5;
+        int anonymous_6;
+        int hasLoop;
+        __int16 anonymous_8;
+        _BYTE gap22[1];
+        char playStatus;
+    };
+    DataArray(struct_0, stru_26B818, 0x0026B818, 16);
 
 #pragma endregion
 
@@ -1219,7 +1246,7 @@ namespace SonicMania
         /* 0x00000014 */ int YVelocity;         // 16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
         /* 0x00000018 */ int UpdateRangeX;      // How many pixels offscreen to keep the object updating
         /* 0x0000001C */ int UpdateRangeY;      // How many pixels offscreen to keep the object updating
-        /* 0x00000020 */ int Angle;             
+        /* 0x00000020 */ int Angle;
         /* 0x00000024 */ int Alpha;             // Transparency
         /* 0x00000028 */ int Rotation;
         /* 0x0000002C */ int Speed;
@@ -1269,6 +1296,13 @@ namespace SonicMania
             XVelocity = (int)(XVelocity * x);
             YVelocity = (int)(YVelocity * y);
             Speed = (int)(Speed * x);
+        }
+
+        bool InRange(int x1, int y1, int x2, int y2)
+        {
+            bool inRange = false;
+            inRange = (Position.X >= x1 && Position.X <= x2) && (Position.Y >= y1 && Position.Y <= y2);
+            return inRange;
         }
     };
 
@@ -1421,7 +1455,6 @@ namespace SonicMania
         /* 0x000000D8 */ EntityAnimationData DebrisData;
         /* 0x000000F0 */ int Parent;
     };
-
     struct EntityPlatform : Entity
     {
         /* 0x00000058 */ void* State;
@@ -1454,7 +1487,6 @@ namespace SonicMania
         /* 0x000000B0 */ EntityAnimationData Animation;
         /* 0x000000C8 */ DWORD ChildCount;
     };
-
     struct EntityDust : Entity
     {
         /* 0x00000058 */ int State;
@@ -1462,8 +1494,6 @@ namespace SonicMania
         /* 0x00000060 */ DWORD Parent;
         /* 0x00000064 */ EntityAnimationData Animation;
     };
-
-
     struct EntityCamera : Entity
     {
         void* State;
@@ -1496,7 +1526,6 @@ namespace SonicMania
         int MinY;
         int MaxY;
     };
-
     struct EntityRing : Entity
     {
         /* 0x00000058 */ void* State;
@@ -1515,9 +1544,8 @@ namespace SonicMania
         /* 0x0000008C */ DWORD XOffset;
         /* 0x00000090 */ DWORD YOffset;
         /* 0x00000094 */ EntityAnimationData Animation;
-    
-    };
 
+    };
     struct EntityFXFade : Entity
     {
         /* 0x00000058 */ void* State;
@@ -1588,7 +1616,7 @@ namespace SonicMania
         /* 0x000000D4 */ DWORD field_D4;
 
     };
-    struct UIVsZoneButton : Entity
+    struct EntityUIVsZoneButton : Entity
     {
         /* 0x00000058 */ BYTE gap[164];
         /* 0x000000FC */ DWORD Filter; //Might not Exist 
@@ -1601,22 +1629,23 @@ namespace SonicMania
     struct EntityUIText : Entity
     {
         /* 0x00000058 */ void* State;
-        /* 0x0000005C */ DWORD dword5C;
-        /* 0x00000060 */ char* Text;
-        /* 0x00000064 */ DWORD dword64;
-        /* 0x00000068 */ DWORD dword68;
-        /* 0x0000006C */ DWORD dword6C;
-        /* 0x00000070 */ DWORD dword70;
-        /* 0x00000074 */ DWORD dword74;
-        /* 0x00000078 */ DWORD dword78;
-        /* 0x0000007C */ DWORD dword7C;
-        /* 0x00000080 */ DWORD dword80;
-        /* 0x00000084 */ DWORD dword84;
-        /* 0x00000088 */ DWORD dword88;
-        /* 0x0000008C */ DWORD dword8C;
-        /* 0x00000090 */ DWORD dword90;
+        /* 0x0000005C */ void* StateDraw;
+        /* 0x00000060 */ wchar_t* Text;
+        /* 0x00000064 */ WORD TextLength;
+        /* 0x00000066 */ WORD field_66;
+        /* 0x00000068 */ DWORD Tag;
+        /* 0x0000006C */ DWORD field_6C;
+        /* 0x00000070 */ DWORD Selectable;
+        /* 0x00000074 */ WORD AnimListID;
+        /* 0x00000076 */ WORD gap76;
+        /* 0x00000078 */ DWORD Align;
+        /* 0x0000007C */ DWORD Data0;
+        /* 0x00000080 */ DWORD Data1;
+        /* 0x00000084 */ DWORD Data2;
+        /* 0x00000088 */ DWORD  Data3;
+        /* 0x0000008C */ DWORD Highlighted;
+        /* 0x00000090 */ SonicMania::EntityAnimationData  AnimData;
     };
-
     struct EntityMotoBug : Entity
     {
         /* 0x00000058 */ void* State;
@@ -1817,7 +1846,6 @@ namespace SonicMania
         /* 0x000001B8 */ BOOL JumpHold;
         /* 0x000001BC */ EntityAnimationData Animation;
     };
-
     struct EntityTitleCard : Entity
     {
         /* 00000058 */ void* State;
@@ -2355,7 +2383,6 @@ namespace SonicMania
         /* 0x00000A2B */ BYTE field_A2B;
         /* 0x00000A2C */ BYTE field_A2C;
     };
-
     struct EntitySpikes : Entity
     {
         /* 0x00000058 */ void* State;
@@ -2379,9 +2406,193 @@ namespace SonicMania
         /* 0x00000088 */ EntityAnimationData Animation;
 
     };
+    struct EntityUIPicture : Entity
+    {
+        /* 0x00000058 */ DWORD ListID;
+        /* 0x0000005C */ DWORD FrameID;
+        /* 0x00000060 */ DWORD Tag;
+        /* 0x00000064 */ BYTE ZonePalette;
+        /* 0x00000065 */ BYTE field_65;
+        /* 0x00000066 */ BYTE field_66;
+        /* 0x00000067 */ BYTE field_67;
+        /* 0x00000068 */ DWORD ZoneID;
+        /* 0x0000006C */ EntityAnimationData AnimData;
+    };
+    struct EntityUIButton : Entity {
+        /* 00000058 */ DWORD field_58;
+        /* 0000005C */ DWORD dword5C;
+        /* 00000060 */ DWORD dword60;
+        /* 00000064 */ DWORD field_64;
+        /* 00000068 */ DWORD dword68;
+        /* 0000006C */ DWORD dword6C;
+        /* 00000070 */ DWORD dword70;
+        /* 00000074 */ DWORD dword74;
+        /* 00000078 */ DWORD dword78;
+        /* 0000007C */ DWORD dword7C;
+        /* 00000080 */ BYTE gap80[128];
+        /* 00000100 */ DWORD Disabled;
+        /* 00000104 */ SonicMania::Vector2 Size;
+        /* 0000010C */ DWORD ListID;
+        /* 00000110 */ DWORD FrameID;
+        /* 00000114 */ DWORD Align;
+        /* 00000118 */ DWORD ChoiceCount;
+        /* 0000011C */ DWORD ChoiceDir;
+        /* 0000011D */ DWORD Unused1;
+        /* 0000011E */ DWORD Unused2;
+        /* 0000011F */ DWORD Unused3;
+        /* 00000120 */ DWORD Invisible;
+        /* 00000124 */ DWORD AlignsP1;
+        /* 00000128 */ DWORD FreeBindP2;
+        /* 0000012C */ DWORD Transition;
+        /* 00000130 */ DWORD StopMusic;
+        /* 00000134 */ DWORD field_134;
+        /* 00000138 */ DWORD dword138;
+        /* 0000013C */ BYTE gap13C[16];
+        /* 0000014C */ DWORD dword14C;
+        /* 00000150 */ BYTE gap150[20];
+        /* 00000164 */ SonicMania::EntityAnimationData entityanimationdata164l;
+        /* 0000017C */ WORD word17C;
+        /* 0000017E */ BYTE field_17E;
+        /* 0000017F */ BYTE field_17F;
+        /* 00000180 */ DWORD dword180;
+        /* 00000184 */ DWORD dword184;
+    };
+    struct EntityUIVsRoundPicker : Entity
+    {
+        /* 00000058 */ DWORD gap58;
+        /* 0000005C */ DWORD dword5C;
+        /* 00000060 */ DWORD dword60;
+        /* 00000064 */ BYTE Unknown1[156];
+        /* 00000100 */ DWORD Disabled;
+        /* 00000104 */ SonicMania::Vector2 Size;
+        /* 0000010C */ DWORD Align;
+        /* 00000110 */ DWORD ArrowWidth;
+        /* 00000114 */ DWORD Val;
+        /* 00000118 */ DWORD MaxVal;
+        /* 0000011C */ BYTE gap11C[4];
+        /* 00000120 */ DWORD dword120;
+        /* 00000124 */ BYTE gap124[16];
+        /* 00000134 */ DWORD dword134;
+        /* 00000138 */ BYTE gap138[12];
+        /* 00000144 */ SonicMania::EntityAnimationData AnimData1;
+        /* 0000015C */ SonicMania::EntityAnimationData AnimData2;
+        /* 00000174 */ SonicMania::EntityAnimationData AnimData3;
+        /* 0000018C */ SonicMania::EntityAnimationData AnimData4;
+        /* 000001A4 */ WORD word1A4;
+        /* 000001A6 */ BYTE field_1A6;
+        /* 000001A7 */ BYTE field_1A7;
+    };
+    struct EntityUIInfoLabel : Entity
+    {
+        /* 0x00000058 */ SonicMania::EntityAnimationData AnimData;
+        /* 0x00000070 */ BYTE field_70;
+        /* 0x00000071 */ BYTE field_71;
+        /* 0x00000072 */ BYTE field_72;
+        /* 0x00000073 */ BYTE field_73;
+        /* 0x00000074 */ BYTE field_74;
+        /* 0x00000075 */ BYTE field_75;
+        /* 0x00000076 */ BYTE field_76;
+        /* 0x00000077 */ BYTE field_77;
+        /* 0x00000078 */ SonicMania::Vector2 Size;
+        /* 0x00000080 */ wchar_t* Text;
+        /* 0x00000084 */ int TextLength;
+        /* 0x00000086 */ BYTE field_86;
+        /* 0x00000087 */ BYTE field_87;
+        /* 0x00000088 */ DWORD field_88;
+        /* 0x0000008C */ SonicMania::EntityAnimationData AnimData2;
+    };
+    struct EntityUIVsResults : Entity
+    {
+        /* 00000058*/ DWORD State;
+        /* 0000005C*/ BYTE  Unknown1[164];
+        /* 00000100*/ DWORD Disabled;
+        /* 00000104*/ DWORD PlayerID;
+        /* 00000108*/ DWORD NumRows;
+        /* 0000010C*/ DWORD TrophyCount;
+        /* 00000110*/ BYTE  Row0Label;
+        /* 00000111*/ BYTE  Row1Label;
+        /* 00000112*/ BYTE  Row2Label;
+        /* 00000113*/ BYTE  Row3Label;
+        /* 00000114*/ BYTE  Row4Label;
+        /* 00000115*/ BYTE  Row5Label;
+        /* 00000116*/ BYTE  Row6Label;
+        /* 00000117*/ BYTE  Row7Label;
+        /* 00000118*/ BYTE  Row8Label;
+        /* 00000119*/ BYTE  Row9Label;
+        /* 0000011A*/ BYTE  Row10Label;
+        /* 0000011B*/ BYTE  Row11Label;
+        /* 0000011C*/ BYTE  Row12Label;
+        /* 0000011D*/ BYTE  field_11D;
+        /* 0000011E*/ BYTE  field_11E;
+        /* 0000011F*/ BYTE  field_11F;
+        /* 00000120*/ DWORD Row0Highlight;
+        /* 00000124*/ DWORD Row1Highlight;
+        /* 00000128*/ DWORD Row2Highlight;
+        /* 0000012C*/ DWORD Row3Highlight;
+        /* 00000130*/ DWORD Row4Highlight;
+        /* 00000134*/ DWORD Row5Highlight;
+        /* 00000138*/ DWORD Row6Highlight;
+        /* 0000013C*/ DWORD Row7Highlight;
+        /* 00000140*/ DWORD Row8Highlight;
+        /* 00000144*/ DWORD Row9Highlight;
+        /* 00000148*/ DWORD Row10Highlight;
+        /* 0000014C*/ DWORD Row11Highlight;
+        /* 00000150*/ DWORD Row12Highlight;
+        /* 00000154*/ BYTE  Unknown2[104];
+        /* 000001BC*/ DWORD dword1BC;
+        /* 000001C0*/ BYTE  Unknown3[484];
+        /* 000003A4*/ WORD  word3A4;
+        /* 000003A6*/ BYTE  field_3A6;
+        /* 000003A7*/ BYTE  field_3A7;
+    };
+    struct EntityUIControl : Entity
+    {
+        /* 0x00000058 */ DWORD field_58;
+        /* 0x0000005C */ DWORD field_5C;
+        /* 0x00000060 */ DWORD SelectedElement;
+        /* 0x00000064 */ DWORD Tag;
+        /* 0x00000068 */ DWORD field_68;
+        /* 0x0000006C */ wchar_t* parentTag;
+        /* 0x00000070 */ DWORD field_70;
+        /* 0x00000074 */ DWORD ActiveOnLoad;
+        /* 0x00000078 */ DWORD NoWidgets;
+        /* 0x0000007C */ DWORD ResetSelection;
+        /* 0x00000080 */ BYTE field_80;
+        /* 0x00000081 */ BYTE byte81;
+        /* 0x00000082 */ BYTE RowCount;
+        /* 0x00000083 */ BYTE ColumnCount;
+        /* 0x00000084 */ BYTE StartingID;
+        /* 0x00000085 */ DWORD field_85;
+        /* 0x00000086 */ DWORD field_86;
+        /* 0x00000087 */ DWORD field_87;
+        /* 0x00000088 */ Vector2 Size;
+        /* 0x00000090 */ Vector2 CameraOffset;
+        /* 0x00000098 */ Vector2 ScrollSpeed;
+        /* 0x000000A0 */ DWORD NoClamp;
+        /* 0x000000A4 */ DWORD NoWrap;
+        /* 0x000000A8 */ DWORD dwordA;
+        /* 0x000000AC */ DWORD dwordAC;
+        /* 0x000000B0 */ DWORD gapB0[20];
+        /* 0x000000C4 */ DWORD dwordC4;
+        /* 0x000000C8 */ DWORD gapC8[4];
+        /* 0x000000CC */ DWORD dwordCC;
+        /* 0x000000D0 */ DWORD gapD0[4];
+        /* 0x000000D4 */ DWORD dwordD4;
+        /* 0x000000D8 */ DWORD field_D8[336];
+    };
+    struct EntityButton : Entity
+    {
+        /* 0x00000058 */ DWORD field_58;
+        /* 0x0000005C */ DWORD field_5C;
+        /* 0x00000060 */ DWORD field_60;
+        /* 0x00000064 */ WORD field_64;
+        /* 0x00000066 */ WORD field_66;
+        /* 0x00000068 */ bool Pressed;
+    };
 #pragma endregion
 
 #pragma region Object 
+
     struct Object
     {
         WORD ObjectID;
@@ -2517,8 +2728,8 @@ namespace SonicMania
         int    field_A5C;
         int    field_A60;
         int    field_A64;
-        void*  pfuncA68;
-        void*  field_A6C;
+        void* pfuncA68;
+        void* field_A6C;
         int    field_A70;
     };
     struct Obj_UFO_Player : Object
@@ -2706,6 +2917,8 @@ namespace SonicMania
         //TODO: fill out later
     };
 
+
+
     struct Obj_Spikes : Object
     {
         int field_4;
@@ -2791,6 +3004,17 @@ namespace SonicMania
         int FGArray[0x20];
         int BGArray[0x20];
     };
+
+    struct Obj_UIPicture : SonicMania::Object
+    {
+        /* 0x00000004 */ WORD SpriteIndex;
+    };
+
+    struct Obj_UIText : SonicMania::Object
+    {
+        /* 0x00000004 */ WORD SpriteIndex;
+    };
+
     struct Obj_ZONE : Object
     {
         DWORD Act2;
@@ -2926,10 +3150,8 @@ namespace SonicMania
         int MonitorMode;
         int Unknown_78;
         int Unknown_Gap_7C[12];
-        int CharacterFlags;
-        int WinnerFlag;
-        int Unknown_B4;
-        int Unknown_B8;
+        BYTE CharacterFlags[4];
+        BYTE WinnerFlag[12];
         int Rings_P1;
         int Rings_P2;
         int Rings_P3;
@@ -3075,6 +3297,48 @@ namespace SonicMania
 #pragma endregion
 
 #pragma region HelperFunctions
+
+    // Used to set the strings of UIText and UIInfoLabels
+    inline void ConvertASCII2Unicode(wchar_t* dest, char* src, size_t size, int offset)
+    {
+        memset(dest, 0, size * 2);
+        for (int i = 0; i < size; ++i)
+            dest[i] = src[i] + offset;
+    }
+
+    inline void SetVSScreenCount(int count)
+    {
+        BYTE* Pointer = *(BYTE**)((baseAddress + 0xA530FC));
+        WriteData((BYTE*)baseAddress + 0xA530FC, (BYTE)count);
+    }
+
+    inline void WriteUIBG_Color(int offset, int r, int g, int b)
+    {
+        unsigned int color = r << 16
+            | g << 8 | b; // idk if this is reversed
+        WriteData((unsigned int*)(GetUIBGPointer() + offset), color);
+    }
+
+    inline BYTE* GetUIBGPointer()
+    {
+        return *(BYTE**)(baseAddress + 0xAC68E4);
+    }
+
+    inline void SetUIBG_BGColor(int r, int g, int b)
+    {
+        WriteUIBG_Color(4, r, g, b);
+    }
+
+    inline void SetUIBG_FGLowColor(int r, int g, int b)
+    {
+        WriteUIBG_Color(8, r, g, b);
+    }
+
+    inline void SetUIBG_FGHighColor(int r, int g, int b)
+    {
+        WriteUIBG_Color(12, r, g, b);
+    }
+
     // Written by Sajid
     inline SHORT ToRGB565(byte R, byte G, byte B)
     {
@@ -3386,18 +3650,18 @@ namespace SonicMania
         Alignment_Right
     };
 
-    DataPointer(bool , DevMenu_Enabled, 0x002FC867);
+    DataPointer(bool, DevMenu_Enabled, 0x002FC867);
     DataPointer(void*, DevMenu_Address, 0x002FBB40);
-    DataPointer(int  , DevMenu_Option , 0x002FBB44);
-    DataPointer(int  , DevMenu_Scroll , 0x002FBB48);
+    DataPointer(int, DevMenu_Option, 0x002FBB44);
+    DataPointer(int, DevMenu_Scroll, 0x002FBB48);
     FunctionPointer(int, DevMenu_DrawRect, (int x, int y, signed int width, int height, int color, signed int a6, int a7, int a8), 0x001D8870);
     FunctionPointer(int, DevMenu_DrawText, (int x, const char* text, int y, DevMenu_Alignment CenterText, int color), 0x1D58C0);
-    DataPointer(DWORD, dword_D3CC00   , 0x947C6C);
+    DataPointer(DWORD, dword_D3CC00, 0x947C6C);
 
-    FunctionPointer(char, Devmenu_MainMenu, ()   , 0x001C2500);
+    FunctionPointer(char, Devmenu_MainMenu, (), 0x001C2500);
     FunctionPointer(char, Devmenu_StageSelect, (), 0x001C2B60);
     FunctionPointer(char, Devmenu_SceneSelect, (), 0x001C2DB0);
-    FunctionPointer(char, Devmenu_Options, ()    , 0x001C3090);
+    FunctionPointer(char, Devmenu_Options, (), 0x001C3090);
 
 
     inline int DrawDevText(int x, int y, DevMenu_Alignment CenterText, int color, const char* format, ...)
