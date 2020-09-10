@@ -4,7 +4,7 @@ mANManaapiaaia,kmaMmammMmm.....
 ## ManiaAPI Credits
 - SuperSonic16 - Lead Programmer & Project Management
 - CodenameGamma - Reverse Engineering
-- CarJem - Reverse Engineering & Testing
+- CarJem Generations - Reverse Engineering & Testing
 - RubberduckyCooly - Reverse Engineering
 - RMGRich - Reverse Engineering
 - LJSTAR - Reverse Engineering & Testing
