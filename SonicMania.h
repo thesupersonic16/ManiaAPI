@@ -540,6 +540,7 @@ namespace SonicMania
         ObjectType_UIWaitSpinner = 0x00AC6DA0,
         ObjectType_PauseMenu = 0x00AC6EF0,
         ObjectType_FXRuby = 0x00AC6E90,
+        ObjectType_UIInfoLabel = 0x00AC6ECC,
 
         //System
         ObjectType_DebugMode = 0x00AC6930
@@ -1712,9 +1713,6 @@ namespace SonicMania
         /* 0x000000B4 */ DWORD dwordB4;
         /* 0x000000B8 */ DWORD dwordB8;
         /* 0x000000BC */ DWORD dwordBC;
-
-
-
     };
     struct EntitySpring : Entity
     {
@@ -3142,9 +3140,9 @@ namespace SonicMania
         int Unknown_Gap_0[22];
         int inMatch;
         int NumberOfPlayers;
-        int Unknown_60;
-        int Unknown_64;
-        int Unknown_68;
+        int UIVsLevelSelectIndex;
+        int UIVsSelectedZoneID;
+        int UIVsSelectedActID;
         int CurrentRound;
         int TotalRounds;
         int MonitorMode;
@@ -3257,7 +3255,7 @@ namespace SonicMania
         int  TATableID;
         int  TATableLoaded;
         int  Stock; // Encore Lives
-        int  CharacterFlags;
+        BYTE  CharacterFlags[4];
         int  VapeMode; // Vape Mode
         int  Secrets;
         int  SuperSecret;
@@ -3588,6 +3586,23 @@ namespace SonicMania
         if (GetSoundFXID(path) == (short)-1)
             return LoadSoundFX(path, scope);
         return -1;
+    }
+
+    static void UnloadSoundFX(short soundFXID)
+    {
+        if (soundFXID != -1)
+        {
+            intptr_t sfxPtr = (baseAddress + 0x00A5ACB5);
+            *((Scope*)(sfxPtr - 0 + 32 * soundFXID)) = Scope_None;
+            memset((void*)(sfxPtr - 13 + 32 * soundFXID), 0, 16);
+            memset((void*)(sfxPtr - 29 + 32 * soundFXID), 0, 16);
+        }
+    }
+
+    static void UnloadSoundFXS(const char* path)
+    {
+        short soundFXID = SonicMania::GetSoundFXID(path);
+        UnloadSoundFX(soundFXID);
     }
 
 
