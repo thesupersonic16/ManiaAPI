@@ -870,7 +870,7 @@ namespace SonicMania
 
         inline int ToRGB888()
         {
-            return ((Red & 0xFF) << 16) + ((Green & 0xFF) << 16) + (Blue & 0xFF);
+            return (Red & 0xFF) << 16 | (Green & 0xFF) << 8 | Blue & 0xFF;
         }
 
         inline void FromRGB565(SHORT RGB565)
