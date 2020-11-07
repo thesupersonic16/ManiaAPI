@@ -57,7 +57,21 @@ namespace SonicMania
     struct Obj_ForceSpin;
     struct Obj_PlaneSwitch;
     struct Obj_GHZSetup;
+    struct Obj_SPZ1Setup;
+    struct Obj_SPZ2Setup;
+    struct Obj_FBZSetup;
+    struct Obj_PSZ1Setup;
+    struct Obj_PSZ2Setup;
+    struct Obj_HCZSetup;
+    struct Obj_MSZSetup;
+    struct Obj_OOZSetup;
     struct Obj_LRZ1Setup;
+    struct Obj_LRZ2Setup;
+    struct Obj_LRZ3Setup;
+    struct Obj_MMZSetup;
+    struct Obj_TMZ1Setup;
+    struct Obj_TMZ2Setup;
+    struct Obj_TMZ3Setup;
     struct Obj_ZONE;
     struct Obj_Clapperboard;
     struct Obj_Lovetester;
@@ -68,6 +82,7 @@ namespace SonicMania
 
     //Misc
     struct Hitbox;
+    struct FileInfo;
 
 #pragma endregion
 
@@ -302,6 +317,26 @@ namespace SonicMania
         Scope_None,
         Scope_Global,
         Scope_Stage
+    };
+
+    enum GameModes : int
+    {
+        GAMEMODE_MANIA,
+        GAMEMODE_ENCORE,
+        GAMEMODE_TATTACK,
+        GAMEMODE_COMPETITION,
+    };
+
+    enum PlayerIDs : int
+    {
+        PLAYER_NONE = 0,
+        PLAYER_SONIC = 1,
+        PLAYER_TAILS = 2,
+        PLAYER_KNUX = 4,
+        PLAYER_MIGHTY = 8,
+        PLAYER_RAY = 0x10,
+        PLAYER_P2TAILS = 0x200,
+        PLAYER_DEFAULT = 0x201,
     };
 
     enum ItemBoxItem : byte
@@ -1070,8 +1105,11 @@ namespace SonicMania
     FunctionPointer(void, DrawVertices, (Vector2* Verticies, int VertCount, int Red, int Green, int Blue, int Alpha, InkEffect InkEffect), 0x1DAC10);
     FunctionPointer(void, DrawCircle, (int Xpos, int Ypos, signed int Radius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1D9890);
     FunctionPointer(void, DrawCircleOutline, (int Xpos, int Ypos, signed int InnerRadius, signed int OuterRadius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1DA170);
-    FunctionPointer(void*, LoadAniTiles, (const char* FilePath, Scope scope), 0x001D4CE0);
-    FunctionPointer(void*, SetAniTiles, (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth, ushort FrameHeight), 0x00BDC4B0);
+    FunctionPointer(short, LoadAniTiles, (const char *FilePath, Scope scope), 0x001D4CE0);
+    FunctionPointer(char, SetAniTiles,
+                    (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth,
+                     ushort FrameHeight),
+                    0x001DC4B0);
     FunctionPointer(void*, LoadMesh, (const char* filepath, Scope scope), 0x00BDE080);
     FunctionPointer(int, DrawSprite, (EntityAnimationData* AnimData, Vector2* Position, BOOL ScreenRelative), 0x001B3B00);
     FunctionPointer(void, DrawLine, (int X1, int Y1, int X2, int Y2, unsigned int Colour, signed int Alpha, int InkEffect, BOOL ScreenRelative), 0x001D8DF0);
@@ -1114,7 +1152,13 @@ namespace SonicMania
     FunctionPointer(void*, MatrixRotateY, (Matrix* Matrix, ushort RotationY), 0x001DD500);
     FunctionPointer(void*, MatrixRotateZ, (Matrix* Matrix, ushort RotationZ), 0x001DD590);
     FunctionPointer(void*, MatrixInvert, (unsigned int a1, Matrix* Matrix), 0x001DD770);
-    FunctionPointer(void*, MatrixMultiply, (Matrix* Matrix1, Matrix* Matrix2), 0x001DE010);
+    FunctionPointer(void *, MatrixMultiply, (Matrix * Matrix1, Matrix *Matrix2), 0x001DE010);
+    
+    // IO
+    ThiscallFunctionPointer(bool, LoadFile, (FileInfo * fileInfo, const char *filename, int streaming),
+                            0x001C53C0);
+    ThiscallFunctionPointer(bool, DecryptBytes, (FileInfo * fileInfo, void *Buffer, int BufferSize),
+                            0x001C5690);
 
 
 
@@ -1147,6 +1191,9 @@ namespace SonicMania
     DataPointer(short, CurrentSceneInt, 0x00A535C4);
     DataPointer(Category, CurrentCategory, 0x00A535E0);
     DataPointer(byte, CurrentCategoryInt, 0x00A535E0);
+
+    DataPointer(int, FastForwardSpeed, 0x002680A4);
+    DataPointer(byte, StepOverFlag, 0x002FC866);
 
     DataPointer(struct_Timer, Timer, 0x00A535DC);
     DataPointer(GameStates, GameState, 0x00A535E2);
@@ -1187,8 +1234,22 @@ namespace SonicMania
     DataPointer(Obj_ItemBox*, OBJ_ItemBox, 0x00AC6F00);
     DataPointer(Obj_SpecialRing*, OBJ_SpecialRing, 0x00AC686C);
     DataPointer(Obj_PlaneSwitch*, OBJ_PlaneSwitch, 0x00AC6C0C);
-    DataPointer(Obj_GHZSetup*, OBJ_GHZSetup, 0x00AC6C0C);
-    DataPointer(Obj_LRZ1Setup*, OBJ_LRZ1Setup, 0x00AC6DF4);
+    DataPointer(Obj_GHZSetup *, OBJ_GHZSetup, 0x00AC698C);
+    DataPointer(Obj_SPZ1Setup *, OBJ_SPZ1Setup, 0x00AC6914);
+    DataPointer(Obj_SPZ2Setup *, OBJ_SPZ2Setup, 0x00AC6824);
+    DataPointer(Obj_FBZSetup *, OBJ_FBZSetup, 0x00AC6F30);
+    DataPointer(Obj_PSZ1Setup *, OBJ_PSZ1Setup, 0x00AC6AB4);
+    DataPointer(Obj_PSZ2Setup *, OBJ_PSZ2Setup, 0x00AC6C60);
+    DataPointer(Obj_HCZSetup *, OBJ_HCZSetup, 0x00AC67E8);
+    DataPointer(Obj_MSZSetup *, OBJ_MSZSetup, 0x00AC69F4);
+    DataPointer(Obj_OOZSetup *, OBJ_OOZSetup, 0x00AC69F0);
+    DataPointer(Obj_LRZ1Setup *, OBJ_LRZ1Setup, 0x00AC6DF4);
+    DataPointer(Obj_LRZ2Setup *, OBJ_LRZ2Setup, 0x00AC6858);
+    DataPointer(Obj_LRZ2Setup *, OBJ_LRZ3Setup, 0x00AC6BBC);
+    DataPointer(Obj_MMZSetup *, OBJ_MMZSetup, 0x00AC6F80);
+    DataPointer(Obj_TMZ1Setup *, OBJ_TMZ1Setup, 0x00AC6840);
+    DataPointer(Obj_TMZ2Setup *, OBJ_TMZ2Setup, 0x00AC6E7C);
+    DataPointer(Obj_TMZ3Setup *, OBJ_TMZ2Setup, 0x00AC6ABC);
     DataPointer(Obj_ZONE*, OBJ_ZONE, 0x00AC690C);
     DataPointer(Obj_FXRuby*, OBJ_FXRuby, 0x00AC6EF0);
     DataPointer(Obj_PauseMenu*, OBJ_PauseMenu, 0x00AC6E90);
@@ -2991,6 +3052,135 @@ namespace SonicMania
         int DelayListB[16];
         ushort AniTiles;
     };
+    struct Obj_SPZ1Setup : Object {
+        int PalRotateTimerA;
+        int PalRotateTimerB;
+        int Angle;
+        int AniTilesFrameC;
+        int TimerA;
+        int TimerB;
+        int AniTilesFrameB;
+        ushort AniTiles;
+        BYTE field_22;
+        BYTE field_23;
+        void *BGLayer;
+        void *BGLayer2;
+    };
+    struct Obj_SPZ2Setup : Object {
+        BYTE field_4;
+        BYTE field_5;
+        BYTE field_6;
+        BYTE field_7;
+        int Angle;
+        int TimerC;
+        int AniTilesFrameC;
+        int AniTileDelaysC[7];
+        BYTE field_30;
+        BYTE field_31;
+        BYTE field_32;
+        BYTE field_33;
+        int DelayD;
+        int FrameD;
+        int AniTilePositionsYPosD[12];
+        int AniTileDelaysD[12];
+        int field_9C[0x20];
+        int AniTilePositionsXPosB[0xF];
+        BYTE field_158;
+        BYTE field_159;
+        BYTE field_15A;
+        BYTE field_15B;
+        int AniTilePositionsYPosB[0xF];
+        BYTE field_198;
+        BYTE field_199;
+        BYTE field_19A;
+        BYTE field_19B;
+        int AniTilePositionsXPosA[0xF];
+        BYTE field_1D8;
+        BYTE field_1D9;
+        BYTE field_1DA;
+        BYTE field_1DB;
+        int AniTilesFrameB;
+        int AniTilesFrameA;
+        void *FGLowInfo;
+        void *FGHighInfo;
+        ushort AniTiles;
+        ushort AniTiles2;
+        Entity *OutroPtr;
+    };
+    struct Obj_PSZ1Setup : Object {
+        int AniTileDelays1[7];
+        int AniTileDelays2[14];
+        int field_58;
+        int dword5C;
+        int gap60;
+        int DelayC;
+        int FrameC;
+        int DelayD;
+        int FrameD;
+        int DelayE;
+        int FrameE;
+        int DelayF;
+        int FrameF;
+        int DelayG;
+        int FrameG;
+        int DelayH;
+        int FrameH;
+        int FrameI;
+        int FrameB;
+        int FrameA;
+        int dwordA0;
+        int gapA4;
+        ushort AniTilesA;
+        ushort AniTilesB;
+        ushort AniTilesC;
+    };
+    struct Obj_PSZ2Setup : Object {
+        int AniTileDelays[4];
+        BYTE field_1C;
+        BYTE field_1D;
+        BYTE field_1E;
+        BYTE field_1F;
+        BYTE field_20;
+        BYTE field_21;
+        BYTE field_22;
+        BYTE field_23;
+        int Delay;
+        int Frame;
+        int field_2C;
+        ushort field_30;
+        ushort AniTiles1;
+        ushort AniTiles2;
+        int field_36;
+        int field_37;
+    };
+    struct Obj_HCZSetup : Object {
+        int AniTileDelays[14];
+        int field_3C;
+        int TimerB;
+        int TimerA;
+        BYTE field_48;
+        BYTE field_49;
+        int field_4A;
+        BYTE field_4B;
+        ushort AniTiles1;
+        ushort AniTiles2;
+        ushort AniTiles3;
+        BYTE field_52;
+        BYTE field_53;
+        void *dword54;
+        int dword58;
+        int dword5C;
+        int WaterfallSFXTimer;
+        ushort SFX_Waterfall;
+        ushort SFX_WaterfallLoop;
+            
+    };
+    struct Obj_MSZSetup : Object {
+        // TO-DO: fill out later
+    };
+    struct Obj_OOZSetup : Object {
+        // TO-DO: fill out later
+    };
     struct Obj_LRZ1Setup : Object
     {
         int PalTimer;
@@ -3001,6 +3191,79 @@ namespace SonicMania
         DWORD* FGHigh;
         int FGArray[0x20];
         int BGArray[0x20];
+    };
+    struct Obj_LRZ2Setup : Object {
+        int PalTimer1;
+        int PalTimer2;
+        int DstPal;
+        int SrcPal;
+        int field_14;
+        BYTE field_18;
+        BYTE field_19;
+        BYTE field_1A;
+        BYTE field_1B;
+    };
+    struct Obj_LRZ3Setup : Object {
+        BYTE field_4;
+        BYTE field_5;
+        BYTE field_6;
+        BYTE field_7;
+        BYTE field_8;
+        BYTE field_9;
+        BYTE field_A;
+        BYTE field_B;
+        BYTE field_C;
+        BYTE field_D;
+        BYTE field_E;
+        BYTE field_F;
+        void *CutscenePtr;
+    };
+    struct Obj_MMZSetup : Object {
+        // TO-DO: fill out later
+    };
+    struct Obj_TMZ1Setup : Object {
+        BYTE field_4;
+        BYTE field_5;
+        BYTE field_6;
+        BYTE field_7;
+        int Value;
+        int Angle;
+        BYTE field_10;
+        BYTE field_11;
+        BYTE field_12;
+        BYTE field_13;
+        int Timer;
+        int field_18;
+        BYTE field_1C;
+        BYTE field_1D;
+        BYTE field_1E;
+        BYTE field_1F;
+        BYTE field_20;
+        BYTE field_21;
+        BYTE field_22;
+        BYTE field_23;
+        int field_24;
+        ushort AniTiles;
+        ushort field_2A;
+        int field_2C;
+    };
+    struct Obj_TMZ2Setup : Object {
+        int dword4;
+        int Value;
+        int Timer;
+        int dword10;
+        int dword14;
+        ushort AniTiles;
+        ushort DynTiles;
+        ushort word1C;
+    };
+    struct Obj_TMZ3Setup : Object {
+        int Value;
+        int dword8;
+        int dwordC;
+        int Timer;
+        ushort AniTiles;
+        ushort word16;
     };
 
     struct Obj_UIPicture : SonicMania::Object
@@ -3262,6 +3525,25 @@ namespace SonicMania
         int  SuperMusicEnabled; // Play Super Music when going super?
         int  LastHasPlus;
         int  HasPlusInitial;
+    };
+
+    struct FileInfo {
+        int FileSize;
+        int ExternalFile;
+        FILE *File;
+        byte *FileData;
+        int ReadPos;
+        int FileOffset;
+        byte UsingFileBuffer;
+        byte IsEncrypted;
+        byte eNybbleSwap;
+        byte DecryptionKeyA[16];
+        byte DecryptionKeyB[16];
+        byte eStringPosA;
+        byte eStringPosB;
+        byte eStringNo;
+        byte field_3E;
+        byte field_3F;
     };
 
 #pragma endregion
