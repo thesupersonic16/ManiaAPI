@@ -1249,7 +1249,7 @@ namespace SonicMania
     DataPointer(Obj_MMZSetup *, OBJ_MMZSetup, 0x00AC6F80);
     DataPointer(Obj_TMZ1Setup *, OBJ_TMZ1Setup, 0x00AC6840);
     DataPointer(Obj_TMZ2Setup *, OBJ_TMZ2Setup, 0x00AC6E7C);
-    DataPointer(Obj_TMZ3Setup *, OBJ_TMZ2Setup, 0x00AC6ABC);
+    DataPointer(Obj_TMZ3Setup *, OBJ_TMZ3Setup, 0x00AC6ABC);
     DataPointer(Obj_ZONE*, OBJ_ZONE, 0x00AC690C);
     DataPointer(Obj_FXRuby*, OBJ_FXRuby, 0x00AC6EF0);
     DataPointer(Obj_PauseMenu*, OBJ_PauseMenu, 0x00AC6E90);
