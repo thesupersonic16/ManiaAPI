@@ -86,8 +86,6 @@ namespace SonicMania
 
 #pragma endregion
 
-
-
 #pragma region Enums
     // Enum
     enum Scene : short
@@ -469,6 +467,7 @@ namespace SonicMania
         ObjectType_ScoreBonus = 0x00AC6D80,
         ObjectType_Explosion = 0x00AC6D84,
         ObjectType_PlathSwapper = 0x00AC6C0C,
+        ObjectType_Decoration = 0x00AC6A90,
 
         // Green Hill Zone
         ObjectType_Motobug = 0x00AC6B60,
@@ -498,6 +497,7 @@ namespace SonicMania
         ObjectType_TechnoSqueek = 0x00AC69FC,
         ObjectType_Blaster = 0x00AC6A6C,
         ObjectType_Clucker = 0x00AC6C88,
+        ObjectType_FBZStorm = 0x00AC6DDC, //May be wrong?
         // Press Garden Zone
         ObjectType_Dragonfly = 0x00AC6928,
         ObjectType_Jugglesaw = 0x00AC6688,
@@ -542,6 +542,8 @@ namespace SonicMania
         ObjectType_MatryoshkaBom = 0x00AC6C30,
         ObjectType_Scarab = 0x00AC69A8,
         ObjectType_PohBee = 0x00AC6950,
+        ObjectType_RPlaneShifter = 0x00AC6AD8,
+        ObjectType_SizeLazer = 0x00AC6758,
         // Titanic Monarch Zone
         ObjectType_SentryBug = 0x00AC6E70,
         ObjectType_TurboTurtle = 0x00AC683C,
@@ -888,6 +890,13 @@ namespace SonicMania
         Color()
         {
 
+        }
+
+        Color(byte r, byte g, byte b)
+        {
+            Red = r;
+            Green = g;
+            Blue = b;
         }
 
         Color(int rgb)
