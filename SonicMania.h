@@ -247,10 +247,10 @@ namespace SonicMania
 
     enum Filter : byte
     {
-        Filter_None = 0b0000, // 0
-        Filter_ManiaMode = 0b0001, // 1
-        Filter_Unknown = 0b0010, // 2
-        Filter_EncoreMode = 0b0100  // 4
+        Filter_None   = 0b0000, // 0
+        Filter_Common = 0b0001, // 1
+        Filter_Mania  = 0b0010, // 2
+        Filter_Encore = 0b0100  // 4
     };
     BitFlag(Filter, byte)
 
@@ -1142,7 +1142,7 @@ namespace SonicMania
 
 #pragma region Functions
 
-    //New
+    // New
     FastcallFunctionPointer(bool, Player_CheckBadnikHit, (EntityPlayer* Player, Entity* Entity, Hitbox* EntityHitbox), 0x000C5E30);
     FunctionPointer(int, CheckObjectCollisionTouch, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BEB20);
     FunctionPointer(int, CheckObjectCollisionBox, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BEDD0);
@@ -1160,7 +1160,7 @@ namespace SonicMania
     FunctionPointer(char, GetTileBehaviour, (__int16 TileXPos, unsigned __int8 TileYPos), 0x001C23C0);
     FastcallFunctionPointer(int, Itembox_Break, (EntityItemBox* ItemBox, EntityPlayer* Player), 0xA9930);
 
-    //Unknown Function Ptrs (that are used and needed
+    // Unknown Function Ptrs (that are used and needed)
     FunctionPointer(int, RSDK_Unknown45, (), 0x00AA7744);
 
     // Audio
@@ -1177,7 +1177,7 @@ namespace SonicMania
     FunctionPointer(Entity*, SpawnObject_Internal, (short objectID, short subObject, DWORD x, DWORD y), 0x001D3E00);
     FunctionPointer(void, DespawnEntity_Internal, (Entity* entity, DWORD a2, DWORD a3), 0x001D3CF0);
     FunctionPointer(FILE*, LoadStaticObject, (int ObjStruct, int a2, Scope scope), 0x001D32B0);
-    //Collision
+    // Collision
     FunctionPointer(int, ObjectTileCollision, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BF5F0); //Check Collision at a certain point
     FunctionPointer(int, ObjectPathGrip, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BFB40); //Check Collision around a certain point
     FunctionPointer(void, ProcessPlayerTileCollisions, (EntityPlayer* Player, Hitbox* OuterBox, Hitbox* InnerBox), 0x001C0060);
@@ -1189,10 +1189,7 @@ namespace SonicMania
     FunctionPointer(void, DrawCircle, (int Xpos, int Ypos, signed int Radius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1D9890);
     FunctionPointer(void, DrawCircleOutline, (int Xpos, int Ypos, signed int InnerRadius, signed int OuterRadius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1DA170);
     FunctionPointer(short, LoadAniTiles, (const char *FilePath, Scope scope), 0x001D4CE0);
-    FunctionPointer(char, SetAniTiles,
-                    (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth,
-                     ushort FrameHeight),
-                    0x001DC4B0);
+    FunctionPointer(char, SetAniTiles, (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth, ushort FrameHeight), 0x001DC4B0);
     FunctionPointer(void*, LoadMesh, (const char* filepath, Scope scope), 0x00BDE080);
     FunctionPointer(int, DrawSprite, (EntityAnimationData* AnimData, Vector2* Position, BOOL ScreenRelative), 0x001B3B00);
     FunctionPointer(void, DrawLine, (int X1, int Y1, int X2, int Y2, unsigned int Colour, signed int Alpha, int InkEffect, BOOL ScreenRelative), 0x001D8DF0);
@@ -1200,7 +1197,8 @@ namespace SonicMania
     FunctionPointer(void*, DrawMesh, (ushort AnimationID, ushort ModelID, char a3, DWORD* a4, DWORD* a5, int Colour), 0x001DEF00);
     FunctionPointer(short, LoadAnimation, (const char* filename, Scope scope), 0x001B1FA0);
     FunctionPointer(char, LoadGif, (int a1, char* filepath, int buffer), 0x001CBA90);
-    //Palettes
+    
+    // Palettes
     FunctionPointer(int, SetPaletteEntry, (char PaletteID, unsigned char Index, int Color), 0x001D5020);
     FunctionPointer(int, GetPaletteEntry, (char PaletteID, unsigned char Index), 0x001D5070);
     FunctionPointer(void, BlendFromPalettes, (byte DestPaletteID, byte SourcePalA, byte SourcePalB, signed int AlphaPerFrame, int StartIndex, int EndIndex), 0x001D54E0);
@@ -1235,13 +1233,13 @@ namespace SonicMania
     FunctionPointer(void*, MatrixRotateY, (Matrix* Matrix, ushort RotationY), 0x001DD500);
     FunctionPointer(void*, MatrixRotateZ, (Matrix* Matrix, ushort RotationZ), 0x001DD590);
     FunctionPointer(void*, MatrixInvert, (unsigned int a1, Matrix* Matrix), 0x001DD770);
-    FunctionPointer(void *, MatrixMultiply, (Matrix * Matrix1, Matrix *Matrix2), 0x001DE010);
+    FunctionPointer(void*, MatrixMultiply, (Matrix * Matrix1, Matrix *Matrix2), 0x001DE010);
     
     // IO
-    ThiscallFunctionPointer(bool, LoadFile, (FileInfo * fileInfo, const char *filename, int streaming),
-                            0x001C53C0);
-    ThiscallFunctionPointer(bool, DecryptBytes, (FileInfo * fileInfo, void *Buffer, int BufferSize),
-                            0x001C5690);
+    ThiscallFunctionPointer(bool, LoadFile, (FileInfo * fileInfo, const char *filename, int streaming), 0x001C53C0);
+    ThiscallFunctionPointer(bool, DecryptBytes, (FileInfo * fileInfo, void *Buffer, int BufferSize), 0x001C5690);
+    FunctionPointer(int, TrySaveUserFile, (const char* filename, void* buffer, unsigned int bufSize, int(__cdecl* setStatus)(int), unsigned int a5), 0x001BE010);
+    FunctionPointer(int, TryLoadUserFile, (const char* filename, void* buffer, unsigned int bufSize, int(__cdecl* setStatus)(int)), 0x001BDFF0);
 
 
 
@@ -1274,6 +1272,8 @@ namespace SonicMania
     DataPointer(short, CurrentSceneInt, 0x00A535C4);
     DataPointer(Category, CurrentCategory, 0x00A535E0);
     DataPointer(byte, CurrentCategoryInt, 0x00A535E0);
+    DataPointer(Filter, SceneFlags, 0x00A535E3);
+    DataPointer(HWND, MainWindowHandle, 0x00A53C10);
 
     DataPointer(int, FastForwardSpeed, 0x002680A4);
     DataPointer(byte, StepOverFlag, 0x002FC866);
@@ -3665,7 +3665,7 @@ namespace SonicMania
     inline void ConvertASCII2Unicode(wchar_t* dest, char* src, size_t size, int offset)
     {
         memset(dest, 0, size * 2);
-        for (int i = 0; i < size; ++i)
+        for (size_t i = 0; i < size; ++i)
             dest[i] = src[i] + offset;
     }
 
@@ -3702,10 +3702,8 @@ namespace SonicMania
         WriteUIBG_Color(12, r, g, b);
     }
 
-    // Written by Sajid
     inline SHORT ToRGB565(byte R, byte G, byte B)
     {
-        //return ((R & 0b11111000) << 8) | ((G & 0b11111100) << 3) | (B >> 3);
         return (B >> 3) | ((G >> 2) << 5) | ((R >> 3) << 11);
     }
 
@@ -4038,11 +4036,10 @@ namespace SonicMania
     FunctionPointer(int, DevMenu_DrawText, (int x, const char* text, int y, DevMenu_Alignment CenterText, int color), 0x1D58C0);
     DataPointer(DWORD, dword_D3CC00, 0x947C6C);
 
-    FunctionPointer(char, Devmenu_MainMenu, (), 0x001C2500);
-    FunctionPointer(char, Devmenu_StageSelect, (), 0x001C2B60);
-    FunctionPointer(char, Devmenu_SceneSelect, (), 0x001C2DB0);
-    FunctionPointer(char, Devmenu_Options, (), 0x001C3090);
-
+    FunctionPointer(char, DevMenu_MainMenu, (), 0x001C2500);
+    FunctionPointer(char, DevMenu_StageSelect, (), 0x001C2B60);
+    FunctionPointer(char, DevMenu_SceneSelect, (), 0x001C2DB0);
+    FunctionPointer(char, DevMenu_Options, (), 0x001C3090);
 
     inline int DrawDevText(int x, int y, DevMenu_Alignment CenterText, int color, const char* format, ...)
     {
