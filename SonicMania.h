@@ -874,6 +874,21 @@ namespace SonicMania
             return X == 0 && Y == 0;
         }
 
+        int inline ToTileX(int offsetX = 0)
+        {
+            return (X != 0 ? X / 16 : 0) + offsetX;
+        }
+
+        int inline ToTileY(int offsetY = 0)
+        {
+            return (Y != 0 ? Y / 16 : 0) + offsetY;
+        }
+
+        Vector2 inline ToTile(int offsetX = 0, int offsetY = 0)
+        {
+            return Vector2(ToTileX(offsetX), ToTileY(offsetY));
+        }
+
     public:
         ushort SubX = 0;
         short X = 0;
@@ -1063,6 +1078,65 @@ namespace SonicMania
         DWORD field_30;
         DWORD field_34;
     };
+
+    struct Tile
+    {
+        int Index = 0;
+        bool FlipX = false;
+        bool FlipY = false;
+        bool SolidTopA = false;
+        bool SolidLrbA = false;
+        bool SolidTopB = false;
+        bool SolidLrbB = false;
+
+        ushort SetBit(int pos, bool Set, int value) //Shitty Maybe, but idc, it works
+        {
+
+            // "Pos" is what bit we are changing
+            // "Set" tells it to be either on or off
+            // "Value" is the value you want as your source
+
+            if (Set) value |= 1 << pos;
+            if (!Set) value &= ~(1 << pos);
+            return (ushort)value;
+        }
+
+        Tile FromRawData(ushort value)
+        {
+            Index = (int)(value & 0x3ff);
+            FlipX = ((value >> 10) & 1) == 1;
+            FlipY = ((value >> 11) & 1) == 1;
+            SolidTopA = ((value >> 12) & 1) == 1;
+            SolidLrbA = ((value >> 13) & 1) == 1;
+            SolidTopB = ((value >> 14) & 1) == 1;
+            SolidLrbB = ((value >> 15) & 1) == 1;
+        }
+
+        ushort ToRawData()
+        {
+            ushort tile = (ushort)Index;
+
+            tile = SetBit(10, FlipX, tile);
+            tile = SetBit(11, FlipY, tile);
+            tile = SetBit(12, SolidTopA, tile);
+            tile = SetBit(13, SolidLrbA, tile);
+            tile = SetBit(14, SolidTopB, tile);
+            tile = SetBit(15, SolidLrbB, tile);
+
+            return tile;
+        }
+
+        Tile()
+        {
+
+        }
+
+        Tile(ushort tile) : Tile()
+        {
+            FromRawData(tile);
+        }
+    };
+
 
 #pragma endregion
 
@@ -2563,7 +2637,7 @@ namespace SonicMania
         /* 0x00000077 */ BYTE field_77;
         /* 0x00000078 */ SonicMania::Vector2 Size;
         /* 0x00000080 */ wchar_t* Text;
-        /* 0x00000084 */ int TextLength;
+        /* 0x00000084 */ WORD TextLength;
         /* 0x00000086 */ BYTE field_86;
         /* 0x00000087 */ BYTE field_87;
         /* 0x00000088 */ DWORD field_88;
