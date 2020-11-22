@@ -78,11 +78,13 @@ namespace SonicMania
     struct Obj_PauseMenu;
     struct Obj_FXRuby;
     struct Obj_DebugMode;
+    struct ActiveEntityInfo;
     struct GameOptions;
 
     //Misc
     struct Hitbox;
     struct FileInfo;
+    struct ObjectInfo;
 
 #pragma endregion
 
@@ -247,9 +249,9 @@ namespace SonicMania
 
     enum Filter : byte
     {
-        Filter_None   = 0b0000, // 0
+        Filter_None = 0b0000, // 0
         Filter_Common = 0b0001, // 1
-        Filter_Mania  = 0b0010, // 2
+        Filter_Mania = 0b0010, // 2
         Filter_Encore = 0b0100  // 4
     };
     BitFlag(Filter, byte)
@@ -596,6 +598,13 @@ namespace SonicMania
         SuperState_Activate,
         SuperState_Active,
         SuperState_Deactivate
+    };
+
+    enum CreationType : int
+    {
+        //0-0x3FF are just valid slot ids, >= 0x400 or <= -3 are invalid
+        CreateSlot_New = -1,
+        CreateSlot_Replace = -2,
     };
 
 #pragma endregion
@@ -1061,24 +1070,6 @@ namespace SonicMania
         int Values[16];
     };
 
-    struct ActiveEntityInfo
-    {
-        EntityBase* CurrentEntity;
-        DWORD field_4;
-        DWORD field_8;
-        DWORD field_C;
-        DWORD field_10;
-        DWORD field_14;
-        DWORD field_18;
-        DWORD field_1C;
-        DWORD field_20;
-        DWORD field_24;
-        DWORD field_28;
-        DWORD field_2C;
-        DWORD field_30;
-        DWORD field_34;
-    };
-
     struct Tile
     {
         int Index = 0;
@@ -1155,7 +1146,7 @@ namespace SonicMania
     FunctionPointer(int, GetActiveObjects, (unsigned __int16 ObjectType, Entity* EntityPtr), 0x001C8430);
     FunctionPointer(int, GetObjects, (unsigned __int16 ObjectType, Entity* EntityPtr), 0x001C84E0);
     FunctionPointer(void*, GetObjectByID, (unsigned __int16 SlotID), 0x001D3C90);
-    FunctionPointer(int, GetAttribute, (int AttributeType, char* AttributeName, int ObjectID, int StoreOffset), 0x001D3B20);
+    FunctionPointer(int, GetAttribute, (int AttributeType, const char* AttributeName, int ObjectID, int StoreOffset), 0x001D3B20);
     FunctionPointer(char, GetTileAngle, (__int16 TileXPos, unsigned __int8 TileYPos, char CollisionMode), 0x001C22A0);
     FunctionPointer(char, GetTileBehaviour, (__int16 TileXPos, unsigned __int8 TileYPos), 0x001C23C0);
     FastcallFunctionPointer(int, Itembox_Break, (EntityItemBox* ItemBox, EntityPlayer* Player), 0xA9930);
@@ -1188,7 +1179,7 @@ namespace SonicMania
     FunctionPointer(void, DrawVertices, (Vector2* Verticies, int VertCount, int Red, int Green, int Blue, int Alpha, InkEffect InkEffect), 0x1DAC10);
     FunctionPointer(void, DrawCircle, (int Xpos, int Ypos, signed int Radius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1D9890);
     FunctionPointer(void, DrawCircleOutline, (int Xpos, int Ypos, signed int InnerRadius, signed int OuterRadius, int Colour, signed int Alpha, InkEffect InkEffect, BOOL ScreenRelative), 0x1DA170);
-    FunctionPointer(short, LoadAniTiles, (const char *FilePath, Scope scope), 0x001D4CE0);
+    FunctionPointer(short, LoadAniTiles, (const char* FilePath, Scope scope), 0x001D4CE0);
     FunctionPointer(char, SetAniTiles, (ushort SheetID, ushort TileIndex, ushort SrcX, ushort SrcY, ushort FrameWidth, ushort FrameHeight), 0x001DC4B0);
     FunctionPointer(void*, LoadMesh, (const char* filepath, Scope scope), 0x00BDE080);
     FunctionPointer(int, DrawSprite, (EntityAnimationData* AnimData, Vector2* Position, BOOL ScreenRelative), 0x001B3B00);
@@ -1197,7 +1188,7 @@ namespace SonicMania
     FunctionPointer(void*, DrawMesh, (ushort AnimationID, ushort ModelID, char a3, DWORD* a4, DWORD* a5, int Colour), 0x001DEF00);
     FunctionPointer(short, LoadAnimation, (const char* filename, Scope scope), 0x001B1FA0);
     FunctionPointer(char, LoadGif, (int a1, char* filepath, int buffer), 0x001CBA90);
-    
+
     // Palettes
     FunctionPointer(int, SetPaletteEntry, (char PaletteID, unsigned char Index, int Color), 0x001D5020);
     FunctionPointer(int, GetPaletteEntry, (char PaletteID, unsigned char Index), 0x001D5070);
@@ -1227,17 +1218,22 @@ namespace SonicMania
     FunctionPointer(void*, GetSceneLayerInfo, (unsigned __int16 LayerID), 0x001E16B0); //Actually returns SceneLayer* but thats not added yet
     FunctionPointer(__int16, GetLayerSize, (unsigned __int16 LayerID, Vector2* Size, DWORD PixelSize), 0x001E16E0);
 
+    //Setting up Objects
+    FunctionPointer(__int16, CreateObj, (void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*EarlyUpdate)(void), void (*LateUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), DWORD a11, DWORD a12, void (*GetAttributes)(void)), 0x001D3090);
+    ThiscallFunctionPointer(int, SetupObjects, (void* GameInfo), 0x001A6E20);
+    FastcallFunctionPointer(int, GenHash, (byte* Hash, int len), 0x001CB620);
+
     // MATRICIES - Untested
     FunctionPointer(void*, MatrixTranslateXYZ, (Matrix* Matrix, int X, int Y, int Z), 0x001DD3F0);
     FunctionPointer(void*, MatrixRotateX, (Matrix* Matrix, ushort RotationX), 0x001DD470);
     FunctionPointer(void*, MatrixRotateY, (Matrix* Matrix, ushort RotationY), 0x001DD500);
     FunctionPointer(void*, MatrixRotateZ, (Matrix* Matrix, ushort RotationZ), 0x001DD590);
     FunctionPointer(void*, MatrixInvert, (unsigned int a1, Matrix* Matrix), 0x001DD770);
-    FunctionPointer(void*, MatrixMultiply, (Matrix * Matrix1, Matrix *Matrix2), 0x001DE010);
-    
+    FunctionPointer(void*, MatrixMultiply, (Matrix* Matrix1, Matrix* Matrix2), 0x001DE010);
+
     // IO
-    ThiscallFunctionPointer(bool, LoadFile, (FileInfo * fileInfo, const char *filename, int streaming), 0x001C53C0);
-    ThiscallFunctionPointer(bool, DecryptBytes, (FileInfo * fileInfo, void *Buffer, int BufferSize), 0x001C5690);
+    ThiscallFunctionPointer(bool, LoadFile, (FileInfo* fileInfo, const char* filename, int streaming), 0x001C53C0);
+    ThiscallFunctionPointer(bool, DecryptBytes, (FileInfo* fileInfo, void* Buffer, int BufferSize), 0x001C5690);
     FunctionPointer(int, TrySaveUserFile, (const char* filename, void* buffer, unsigned int bufSize, int(__cdecl* setStatus)(int), unsigned int a5), 0x001BE010);
     FunctionPointer(int, TryLoadUserFile, (const char* filename, void* buffer, unsigned int bufSize, int(__cdecl* setStatus)(int)), 0x001BDFF0);
 
@@ -1248,19 +1244,21 @@ namespace SonicMania
 #pragma region DataPointers
 
     // Players
-    //DataPointer(EntityBase, ObjectList, 0x00469A10, 0x940); //Object List (Size: 0x940)
     DataArray(Entity, ObjectEntityList, 0x00469A10, 0x940);
+    DataArray(ObjectInfo, ObjectList, 0x00A78F68, 0x400);
+    DataPointer(WORD, ObjectCount, 0x0043D56C);
+    DataArray(BYTE, HashBuffer, 0x0043CDA8, 0x400);
 
     DataPointer(EntityPlayer, Player1, 0x00469A10);
     DataPointer(EntityPlayer, Player2, 0x00469E68);
     DataPointer(EntityPlayer, Player3, 0x0046A2C0);
     DataPointer(EntityPlayer, Player4, 0x0046A718);
 
+    //Currently Running Entity
+    DataPointer(ActiveEntityInfo, EntityInfo, 0x00A535AC);
+
     //Probably is just 0,0,0,0 (used as default for player if OuterBox/InnerBox isn't found)
     DataPointer(Hitbox, DefaultHitbox, 0x0026B804);
-
-    //Currently Running Entity
-    DataPointer(ActiveEntityInfo*, EntityInfo, 0x00AA7634);
 
     //Audio/Sound
     DataPointer(float, StreamVolume, 0xA53078);
@@ -1274,6 +1272,8 @@ namespace SonicMania
     DataPointer(byte, CurrentCategoryInt, 0x00A535E0);
     DataPointer(Filter, SceneFlags, 0x00A535E3);
     DataPointer(HWND, MainWindowHandle, 0x00A53C10);
+    DataPointer(byte, UseDLLCode, 0x002FC864);
+    DataPointer(byte, UseDataFile, 0x002FC865);
 
     DataPointer(int, FastForwardSpeed, 0x002680A4);
     DataPointer(byte, StepOverFlag, 0x002FC866);
@@ -1317,22 +1317,22 @@ namespace SonicMania
     DataPointer(Obj_ItemBox*, OBJ_ItemBox, 0x00AC6F00);
     DataPointer(Obj_SpecialRing*, OBJ_SpecialRing, 0x00AC686C);
     DataPointer(Obj_PlaneSwitch*, OBJ_PlaneSwitch, 0x00AC6C0C);
-    DataPointer(Obj_GHZSetup *, OBJ_GHZSetup, 0x00AC698C);
-    DataPointer(Obj_SPZ1Setup *, OBJ_SPZ1Setup, 0x00AC6914);
-    DataPointer(Obj_SPZ2Setup *, OBJ_SPZ2Setup, 0x00AC6824);
-    DataPointer(Obj_FBZSetup *, OBJ_FBZSetup, 0x00AC6F30);
-    DataPointer(Obj_PSZ1Setup *, OBJ_PSZ1Setup, 0x00AC6AB4);
-    DataPointer(Obj_PSZ2Setup *, OBJ_PSZ2Setup, 0x00AC6C60);
-    DataPointer(Obj_HCZSetup *, OBJ_HCZSetup, 0x00AC67E8);
-    DataPointer(Obj_MSZSetup *, OBJ_MSZSetup, 0x00AC69F4);
-    DataPointer(Obj_OOZSetup *, OBJ_OOZSetup, 0x00AC69F0);
-    DataPointer(Obj_LRZ1Setup *, OBJ_LRZ1Setup, 0x00AC6DF4);
-    DataPointer(Obj_LRZ2Setup *, OBJ_LRZ2Setup, 0x00AC6858);
-    DataPointer(Obj_LRZ2Setup *, OBJ_LRZ3Setup, 0x00AC6BBC);
-    DataPointer(Obj_MMZSetup *, OBJ_MMZSetup, 0x00AC6F80);
-    DataPointer(Obj_TMZ1Setup *, OBJ_TMZ1Setup, 0x00AC6840);
-    DataPointer(Obj_TMZ2Setup *, OBJ_TMZ2Setup, 0x00AC6E7C);
-    DataPointer(Obj_TMZ3Setup *, OBJ_TMZ3Setup, 0x00AC6ABC);
+    DataPointer(Obj_GHZSetup*, OBJ_GHZSetup, 0x00AC698C);
+    DataPointer(Obj_SPZ1Setup*, OBJ_SPZ1Setup, 0x00AC6914);
+    DataPointer(Obj_SPZ2Setup*, OBJ_SPZ2Setup, 0x00AC6824);
+    DataPointer(Obj_FBZSetup*, OBJ_FBZSetup, 0x00AC6F30);
+    DataPointer(Obj_PSZ1Setup*, OBJ_PSZ1Setup, 0x00AC6AB4);
+    DataPointer(Obj_PSZ2Setup*, OBJ_PSZ2Setup, 0x00AC6C60);
+    DataPointer(Obj_HCZSetup*, OBJ_HCZSetup, 0x00AC67E8);
+    DataPointer(Obj_MSZSetup*, OBJ_MSZSetup, 0x00AC69F4);
+    DataPointer(Obj_OOZSetup*, OBJ_OOZSetup, 0x00AC69F0);
+    DataPointer(Obj_LRZ1Setup*, OBJ_LRZ1Setup, 0x00AC6DF4);
+    DataPointer(Obj_LRZ2Setup*, OBJ_LRZ2Setup, 0x00AC6858);
+    DataPointer(Obj_LRZ2Setup*, OBJ_LRZ3Setup, 0x00AC6BBC);
+    DataPointer(Obj_MMZSetup*, OBJ_MMZSetup, 0x00AC6F80);
+    DataPointer(Obj_TMZ1Setup*, OBJ_TMZ1Setup, 0x00AC6840);
+    DataPointer(Obj_TMZ2Setup*, OBJ_TMZ2Setup, 0x00AC6E7C);
+    DataPointer(Obj_TMZ3Setup*, OBJ_TMZ3Setup, 0x00AC6ABC);
     DataPointer(Obj_ZONE*, OBJ_ZONE, 0x00AC690C);
     DataPointer(Obj_FXRuby*, OBJ_FXRuby, 0x00AC6EF0);
     DataPointer(Obj_PauseMenu*, OBJ_PauseMenu, 0x00AC6E90);
@@ -1673,8 +1673,8 @@ namespace SonicMania
     };
     struct EntityRing : Entity
     {
-        /* 0x00000058 */ void* State;
-        /* 0x00000058 */ void* StateDraw;
+        /* 0x00000058 */ void (*State)(void);
+        /* 0x0000005C */ void (*StateDraw)(void);
         /* 0x00000060 */ int Type;
         /* 0x00000064 */ DWORD PlaneFilter;
         /* 0x00000068 */ int RingAmount;
@@ -2735,6 +2735,23 @@ namespace SonicMania
 
 #pragma region Object 
 
+    struct ObjectInfo
+    {
+        /* 0x00000000 */ BYTE Hash[0x10];
+        /* 0x00000010 */ void (*Update)(void);
+        /* 0x00000014 */ void (*LateUpdate)(void);
+        /* 0x00000018 */ void (*EarlyUpdate)(void);
+        /* 0x0000001C */ void (*Draw)(void);
+        /* 0x00000020 */ void (*Startup)(void* subType);
+        /* 0x00000024 */ void (*StageLoad)(void);
+        /* 0x00000028 */ DWORD a11; // /* 0x00000028 */ void (*a11)(void);
+        /* 0x00000028 */ DWORD a12; // /* 0x0000002C */ void (*a12)(void);
+        /* 0x00000030 */ void (*GetAttributes)(void);
+        /* 0x00000034 */ Object* Type;
+        /* 0x00000038 */ DWORD EntitySize;
+        /* 0x0000003C */ DWORD ObjSize;
+    };
+
     struct Object
     {
         WORD ObjectID;
@@ -3146,8 +3163,8 @@ namespace SonicMania
         ushort AniTiles;
         BYTE field_22;
         BYTE field_23;
-        void *BGLayer;
-        void *BGLayer2;
+        void* BGLayer;
+        void* BGLayer2;
     };
     struct Obj_SPZ2Setup : Object {
         BYTE field_4;
@@ -3184,11 +3201,11 @@ namespace SonicMania
         BYTE field_1DB;
         int AniTilesFrameB;
         int AniTilesFrameA;
-        void *FGLowInfo;
-        void *FGHighInfo;
+        void* FGLowInfo;
+        void* FGHighInfo;
         ushort AniTiles;
         ushort AniTiles2;
-        Entity *OutroPtr;
+        Entity* OutroPtr;
     };
     struct Obj_PSZ1Setup : Object {
         int AniTileDelays1[7];
@@ -3250,13 +3267,13 @@ namespace SonicMania
         ushort AniTiles3;
         BYTE field_52;
         BYTE field_53;
-        void *dword54;
+        void* dword54;
         int dword58;
         int dword5C;
         int WaterfallSFXTimer;
         ushort SFX_Waterfall;
         ushort SFX_WaterfallLoop;
-            
+
     };
     struct Obj_MSZSetup : Object {
         // TO-DO: fill out later
@@ -3299,7 +3316,7 @@ namespace SonicMania
         BYTE field_D;
         BYTE field_E;
         BYTE field_F;
-        void *CutscenePtr;
+        void* CutscenePtr;
     };
     struct Obj_MMZSetup : Object {
         // TO-DO: fill out later
@@ -3541,6 +3558,31 @@ namespace SonicMania
         int Unknown_Gap_164[4007];
     };
 
+    struct ActiveEntityInfo {
+        EntityBase* CurrentEntity;
+        DWORD field_4;
+        DWORD field_8;
+        DWORD field_C;
+        DWORD field_10;
+        DWORD field_14;
+        DWORD field_18;
+        DWORD field_1C;
+        DWORD field_20;
+        DWORD field_24;
+        DWORD field_28;
+        DWORD field_2C;
+        DWORD field_30;
+        DWORD field_34;
+        BYTE StageMilliseconds;
+        BYTE StageSeconds;
+        BYTE StageMinutes;
+        BYTE field_3B;
+        BYTE field_3C;
+        BYTE field_3D;
+        BYTE field_3E;
+        BYTE field_3F;
+    };
+
     struct GameOptions {
         int GameMode;
         int PlayerID;
@@ -3613,8 +3655,8 @@ namespace SonicMania
     struct FileInfo {
         int FileSize;
         int ExternalFile;
-        FILE *File;
-        byte *FileData;
+        FILE* File;
+        byte* FileData;
         int ReadPos;
         int FileOffset;
         byte UsingFileBuffer;
@@ -4015,6 +4057,82 @@ namespace SonicMania
         // RB
         byte RBPatch[6]{ (byte)0x09, (byte)0x42, (byte)0x70, (byte)0x90, (byte)0x90, (byte)0x90 };
         WriteData((byte*)(baseAddress + 0x001E6362), RBPatch, 6);
+    }
+
+#pragma endregion
+
+#pragma region Object Utils
+
+    inline void GenerateHash(const char* name, byte* buffer) {
+        int len = strlen(name);
+        memset(HashBuffer, 0x00, 0x400 * sizeof(byte));
+        memcpy(HashBuffer, name, len);
+        GenHash(buffer, len);
+    }
+
+    inline int UnlinkObject(const char* name)
+    {
+        byte buffer[0x11];
+        memset(buffer, 0x00, 0x11 * sizeof(byte));
+        GenerateHash(name, buffer);
+
+        for (int i = 0; i < ObjectCount; ++i) {
+            ObjectInfo* obj = &ObjectList[i];
+            bool match = false;
+            for (int h = 0; h < 0x10; ++h) {
+                match = (byte)buffer[h] == (byte)obj->Hash[h];
+                if (!match)
+                    break;
+            }
+
+            if (match) {
+                memset(obj->Hash, 0x00, 0x10);
+                obj->Type = 0;
+                obj->EntitySize = 0;
+                obj->ObjSize = 0;
+                obj->Update = 0;
+                obj->LateUpdate = 0;
+                obj->EarlyUpdate = 0;
+                obj->Draw = 0;
+                obj->Startup = 0;
+                obj->StageLoad = 0;
+                obj->a11 = 0;
+                obj->GetAttributes = 0;
+                obj->a12 = 0;
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    inline int CreateObject(int objID, void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*EarlyUpdate)(void), void (*LateUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), DWORD a11, DWORD a12, void (*GetAttributes)(void)) {
+        if (objID == -1)
+            return CreateObj(ObjectStruct, ObjectName, EntitySize, ObjSize, Update, EarlyUpdate, LateUpdate, Draw, Setup, StageLoad, a11, a12, GetAttributes);
+        if (objID == -2)
+            objID = UnlinkObject(ObjectName);
+
+        if (objID < 0x400) {
+            ObjectInfo* obj = &ObjectList[objID];
+            byte buffer[0x11];
+            memset(buffer, 0x00, 0x11 * sizeof(byte));
+            GenerateHash(ObjectName, buffer);
+
+            memcpy(obj->Hash, buffer, 0x10);
+            obj->Type = (Object*)ObjectStruct;
+            obj->EntitySize = EntitySize;
+            obj->ObjSize = ObjSize;
+            obj->Update = Update;
+            obj->LateUpdate = LateUpdate;
+            obj->EarlyUpdate = EarlyUpdate;
+            obj->Draw = Draw;
+            obj->Startup = Setup;
+            obj->StageLoad = StageLoad;
+            obj->a11 = a11;
+            obj->a12 = a12;
+            obj->GetAttributes = GetAttributes;
+            return ObjectCount;
+        }
+        return ObjectCount;
     }
 
 #pragma endregion
