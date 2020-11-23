@@ -43,6 +43,7 @@ namespace SonicMania
     struct Obj_Platform;
     struct Obj_SpecialRing;
     struct Obj_ItemBox;
+    struct Obj_Shield;
     struct Obj_Spring;
     struct Obj_Animals;
     struct Obj_ScoreBonus;
@@ -256,7 +257,7 @@ namespace SonicMania
     };
     BitFlag(Filter, byte)
 
-        enum GameStates : byte
+    enum GameStates : byte
     {
         GameState_NotRunning = 0b0000, // 0
         GameState_Running = 0b0001, // 1
@@ -266,7 +267,7 @@ namespace SonicMania
     };
     BitFlag(GameStates, byte)
 
-        enum DrawingFX : BYTE
+    enum DrawingFX : BYTE
     {
         DrawingFX_None = 0,
         DrawingFX_Flip = 1,
@@ -279,7 +280,7 @@ namespace SonicMania
     };
     BitFlag(DrawingFX, byte)
 
-        enum InkEffect : byte
+    enum InkEffect : byte
     {
         Ink_None,
         Ink_Blend,
@@ -366,6 +367,11 @@ namespace SonicMania
         CollisionMode_LeftWall,
         CollisionMode_Roof,
         CollisionMode_RightWall
+    };
+
+    enum CollisionPlanes : byte {
+        CollisionPlane_A,
+        CollisionPlane_B,
     };
 
     // TODO: needs updating
@@ -605,6 +611,22 @@ namespace SonicMania
         //0-0x3FF are just valid slot ids, >= 0x400 or <= -3 are invalid
         CreateSlot_New = -1,
         CreateSlot_Replace = -2,
+    };
+
+    enum RSDK_ATTRIBUTETYPES : int {
+        ATTRIBUTE_UINT8   = 0,
+        ATTRIBUTE_UINT16  = 1,
+        ATTRIBUTE_UINT32  = 2,
+        ATTRIBUTE_INT8    = 3,
+        ATTRIBUTE_INT16   = 4,
+        ATTRIBUTE_INT32   = 5,
+        ATTRIBUTE_VAR     = 6,
+        ATTRIBUTE_BOOL    = 7,
+        ATTRIBUTE_STRING  = 8,
+        ATTRIBUTE_VECTOR2 = 9,
+        ATTRIBUTE_VECTOR3 = 0xA,
+        ATTRIBUTE_COLOUR  = 0xB,
+        ATTRIBUTE_UNKNOWN = 0xC
     };
 
 #pragma endregion
@@ -851,19 +873,19 @@ namespace SonicMania
 
         float GetFullY_F()
         {
-            return (float)Y + (float)(SubY / 0x10000);
+            return (float)Y + (float)(SubY / 0x10000); 
         }
 
         void SetFullX(int x)
         {
             SubX = (short)x;
-            X = x >> 16;
+            X    = x >> 16;
         }
 
         void SetFullY(int y)
         {
             SubY = (short)y;
-            Y = y >> 16;
+            Y    = y >> 16;
         }
 
         void SetFullX(float x)
@@ -1134,7 +1156,34 @@ namespace SonicMania
 #pragma region Functions
 
     // New
-    FastcallFunctionPointer(bool, Player_CheckBadnikHit, (EntityPlayer* Player, Entity* Entity, Hitbox* EntityHitbox), 0x000C5E30);
+    static int loc_Player_CheckBadnikHit = baseAddress + 0x000C5E30;
+    static __declspec(naked) int Player_CheckBadnikHit(EntityPlayer *player, Entity *entity, Hitbox *entityHitbox)
+    {
+        __asm
+        {
+            mov ecx, [ESP + 4]
+            mov edx, [ESP + 8]
+            push[ESP + 12]
+            call loc_Player_CheckBadnikHit
+            add ESP, 4
+            ret
+        }
+    }
+    static int loc_Player_BadnikBreak = baseAddress + 0x000C9380;
+    static __declspec(naked) int Player_BadnikBreak(Entity *entity, EntityPlayer *player, BOOL destroyBadnik)
+    {
+        __asm
+        {
+            mov edx, [ESP + 4]
+            mov ecx, [ESP + 8]
+            push[ESP + 12]
+            call loc_Player_BadnikBreak
+            add ESP, 4
+            ret
+        }
+    }
+    FunctionPointer(int, CheckOnScreen, (Entity * Entity, void *Screen), 0x001D3FB0);
+    FunctionPointer(int, CheckPosOnScreen, (Vector2 *Pos, Vector2 *Range), 0x001D4090);
     FunctionPointer(int, CheckObjectCollisionTouch, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BEB20);
     FunctionPointer(int, CheckObjectCollisionBox, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BEDD0);
     FunctionPointer(int, CheckObjectCollisionPlatform, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BF330);
@@ -1170,7 +1219,7 @@ namespace SonicMania
     FunctionPointer(FILE*, LoadStaticObject, (int ObjStruct, int a2, Scope scope), 0x001D32B0);
     // Collision
     FunctionPointer(int, ObjectTileCollision, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BF5F0); //Check Collision at a certain point
-    FunctionPointer(int, ObjectPathGrip, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int SetPos), 0x001BFB40); //Check Collision around a certain point
+    FunctionPointer(int, ObjectPathGrip, (Entity* Entity, unsigned __int16 CollisionLayers, char CollisionMode, char CollisionPlane, int XOffset, int YOffset, int CollisionTolerance), 0x001BFB40); //Check Collision around a certain point
     FunctionPointer(void, ProcessPlayerTileCollisions, (EntityPlayer* Player, Hitbox* OuterBox, Hitbox* InnerBox), 0x001C0060);
 
     // Graphics
@@ -1237,7 +1286,12 @@ namespace SonicMania
     FunctionPointer(int, TrySaveUserFile, (const char* filename, void* buffer, unsigned int bufSize, int(__cdecl* setStatus)(int), unsigned int a5), 0x001BE010);
     FunctionPointer(int, TryLoadUserFile, (const char* filename, void* buffer, unsigned int bufSize, int(__cdecl* setStatus)(int)), 0x001BDFF0);
 
-
+    //Entity Calls & States
+    FunctionPointer(int, ShieldState_Insta, (), 0x00004270);
+    FunctionPointer(int, ShieldState_Bubble, (), 0x000042C0);
+    FunctionPointer(int, ShieldState_BubbleUnknown, (), 0x00004340);
+    FunctionPointer(int, ShieldState_Fire, (), 0x000043D0);
+    FunctionPointer(int, ShieldState_Lightning, (), 0x00004430);
 
 #pragma endregion
 
@@ -1315,6 +1369,7 @@ namespace SonicMania
     DataPointer(Obj_Animals*, OBJ_Animals, 0x00AC6D78);
     DataPointer(Obj_Spring*, OBJ_Spring, 0x00AC6BD8);
     DataPointer(Obj_ItemBox*, OBJ_ItemBox, 0x00AC6F00);
+    DataPointer(Obj_Shield*, OBJ_Shield, 0x00AC6F4C);
     DataPointer(Obj_SpecialRing*, OBJ_SpecialRing, 0x00AC686C);
     DataPointer(Obj_PlaneSwitch*, OBJ_PlaneSwitch, 0x00AC6C0C);
     DataPointer(Obj_GHZSetup*, OBJ_GHZSetup, 0x00AC698C);
@@ -1368,9 +1423,10 @@ namespace SonicMania
     {
         ENTITYSLOT_PLAYER1 = 0,
         ENTITYSLOT_PLAYER2 = 1,
-        ENTITYSLOT_PLAYER3 = 1,
-        ENTITYSLOT_PLAYER4 = 1,
-        ENTITYSLOT_MUSIC = 9,
+        ENTITYSLOT_PLAYER3 = 2,
+        ENTITYSLOT_PLAYER4 = 3,
+        ENTITYSLOT_MUSIC   = 9,
+        SLOT_ZONE          = 0x0C
     };
 
     struct Entity
@@ -1387,10 +1443,8 @@ namespace SonicMania
         /* 0x00000000 */ Vector2 Position;
         /* 0x00000008 */ int ScaleX;            // 512-based (512 = 0, 1024 = 2, 256 = 1/2)
         /* 0x0000000C */ int ScaleY;            // 512-based (512 = 0, 1024 = 2, 256 = 1/2)
-        /* 0x00000010 */ int XVelocity;         // 16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
-        /* 0x00000014 */ int YVelocity;         // 16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
-        /* 0x00000018 */ int UpdateRangeX;      // How many pixels offscreen to keep the object updating
-        /* 0x0000001C */ int UpdateRangeY;      // How many pixels offscreen to keep the object updating
+        /* 0x00000010 */ Vector2 Velocity;     // 16 bit bitshift (aka 8 is 0x80000 (or 8 << 16))
+        /* 0x00000018 */ Vector2 UpdateRange;   // How many pixels offscreen to keep the object updating
         /* 0x00000020 */ int Angle;
         /* 0x00000024 */ int Alpha;             // Transparency
         /* 0x00000028 */ int Rotation;
@@ -1426,20 +1480,20 @@ namespace SonicMania
         }
         void AddVelocity(int x, int y)
         {
-            XVelocity += x;
-            YVelocity += y;
+            Velocity.X += x;
+            Velocity.Y += y;
             Speed += x;
         }
         void SetVelocity(int x, int y)
         {
-            XVelocity = x;
-            YVelocity = y;
+            Velocity.X = x;
+            Velocity.Y = y;
             Speed = x;
         }
         void MultiplyVelocity(float x, float y)
         {
-            XVelocity = (int)(XVelocity * x);
-            YVelocity = (int)(YVelocity * y);
+            Velocity.X = (int)(Velocity.X * x);
+            Velocity.Y = (int)(Velocity.Y * y);
             Speed = (int)(Speed * x);
         }
 
@@ -1501,7 +1555,7 @@ namespace SonicMania
         /* 0x00000110 */ BOOL Underwater;
         /* 0x00000114 */ DWORD GroundedStore;
         /* 0x00000118 */ BOOL IsUpSideDown;
-        /* 0x0000011C */ DWORD field_11C;
+        /* 0x0000011C */ DWORD Transforming;
         /* 0x00000120 */ DWORD field_120;
         /* 0x00000124 */ SuperState SuperState;
         /* 0x00000128 */ DWORD SuperSecondTimer;
@@ -1543,7 +1597,7 @@ namespace SonicMania
         /* 0x000001BC */ BOOL JumpPress;
         /* 0x000001C0 */ BOOL JumpHold;
         /* 0x000001C4 */ int JumpAbility;
-        /* 0x000001C8 */ int field_1C8;
+        /* 0x000001C8 */ int JumpAbilityTimer;
         /* 0x000001CC */ Ability Moveset;
         /* 0x000001D0 */ Ability UpAbility;
         /* 0x000001D4 */ DWORD dword1D4;
@@ -1565,6 +1619,12 @@ namespace SonicMania
         /* 0x00000214 */ DWORD dword214;
         /* 0x00000218 */ DWORD dword218;
         /* 0x0000021C */ DWORD dword21C;
+        /* 0x00000220 */ DWORD dword220;
+        /* 0x00000224 */ DWORD dword224;
+        /* 0x00000228 */ DWORD dword228;
+        /* 0x0000022C */ DWORD dword22C;
+        /* 0x00000230 */ DWORD dword230;
+        /* 0x00000234 */ DWORD dword234;
 
         void Kill()
         {
@@ -1690,6 +1750,16 @@ namespace SonicMania
         /* 0x00000090 */ DWORD YOffset;
         /* 0x00000094 */ EntityAnimationData Animation;
 
+    };
+    struct EntityShield : Entity {
+        EntityPlayer *PlayerPtr;
+        int (*State)();
+        DWORD Type;
+        DWORD field_64;
+        DWORD field_68;
+        DWORD field_6C;
+        EntityAnimationData AnimData;
+        EntityAnimationData AltAnimData;
     };
     struct EntityFXFade : Entity
     {
@@ -2518,7 +2588,7 @@ namespace SonicMania
         /* 0x00000A04 */ EntityAnimationData DebugData;
         /* 0x00000A1C */ int ObjID;
         /* 0x00000A20 */ int DebugItemCount;
-        /* 0x00000A24 */ DWORD PlayerActive;
+        /* 0x00000A24 */ DWORD DebugActive;
         /* 0x00000A28 */ BYTE DebugItemSubType;
         /* 0x00000A29 */ BYTE SubTypeCount;
         /* 0x00000A2A */ BYTE field_A2a;
@@ -2765,6 +2835,17 @@ namespace SonicMania
         DWORD Pan;
         WORD SpriteIndex;
         WORD SFX_Ring;
+    };
+    struct Obj_Shield : Object {
+        WORD SpriteIndex;
+        WORD SFX_BlueShield;
+        WORD SFX_BubbleShield;
+        WORD SFX_FireShield;
+        WORD SFX_LightningShield;
+        WORD SFX_InstaShield;
+        WORD SFX_BubbleBounce;
+        WORD SFX_FireDash;
+        WORD SFX_LightningJump;
     };
 
     struct Obj_Camera : Object
@@ -4180,5 +4261,14 @@ namespace SonicMania
         }
     }
 
+#pragma endregion
+
+#pragma region utils
+    inline int setBit(int value, char set, int pos)
+    {
+        value ^= (-set ^ value) & (1 << pos);
+        return value;
+    }
+    inline bool getBit(int b, int pos) { return (b >> pos & 1); }
 #pragma endregion
 }
