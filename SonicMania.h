@@ -50,6 +50,7 @@ namespace SonicMania
     struct Obj_Explosion;
     struct Obj_Spikes;
     struct Obj_Door;
+    struct Obj_Water;
     struct Obj_Button;
     struct Obj_StarPost;
     struct Obj_BreakableWall;
@@ -613,7 +614,7 @@ namespace SonicMania
         CreateSlot_Replace = -2,
     };
 
-    enum RSDK_ATTRIBUTETYPES : int {
+    enum AttributeTypes : int {
         ATTRIBUTE_UINT8   = 0,
         ATTRIBUTE_UINT16  = 1,
         ATTRIBUTE_UINT32  = 2,
@@ -628,6 +629,8 @@ namespace SonicMania
         ATTRIBUTE_COLOUR  = 0xB,
         ATTRIBUTE_UNKNOWN = 0xC
     };
+
+    enum PlayerHurtflags : int { PLAYER_NORMAL = 0, PLAYER_HURT = 1, PLAYER_DIE = 2, PLAYER_DROWN = 3 };
 
 #pragma endregion
 
@@ -1182,6 +1185,45 @@ namespace SonicMania
             ret
         }
     }
+    static int loc_Player_CheckCollisionTouch = baseAddress + 0x000C5FB0;
+    static __declspec(naked) int Player_CheckCollisionTouch(EntityPlayer *Player, Entity *Entity, Hitbox *EntityHitbox)
+    {
+        __asm
+        {
+            mov ecx, [ESP + 4]
+            mov edx, [ESP + 8]
+            push[ESP + 12]
+            call loc_Player_CheckCollisionTouch
+            add ESP, 4
+            ret
+        }
+    }
+    static int loc_Player_CheckCollisionBox = baseAddress + 0x000C6000;
+    static __declspec(naked) int Player_CheckCollisionBox(EntityPlayer *Player, Entity *Entity, Hitbox *EntityHitbox)
+    {
+        __asm
+        {
+            mov ecx, [ESP + 4]
+            mov edx, [ESP + 8]
+            push[ESP + 12]
+            call loc_Player_CheckCollisionBox
+            add ESP, 4
+            ret
+        }
+    }
+    static int loc_Player_CheckCollisionPlatform = baseAddress + 0x000C61D0;
+    static __declspec(naked) int Player_CheckCollisionPlatform(EntityPlayer *Player, Entity *Entity, Hitbox *EntityHitbox)
+    {
+        __asm
+        {
+            mov ecx, [ESP + 4]
+            mov edx, [ESP + 8]
+            push[ESP + 12]
+            call loc_Player_CheckCollisionPlatform  
+            add ESP, 4
+            ret
+        }
+    }
     FunctionPointer(int, CheckOnScreen, (Entity * Entity, void *Screen), 0x001D3FB0);
     FunctionPointer(int, CheckPosOnScreen, (Vector2 *Pos, Vector2 *Range), 0x001D4090);
     FunctionPointer(int, CheckObjectCollisionTouch, (Entity* ThisEntity, Hitbox* ThisHitbox, Entity* OtherEntity, Hitbox* OtherHitbox), 0x001BEB20);
@@ -1363,6 +1405,7 @@ namespace SonicMania
     DataPointer(Obj_StarPost*, OBJ_StarPost, 0x00AC672C);
     DataPointer(Obj_Button*, OBJ_Button, 0x00AC68BC);
     DataPointer(Obj_Door*, OBJ_Door, 0x00AC68BC);
+    DataPointer(Obj_Water*, OBJ_Water, 0x00AC6E3C);
     DataPointer(Obj_Spikes*, OBJ_Spikes, 0x00AC67BC);
     DataPointer(Obj_Explosion*, OBJ_Explosion, 0x00AC6D84);
     DataPointer(Obj_ScoreBonus*, OBJ_ScoreBonus, 0x00AC6D80);
@@ -1549,14 +1592,14 @@ namespace SonicMania
         /* 0x000000F8 */ DWORD Invincibility;
         /* 0x000000FC */ DWORD SpeedShoesTTL;
         /* 0x00000100 */ DWORD InvincibilityFrames;
-        /* 0x00000104 */ DWORD field_104; // For when hit
+        /* 0x00000104 */ DWORD ScrollDelay; 
         /* 0x00000108 */ DWORD Skidding;
         /* 0x0000010C */ DWORD Pushing;
         /* 0x00000110 */ BOOL Underwater;
         /* 0x00000114 */ DWORD GroundedStore;
         /* 0x00000118 */ BOOL IsUpSideDown;
         /* 0x0000011C */ DWORD Transforming;
-        /* 0x00000120 */ DWORD field_120;
+        /* 0x00000120 */ DWORD ForceTransform;
         /* 0x00000124 */ SuperState SuperState;
         /* 0x00000128 */ DWORD SuperSecondTimer;
         /* 0x0000012C */ DWORD SuperBlendAmount;
@@ -1564,8 +1607,8 @@ namespace SonicMania
         /* 0x00000134 */ DWORD InteractStatus; // TODO: Work out all the Statuses
         /* 0x00000138 */ DWORD ScoreBonus;
         /* 0x0000013C */ DWORD CameraOffset;
-        /* 0x00000140 */ DWORD dword140;
-        /* 0x00000144 */ DWORD dword144;
+        /* 0x00000140 */ DWORD KillFlagTriggerA;
+        /* 0x00000144 */ DWORD KillFlagTriggerB;
         /* 0x00000148 */ DWORD TopSpeed;
         /* 0x0000014C */ int Acceleration;
         /* 0x00000150 */ int Decceleration;
@@ -1578,15 +1621,16 @@ namespace SonicMania
         /* 0x0000016C */ int GlideSpeedStore;
         /* 0x00000170 */ int JumpStrength;
         /* 0x00000174 */ DWORD JumpCap;
-        /* 0x00000178 */ DWORD dword178;
-        /* 0x0000017C */ DWORD dword17C;
-        /* 0x00000180 */ DWORD dword180;
-        /* 0x00000184 */ DWORD dword184;
-        /* 0x00000188 */ DWORD dword188;
-        /* 0x0000018C */ DWORD dword18C;
+        /* 0x00000178 */ DWORD SensorX1;
+        /* 0x0000017C */ DWORD SensorX2;
+        /* 0x00000180 */ DWORD SensorX3;
+        /* 0x00000184 */ DWORD SensorX4;
+        /* 0x00000188 */ DWORD SensorX5;
+        /* 0x0000018C */ DWORD SensorY;
         /* 0x00000190 */ DWORD dword190;
-        /* 0x00000194 */ BYTE gap194[8];
-        /* 0x0000019C */ DWORD dword19C;
+        /* 0x00000194 */ DWORD dword194;
+        /* 0x00000198 */ DWORD dword198;
+        /* 0x0000019C */ DWORD UnknownState;
         /* 0x000001A0 */ InputStatus InputStatus;
         /* 0x000001A4 */ int ControllerID;
         /* 0x000001A8 */ DWORD dword1A8;
@@ -1603,8 +1647,8 @@ namespace SonicMania
         /* 0x000001D4 */ DWORD dword1D4;
         /* 0x000001D8 */ DWORD dword1D8;
         /* 0x000001DC */ DWORD dword1DC;
-        /* 0x000001E0 */ DWORD dword1E0;
-        /* 0x000001E4 */ DWORD dword1E4;
+        /* 0x000001E0 */ DWORD LeaderXPos;
+        /* 0x000001E4 */ DWORD LeaderYPos;
         /* 0x000001E8 */ DWORD KillFlag;
         /* 0x000001EC */ DWORD dword1EC;
         /* 0x000001F0 */ DWORD dword1F0;
@@ -1941,6 +1985,46 @@ namespace SonicMania
         /* 0x0000006C */ EntityAnimationData Animation;
         /* 0x00000084 */ DWORD dword84;
         /* 0x00000088 */ DWORD dword88;
+    };
+    struct EntityWater : Entity {
+        void (*State)(void);
+        void (*StateDraw)(void);
+        DWORD Type;
+        void *PlayerPtr;
+        DWORD field_68;
+        BYTE BubbleType1;
+        BYTE field_6D;
+        BYTE field_6E;
+        BYTE BubbleType2;
+        DWORD NumDuds;
+        DWORD CountdownID;
+        DWORD field_78;
+        Vector2 Size;
+        Vector2 Height;
+        DWORD Speed;
+        DWORD ButtonTag;
+        BYTE R;
+        BYTE G;
+        BYTE B;
+        BYTE HighPriority;
+        DWORD DestroyOnTrigger;
+        WORD word9C;
+        WORD word9E;
+        WORD wordA0;
+        WORD wordA2;
+        DWORD gapA4;
+        DWORD field_A8;
+        DWORD field_AC;
+        BYTE field_B0;
+        BYTE field_B1;
+        BYTE field_B2;
+        BYTE field_B3;
+        DWORD field_B4;
+        DWORD field_B8;
+        DWORD field_BC;
+        DWORD field_C0;
+        DWORD field_C4;
+        EntityAnimationData WaterData;
     };
     struct EntityUFOSphere : Entity
     {
@@ -3155,6 +3239,61 @@ namespace SonicMania
     struct Obj_Door : Object
     {
         //TODO: fill out later
+    };
+
+    struct Obj_Water : Object {
+        DWORD WaterLevel;
+        DWORD NewWaterLevel;
+        DWORD TargetWaterLevel;
+        DWORD WaterMoveSpeed;
+        void *field_14;
+        DWORD field_18;
+        DWORD field_1C;
+        DWORD field_20;
+        DWORD field_24;
+        DWORD field_28;
+        DWORD field_2C;
+        DWORD field_30;
+        void *field_34;
+        DWORD field_38;
+        DWORD field_3C;
+        DWORD field_40;
+        DWORD BubbleSizes[18];
+        WORD SpriteMappings;
+        WORD BigBubbleSprite;
+        WORD WakeSprite;
+        Hitbox Hitbox2;
+        Hitbox Hitbox;
+        WORD SFX_Splash;
+        WORD SFX_Breathe;
+        WORD SFX_Warning;
+        WORD SFX_DrownAlert;
+        WORD SFX_Drown;
+        WORD SFX_Skim;
+        WORD SFX_DNAGrab;
+        WORD SFX_DNABurst;
+        WORD SFX_WaterLevelL;
+        WORD SFX_WaterLevelR;
+        WORD gapB6;
+        DWORD field_B8;
+        DWORD field_BC;
+        WORD field_C0;
+        WORD field_C2;
+        DWORD field_C4;
+        DWORD field_C8;
+        DWORD field_CC;
+        BYTE field_D0;
+        BYTE field_D1;
+        WORD field_D2;
+        DWORD dwordD4;
+        DWORD Values1[4];
+        BYTE field_E8;
+        BYTE field_E9;
+        BYTE field_EA;
+        BYTE field_EB;
+        EntityAnimationData WakeData;
+        DWORD field_104;
+        DWORD field_108;
     };
 
 
