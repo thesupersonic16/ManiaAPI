@@ -1310,7 +1310,9 @@ namespace SonicMania
     FunctionPointer(__int16, GetLayerSize, (unsigned __int16 LayerID, Vector2* Size, DWORD PixelSize), 0x001E16E0);
 
     //Setting up Objects
-    FunctionPointer(__int16, CreateObj, (void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*EarlyUpdate)(void), void (*LateUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), DWORD a11, DWORD a12, void (*GetAttributes)(void)), 0x001D3090);
+    FunctionPointer(__int16, CreateObj, (void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*LateUpdate)(void), void (*StageUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), DWORD a11, DWORD a12, void (*GetAttributes)(void)), 0x001D3090);
+    // Creates an object container without an associated entity (for stuff like OBJ_SaveGame and etc)
+    FunctionPointer(int, CreateObjContainer, (void* ObjectStruct, const char* ObjectName, unsigned int ObjSize), 0x001D3170);
     ThiscallFunctionPointer(int, SetupObjects, (void* GameInfo), 0x001A6E20);
     FastcallFunctionPointer(int, GenHash, (byte* Hash, int len), 0x001CB620);
 
@@ -2894,12 +2896,12 @@ namespace SonicMania
         /* 0x00000000 */ BYTE Hash[0x10];
         /* 0x00000010 */ void (*Update)(void);
         /* 0x00000014 */ void (*LateUpdate)(void);
-        /* 0x00000018 */ void (*EarlyUpdate)(void);
+        /* 0x00000018 */ void (*StageUpdate)(void);
         /* 0x0000001C */ void (*Draw)(void);
         /* 0x00000020 */ void (*Startup)(void* subType);
         /* 0x00000024 */ void (*StageLoad)(void);
-        /* 0x00000028 */ DWORD a11; // /* 0x00000028 */ void (*a11)(void);
-        /* 0x00000028 */ DWORD a12; // /* 0x0000002C */ void (*a12)(void);
+        /* 0x00000028 */ void (*Unknown1)(void);
+        /* 0x0000002C */ void (*Unknown2)(void);
         /* 0x00000030 */ void (*GetAttributes)(void);
         /* 0x00000034 */ Object* Type;
         /* 0x00000038 */ DWORD EntitySize;
@@ -2909,7 +2911,7 @@ namespace SonicMania
     struct Object
     {
         WORD ObjectID;
-        BYTE EarlyUpdateFlag;
+        BYTE ObjectPriority;
         BYTE field_3;
     };
 
@@ -3785,14 +3787,15 @@ namespace SonicMania
         DWORD field_C;
         DWORD field_10;
         DWORD field_14;
-        DWORD field_18;
+        WORD ActiveSceneID;
+        WORD field_1A;
         DWORD field_1C;
         DWORD field_20;
         DWORD field_24;
-        DWORD field_28;
+        DWORD DebugMode;
         DWORD field_2C;
-        DWORD field_30;
-        DWORD field_34;
+        DWORD StageRestarted;
+        DWORD ModeFilter;
         BYTE StageMilliseconds;
         BYTE StageSeconds;
         BYTE StageMinutes;
@@ -4306,33 +4309,22 @@ namespace SonicMania
             }
 
             if (match) {
-                memset(obj->Hash, 0x00, 0x10);
-                obj->Type = 0;
-                obj->EntitySize = 0;
-                obj->ObjSize = 0;
-                obj->Update = 0;
-                obj->LateUpdate = 0;
-                obj->EarlyUpdate = 0;
-                obj->Draw = 0;
-                obj->Startup = 0;
-                obj->StageLoad = 0;
-                obj->a11 = 0;
-                obj->GetAttributes = 0;
-                obj->a12 = 0;
+                memset(*obj, 0, sizeof(ObjectInfo));
                 return i;
             }
         }
         return -1;
     }
 
-    inline int CreateObject(int objID, void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*EarlyUpdate)(void), void (*LateUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), DWORD a11, DWORD a12, void (*GetAttributes)(void)) {
-        if (objID == -1)
-            return CreateObj(ObjectStruct, ObjectName, EntitySize, ObjSize, Update, EarlyUpdate, LateUpdate, Draw, Setup, StageLoad, a11, a12, GetAttributes);
-        if (objID == -2)
+    inline int CreateObject(int objID, void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*LateUpdate)(void), void (*StageUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), void (*Unknown1)(void), void (*Unknown2)(void), void (*GetAttributes)(void)) {
+        if (objID == CreateSlot_New)
+            return CreateObj(ObjectStruct, ObjectName, EntitySize, ObjSize, Update, LateUpdate, StageUpdate, Draw, Setup, StageLoad, Unknown1, Unknown2, GetAttributes);
+        if (objID == CreateSlot_Replace)
             objID = UnlinkObject(ObjectName);
 
         if (objID < 0x400) {
             ObjectInfo* obj = &ObjectList[objID];
+            memset(*obj, 0, sizeof(ObjectInfo));
             byte buffer[0x11];
             memset(buffer, 0x00, 0x11 * sizeof(byte));
             GenerateHash(ObjectName, buffer);
@@ -4343,13 +4335,34 @@ namespace SonicMania
             obj->ObjSize = ObjSize;
             obj->Update = Update;
             obj->LateUpdate = LateUpdate;
-            obj->EarlyUpdate = EarlyUpdate;
+            obj->StageUpdate = StageUpdate;
             obj->Draw = Draw;
             obj->Startup = Setup;
             obj->StageLoad = StageLoad;
-            obj->a11 = a11;
-            obj->a12 = a12;
+            obj->Unknown1 = Unknown1;
+            obj->Unknown2 = Unknown2;
             obj->GetAttributes = GetAttributes;
+            return ObjectCount;
+        }
+        return ObjectCount;
+    }
+
+    inline int CreateObjectContainer(int objID, void* ObjectStruct, const char* ObjectName, unsigned int ObjSize) {
+        if (objID == CreateSlot_New)
+            return CreateObjContainer(ObjectStruct, ObjectName, ObjSize);
+        if (objID == CreateSlot_Replace)
+            objID = UnlinkObject(ObjectName);
+
+        if (objID < 0x400) {
+            ObjectInfo* obj = &ObjectList[objID];
+            memset(*obj, 0, sizeof(ObjectInfo));
+            byte buffer[0x11];
+            memset(buffer, 0x00, 0x11 * sizeof(byte));
+            GenerateHash(ObjectName, buffer);
+
+            memcpy(obj->Hash, buffer, 0x10);
+            obj->Type = (Object*)ObjectStruct;
+            obj->ObjSize = ObjSize;
             return ObjectCount;
         }
         return ObjectCount;
