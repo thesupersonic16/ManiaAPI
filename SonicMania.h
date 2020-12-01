@@ -1310,7 +1310,7 @@ namespace SonicMania
     FunctionPointer(__int16, GetLayerSize, (unsigned __int16 LayerID, Vector2* Size, DWORD PixelSize), 0x001E16E0);
 
     //Setting up Objects
-    FunctionPointer(__int16, CreateObj, (void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*LateUpdate)(void), void (*StageUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), DWORD a11, DWORD a12, void (*GetAttributes)(void)), 0x001D3090);
+    FunctionPointer(__int16, CreateObj,(void *ObjectStruct, const char *ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*LateUpdate)(void), void (*StageUpdate)(void), void (*Draw)(void), void (*Setup)(void *Subtype), void (*StageLoad)(void), void (*Unknown1)(void),void (*Unknown2)(void), void (*GetAttributes)(void)), 0x001D3090);
     // Creates an object container without an associated entity (for stuff like OBJ_SaveGame and etc)
     FunctionPointer(int, CreateObjContainer, (void* ObjectStruct, const char* ObjectName, unsigned int ObjSize), 0x001D3170);
     ThiscallFunctionPointer(int, SetupObjects, (void* GameInfo), 0x001A6E20);
@@ -4309,7 +4309,7 @@ namespace SonicMania
             }
 
             if (match) {
-                memset(*obj, 0, sizeof(ObjectInfo));
+                memset(obj, 0, sizeof(ObjectInfo));
                 return i;
             }
         }
@@ -4324,7 +4324,7 @@ namespace SonicMania
 
         if (objID < 0x400) {
             ObjectInfo* obj = &ObjectList[objID];
-            memset(*obj, 0, sizeof(ObjectInfo));
+            memset(obj, 0, sizeof(ObjectInfo));
             byte buffer[0x11];
             memset(buffer, 0x00, 0x11 * sizeof(byte));
             GenerateHash(ObjectName, buffer);
@@ -4355,7 +4355,7 @@ namespace SonicMania
 
         if (objID < 0x400) {
             ObjectInfo* obj = &ObjectList[objID];
-            memset(*obj, 0, sizeof(ObjectInfo));
+            memset(obj, 0, sizeof(ObjectInfo));
             byte buffer[0x11];
             memset(buffer, 0x00, 0x11 * sizeof(byte));
             GenerateHash(ObjectName, buffer);
