@@ -1025,18 +1025,31 @@ namespace SonicMania
         /* 0x00000078 */ ControllerInput Start;
         /* 0x00000084 */ ControllerInput Select;
     };
+    struct SpriteFrame {
+        /* 00000000 */ WORD SprX;
+        /* 00000002 */ WORD SprY;
+        /* 00000004 */ WORD Width;
+        /* 00000006 */ WORD Height;
+        /* 00000008 */ WORD PivotY;
+        /* 0000000A */ WORD PivotX;
+        /* 0000000C */ WORD Delay;
+        /* 0000000E */ WORD ID;
+        /* 00000010 */ BYTE SheetID;
+        /* 00000011 */ BYTE HitboxCnt;
+        /* 00000012 */ Hitbox Hitboxes[8];
+    };
     struct __declspec(align(4)) EntityAnimationData
     {
-        /* 0x00000000 */ void* Animationptr;
+        /* 0x00000000 */ SpriteFrame* FramePtrs;
         /* 0x00000004 */ int CurrentFrame;
         /* 0x00000008 */ short CurrentAnimation;
         /* 0x0000000A */ short LastAnimation;
         /* 0x0000000C */ short Speed;
-        /* 0x0000000E */ short Unknown0E;
+        /* 0x0000000E */ short Timer;
         /* 0x00000010 */ short Duration;
-        /* 0x00000012 */ short FrameCount; // Frame count + 1?
-        /* 0x00000014 */ BYTE unknown14;
-        /* 0x00000015 */ BYTE UserFrameCount; // I Added This Normally Unknown
+        /* 0x00000012 */ short FrameCount;
+        /* 0x00000014 */ BYTE LoopIndex;
+        /* 0x00000015 */ BYTE RotationFlag;
     };
     struct struct_Timer
     { // Not a proper struct, I just want the timer
@@ -1090,9 +1103,9 @@ namespace SonicMania
         CollisionSensor Sensors[5];
     };
 
-    struct Matrix
+    struct Matrix4x4
     {
-        int Values[16];
+        int Values[4][4];
     };
 
     struct Tile
@@ -1276,7 +1289,6 @@ namespace SonicMania
     FunctionPointer(int, DrawSprite, (EntityAnimationData* AnimData, Vector2* Position, BOOL ScreenRelative), 0x001B3B00);
     FunctionPointer(void, DrawLine, (int X1, int Y1, int X2, int Y2, unsigned int Colour, signed int Alpha, int InkEffect, BOOL ScreenRelative), 0x001D8DF0);
     FunctionPointer(void*, DrawSpriteRotoZoom, (int XPos, int YPos, int PivotX, int PivotY, int Width, int Height, int SprX, int SprY, signed int ScaleX, signed int ScaleY, int Direction, __int16 Rotation, int InkEffect, signed int Alpha, int SheetID), 0x001D7260); //Internal Call From "DrawSprite"
-    FunctionPointer(void*, DrawMesh, (ushort AnimationID, ushort ModelID, char a3, DWORD* a4, DWORD* a5, int Colour), 0x001DEF00);
     FunctionPointer(short, LoadAnimation, (const char* filename, Scope scope), 0x001B1FA0);
     FunctionPointer(char, LoadGif, (int a1, char* filepath, int buffer), 0x001CBA90);
 
@@ -1316,13 +1328,25 @@ namespace SonicMania
     ThiscallFunctionPointer(int, SetupObjects, (void* GameInfo), 0x001A6E20);
     FastcallFunctionPointer(int, GenHash, (byte* Hash, int len), 0x001CB620);
 
-    // MATRICIES - Untested
-    FunctionPointer(void*, MatrixTranslateXYZ, (Matrix* Matrix, int X, int Y, int Z), 0x001DD3F0);
-    FunctionPointer(void*, MatrixRotateX, (Matrix* Matrix, ushort RotationX), 0x001DD470);
-    FunctionPointer(void*, MatrixRotateY, (Matrix* Matrix, ushort RotationY), 0x001DD500);
-    FunctionPointer(void*, MatrixRotateZ, (Matrix* Matrix, ushort RotationZ), 0x001DD590);
-    FunctionPointer(void*, MatrixInvert, (unsigned int a1, Matrix* Matrix), 0x001DD770);
-    FunctionPointer(void*, MatrixMultiply, (Matrix* Matrix1, Matrix* Matrix2), 0x001DE010);
+    // 3D
+    FunctionPointer(signed int, SetModelAnimation, (unsigned __int16 ModelAnimIndex, EntityAnimationData* AnimData, __int16 AnimSpeed, char LoopIndex, int forceApply, unsigned __int16 FrameID), 0x001DF590);
+    FunctionPointer(int, SetIdentityMatrix, (Matrix4x4* Matrix), 0x001DCF40);
+    FunctionPointer(int, MatrixTranslateXYZ, (Matrix4x4* Matrix, int X, int Y, int Z, BOOL SetIdentity), 0x001DD360);
+    FunctionPointer(int, MatrixScaleXYZ, (Matrix4x4* Matrix, int X, int Y, int Z), 0x001DD3F0);
+    FunctionPointer(int, MatrixRotateX, (Matrix4x4* Matrix, ushort RotationX), 0x001DD470);
+    FunctionPointer(int, MatrixRotateY, (Matrix4x4* Matrix, ushort RotationY), 0x001DD500);
+    FunctionPointer(int, MatrixRotateZ, (Matrix4x4* Matrix, ushort RotationZ), 0x001DD590);
+    FunctionPointer(int, MatrixRotateXYZ, (Matrix4x4* Matrix, int X, int Y, int Z), 0x001DD620);
+    FunctionPointer(int, MatrixInvert, (Matrix* Dest, Matrix* Matrix), 0x001DD770);
+    FunctionPointer(int, MatrixMultiply, (Matrix4x4* Matrix1, Matrix* Matrix2), 0x001DCFC0);
+    //if drawing meshes, call either of these two, THEN call draw3DScene
+    FunctionPointer(__int16, SetupMesh, (unsigned __int16 ModelID, unsigned __int16 SceneID, char DrawMode, Matrix4x4* Matrix1, Matrix4x4* Matrix2, int Colour), 0x001DEF00); 
+    FunctionPointer(__int16, SetupMeshAnimation, (unsigned __int16 AnimationID, unsigned __int16 SceneID, EntityAnimationData* animData, char DrawMode, Matrix4x4* Matrix1, Matrix4x4* Matrix2, int Colour), 0x001DF620);
+    FunctionPointer(int, Draw3DScene, (unsigned __int16 SceneID), 0x001DFEF0);
+    FunctionPointer(__int16, Init3DScene, (unsigned __int16 SceneID), 0x001DEE50);
+    FunctionPointer(unsigned __int16, Scene3D_Unknown1, (unsigned __int16 SceneID, unsigned __int8 X, unsigned __int8 Y, unsigned __int8 Z), 0x001DEE70);
+    FunctionPointer(unsigned __int16, Scene3D_Unknown2, (unsigned __int16 SceneID, unsigned __int8 X, unsigned __int8 Y, unsigned __int8 Z), 0x001DEEA0);
+    FunctionPointer(unsigned __int16, Scene3D_Unknown3, (unsigned __int16 SceneID, unsigned __int8 X, unsigned __int8 Y, unsigned __int8 Z), 0x001DEED0);
 
     // IO
     ThiscallFunctionPointer(bool, LoadFile, (FileInfo* fileInfo, const char* filename, int streaming), 0x001C53C0);
@@ -1494,7 +1518,7 @@ namespace SonicMania
         /* 0x00000024 */ int Alpha;             // Transparency
         /* 0x00000028 */ int Rotation;
         /* 0x0000002C */ int Speed;
-        /* 0x00000030 */ DWORD field_30;
+        /* 0x00000030 */ int Depth; //Used in 3D Scenes such as UFO & Pinball
         /* 0x00000034 */ WORD field_34;
         /* 0x00000036 */ short ObjectID;
         /* 0x00000038 */ BOOL InBounds;
