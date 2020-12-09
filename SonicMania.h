@@ -1336,7 +1336,7 @@ namespace SonicMania
     FunctionPointer(int, MatrixRotateY, (Matrix4x4* Matrix, ushort RotationY), 0x001DD500);
     FunctionPointer(int, MatrixRotateZ, (Matrix4x4* Matrix, ushort RotationZ), 0x001DD590);
     FunctionPointer(int, MatrixRotateXYZ, (Matrix4x4* Matrix, int X, int Y, int Z), 0x001DD620);
-    FunctionPointer(int, MatrixInvert, (Matrix* Dest, Matrix4x4* Matrix), 0x001DD770);
+    FunctionPointer(int, MatrixInvert, (Matrix4x4 * Dest, Matrix4x4 *Matrix), 0x001DD770);
     FunctionPointer(int, MatrixMultiply, (Matrix4x4* Matrix1, Matrix4x4* Matrix2), 0x001DCFC0);
     //if drawing meshes, call either of these two, THEN call draw3DScene
     FunctionPointer(__int16, SetupMesh, (unsigned __int16 ModelID, unsigned __int16 SceneID, char DrawMode, Matrix4x4* Matrix1, Matrix4x4* Matrix2, int Colour), 0x001DEF00); 
