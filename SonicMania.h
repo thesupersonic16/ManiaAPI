@@ -53,6 +53,7 @@ namespace SonicMania
     struct Obj_Water;
     struct Obj_Button;
     struct Obj_StarPost;
+    struct Obj_GameOver;
     struct Obj_BreakableWall;
     struct Obj_LRZBreakableWall;
     struct Obj_CollapsingPlatform;
@@ -1290,6 +1291,8 @@ namespace SonicMania
     FunctionPointer(void*, DrawSpriteRotoZoom, (int XPos, int YPos, int PivotX, int PivotY, int Width, int Height, int SprX, int SprY, signed int ScaleX, signed int ScaleY, int Direction, __int16 Rotation, int InkEffect, signed int Alpha, int SheetID), 0x001D7260); //Internal Call From "DrawSprite"
     FunctionPointer(short, LoadAnimation, (const char* filename, Scope scope), 0x001B1FA0);
     FunctionPointer(char, LoadGif, (int a1, char* filepath, int buffer), 0x001CBA90);
+    FunctionPointer(SpriteFrame*, GetFrame, (unsigned __int16 sprIndex, unsigned __int16 anim, int frame), 0x001B38D0); //Can be used to modify frame data and etc, if ID is needed the below func is recommended instead
+    FunctionPointer(__int16, GetFrameID, (EntityAnimationData* animData), 0x001B3960); //returns "ID" value of the current frame, useful for custom animation behaviours
 
     // Palettes
     FunctionPointer(int, SetPaletteEntry, (char PaletteID, unsigned char Index, int Color), 0x001D5020);
@@ -1428,6 +1431,7 @@ namespace SonicMania
     DataPointer(Obj_LRZBreakableWall*, OBJ_LRZBreakableWall, 0x00AC6C80);
     DataPointer(Obj_BreakableWall*, OBJ_BreakableWall, 0x00AC6A34);
     DataPointer(Obj_StarPost*, OBJ_StarPost, 0x00AC672C);
+    DataPointer(Obj_GameOver*, OBJ_GameOver, 0x00AC6A60);
     DataPointer(Obj_Button*, OBJ_Button, 0x00AC68BC);
     DataPointer(Obj_Door*, OBJ_Door, 0x00AC68BC);
     DataPointer(Obj_Water*, OBJ_Water, 0x00AC6E3C);
@@ -1629,7 +1633,7 @@ namespace SonicMania
         /* 0x00000128 */ DWORD SuperSecondTimer;
         /* 0x0000012C */ DWORD SuperBlendAmount;
         /* 0x00000130 */ DWORD SuperBlendDirection;
-        /* 0x00000134 */ DWORD InteractStatus; // TODO: Work out all the Statuses
+        /* 0x00000134 */ DWORD Sidekick;
         /* 0x00000138 */ DWORD ScoreBonus;
         /* 0x0000013C */ DWORD CameraOffset;
         /* 0x00000140 */ DWORD KillFlagTriggerA;
@@ -3254,6 +3258,12 @@ namespace SonicMania
     struct Obj_StarPost : Object
     {
         //TODO: fill out later
+    };
+
+    struct Obj_GameOver : Object
+    {
+        int dword4;
+        WORD SpriteIndex;
     };
 
     struct Obj_Button : Object
