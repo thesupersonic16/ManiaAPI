@@ -1327,7 +1327,7 @@ namespace SonicMania
     FunctionPointer(__int16, GetLayerSize, (unsigned __int16 LayerID, Vector2* Size, DWORD PixelSize), 0x001E16E0);
 
     //Setting up Objects
-    FunctionPointer(__int16, CreateObj,(void *ObjectStruct, const char *ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*LateUpdate)(void), void (*StageUpdate)(void), void (*Draw)(void), void (*Setup)(void *Subtype), void (*StageLoad)(void), void (*Unknown1)(void),void (*Unknown2)(void), void (*GetAttributes)(void)), 0x001D3090);
+    FunctionPointer(__int16, CreateObj,(void *ObjectStruct, const char *ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*LateUpdate)(void), void (*StageUpdate)(void), void (*Draw)(void), void (*Setup)(void *Subtype), void (*StageLoad)(void), void (*EditorLoad)(void),void (*EditorDraw)(void), void (*GetAttributes)(void)), 0x001D3090);
     // Creates an object container without an associated entity (for stuff like OBJ_SaveGame and etc)
     FunctionPointer(int, CreateObjContainer, (void* ObjectStruct, const char* ObjectName, unsigned int ObjSize), 0x001D3170);
     ThiscallFunctionPointer(int, SetupObjects, (void* GameInfo), 0x001A6E20);
@@ -3059,8 +3059,8 @@ namespace SonicMania
         /* 0x0000001C */ void (*Draw)(void);
         /* 0x00000020 */ void (*Startup)(void* subType);
         /* 0x00000024 */ void (*StageLoad)(void);
-        /* 0x00000028 */ void (*Unknown1)(void);
-        /* 0x0000002C */ void (*Unknown2)(void);
+        /* 0x00000028 */ void (*EditorLoad)(void);
+        /* 0x0000002C */ void (*EditorDraw)(void);
         /* 0x00000030 */ void (*GetAttributes)(void);
         /* 0x00000034 */ Object* Type;
         /* 0x00000038 */ DWORD EntitySize;
@@ -4481,7 +4481,7 @@ namespace SonicMania
         return -1;
     }
 
-    inline int CreateObject(int objID, void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*LateUpdate)(void), void (*StageUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), void (*Unknown1)(void), void (*Unknown2)(void), void (*GetAttributes)(void)) {
+    inline int CreateObject(int objID, void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*LateUpdate)(void), void (*StageUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), void (*EditorLoad)(void), void (*EditorDraw)(void), void (*GetAttributes)(void)) {
         if (objID == CreateSlot_New)
             return CreateObj(ObjectStruct, ObjectName, EntitySize, ObjSize, Update, LateUpdate, StageUpdate, Draw, Setup, StageLoad, Unknown1, Unknown2, GetAttributes);
         if (objID == CreateSlot_Replace)
@@ -4504,8 +4504,8 @@ namespace SonicMania
             obj->Draw = Draw;
             obj->Startup = Setup;
             obj->StageLoad = StageLoad;
-            obj->Unknown1 = Unknown1;
-            obj->Unknown2 = Unknown2;
+            obj->EditorLoad = EditorLoad;
+            obj->EditorDraw = EditorDraw;
             obj->GetAttributes = GetAttributes;
             return ObjectCount;
         }
