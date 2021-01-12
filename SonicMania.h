@@ -85,6 +85,7 @@ namespace SonicMania
     struct GameOptions;
 
     //Misc
+    struct TextInfo;
     struct Hitbox;
     struct FileInfo;
     struct ObjectInfo;
@@ -1005,6 +1006,11 @@ namespace SonicMania
 
 
     };
+    struct TextInfo {
+        WORD* Text;
+        WORD TextLength;
+        WORD Length;
+    };
     struct Hitbox
     {
         short Left;
@@ -1255,15 +1261,12 @@ namespace SonicMania
     FunctionPointer(char, GetTileBehaviour, (__int16 TileXPos, unsigned __int8 TileYPos), 0x001C23C0);
     FastcallFunctionPointer(int, Itembox_Break, (EntityItemBox* ItemBox, EntityPlayer* Player), 0xA9930);
 
-    // Unknown Function Ptrs (that are used and needed)
-    FunctionPointer(int, RSDK_Unknown45, (), 0x00AA7744);
-
     // Audio
     FastcallFunctionPointer(void, SetupMusic, (int slot, const char* filePath, int loopStart), 0x00002AD0);
     FunctionPointer(int, PlayMusic, (const char* filePath, int slot, int a3, int loopstart, bool loop), 0x001BC640);
     FunctionPointer(int, PlaySoundFX, (short SoundFXID, signed int a2, unsigned __int8 a3), 0x001BC390);
     FunctionPointer(short, GetSoundFXID, (const char* path), 0x001BC2F0);
-    FunctionPointer(void, ChangeMusicSpeed, (int slot, float volume, float Channelbalance, float PlaybackSpeed), 0x001BC830);
+    FunctionPointer(void, SetSoundAttributes, (int slot, float volume, float Pan, float PlaybackSpeed), 0x001BC830);
 
     // Entity
     FunctionPointer(bool, SetSpriteAnimation, (short spriteIndex, short animationID, EntityAnimationData* animationData, bool forceApply, short frameID), 0x001B35E0);
@@ -1355,6 +1358,135 @@ namespace SonicMania
     ThiscallFunctionPointer(bool, DecryptBytes, (FileInfo* fileInfo, void* Buffer, int BufferSize), 0x001C5690);
     FunctionPointer(int, TrySaveUserFile, (const char* filename, void* buffer, unsigned int bufSize, int(__cdecl* setStatus)(int), unsigned int a5), 0x001BE010);
     FunctionPointer(int, TryLoadUserFile, (const char* filename, void* buffer, unsigned int bufSize, int(__cdecl* setStatus)(int)), 0x001BDFF0);
+
+    //Function Table, these haven't been tested properly, use at own risk
+    FunctionPointer(int, RSDK_GetConfirmButtonFlip, (void), 0x00AA7644);
+    FunctionPointer(int, RSDK_Unknown2, (), 0x00AA7648);
+    FunctionPointer(int, RSDK_Unknown3, (void), 0x00AA764C);
+    FunctionPointer(int, RSDK_Unknown4, (DWORD), 0x00AA7650);
+    FunctionPointer(int, RSDK_CheckDLC, (DWORD dlcID), 0x00AA7654); //0 is plus
+    FunctionPointer(int, RSDK_Unknown5, (DWORD), 0x00AA7658);
+    FunctionPointer(int, RSDK_UnlockAchievement, (char* Name), 0x00AA765C);
+    FunctionPointer(int, RSDK_Unknown6, (DWORD), 0x00AA7664);
+    FunctionPointer(int, RSDK_Unknown7, (void), 0x00AA7668);
+    FunctionPointer(int, RSDK_Unknown8, (DWORD, DWORD), 0x00AA766C);
+    FunctionPointer(int, RSDK_Unknown9, (DWORD, DWORD, DWORD), 0x00AA7670);
+    FunctionPointer(int, RSDK_Unknown10, (void), 0x00AA7674);
+    FunctionPointer(int, RSDK_Unknown11, (void), 0x00AA7678);
+    FunctionPointer(int, RSDK_Unknown12, (DWORD, DWORD, DWORD), 0x00AA7680);
+    FunctionPointer(int, RSDK_Unknown13, (DWORD), 0x00AA7688);
+    FunctionPointer(int, RSDK_PossiblyGetStrings, (DWORD, DWORD), 0x00AA768C);
+    FunctionPointer(int, RSDK_Unknown14, (DWORD), 0x00AA7690);
+    FunctionPointer(int, RSDK_Unknown15, (DWORD), 0x00AA7698);
+    FunctionPointer(int, RSDK_Unknown16, (void), 0x00AA769C);
+    FunctionPointer(int, RSDK_Unknown17, (void), 0x00AA76A0);
+    FunctionPointer(int, RSDK_Unknown18, (void), 0x00AA76A4);
+    FunctionPointer(int, RSDK_Unknown19, (DWORD), 0x00AA76A8);
+    FunctionPointer(int, RSDK_Unknown20, (void), 0x00AA76AC);
+    FunctionPointer(int, RSDK_Unknown21, (void), 0x00AA76B0);
+    FunctionPointer(int, RSDK_Unknown22, (void), 0x00AA76B4);
+    FunctionPointer(int, RSDK_Unknown23, (void), 0x00AA76B8);
+    FunctionPointer(int, RSDK_Unknown24, (void), 0x00AA76BC);
+    FunctionPointer(int, RSDK_Unknown25, (void), 0x00AA76C4);
+    FunctionPointer(int, RSDK_Unknown26, (void), 0x00AA76C8);
+    FunctionPointer(int, RSDK_Unknown27, (DWORD), 0x00AA76CC);
+    FunctionPointer(int, RSDK_Unknown28, (void), 0x00AA76D0);
+    FunctionPointer(int, RSDK_DeleteUserFile, (_DWORD, _DWORD), 0x00AA76DC);
+    FunctionPointer(int, RSDK_AddUserDBEntry, (const char* filename, int value1, const char* valueName1, int value2, const char* valueName2, int value3, const char* valueName3, int value4, const char* valueName4, _DWORD, const char* valueName5, int value5, const char* valueName6, int value6), 0x00AA76E0);
+    FunctionPointer(int, RSDK_OpenUserDB, (const char* filename, int(__cdecl* SetStatus)(int statusCode), _DWORD), 0x00AA76E4);
+    FunctionPointer(int, RSDK_SaveUserDB, (const char* filename, int(__cdecl* SetStatus)(int statusCode)), 0x00AA76E8);
+    FunctionPointer(int, RSDK_Unknown30, (DWORD), 0x00AA76EC);
+    FunctionPointer(int, RSDK_Unknown31, (DWORD*), 0x00AA76F4);
+    FunctionPointer(int, RSDK_Unknown32, (DWORD), 0x00AA76F8);
+    FunctionPointer(int, RSDK_Unknown33, (DWORD, DWORD, DWORD, DWORD), 0x00AA76FC);
+    FunctionPointer(int, RSDK_Unknown34, (DWORD, DWORD, DWORD, DWORD), 0x00AA7700);
+    FunctionPointer(int, RSDK_Unknown35, (DWORD*), 0x00AA7704);
+    FunctionPointer(int, RSDK_Unknown36, (DWORD, DWORD), 0x00AA7708);
+    FunctionPointer(int, RSDK_Unknown37, (DWORD), 0x00AA770C);
+    FunctionPointer(int, RSDK_Unknown38, (int tableID, int rowID, int unkValue, const char* valueName, int value), 0x00AA7710);
+    FunctionPointer(int, RSDK_Unknown39, (DWORD, DWORD, DWORD, DWORD, DWORD), 0x00AA7714);
+    FunctionPointer(int, RSDK_AddUserDB, (DWORD, DWORD), 0x00AA7718);
+    FunctionPointer(int, RSDK_Unknown40, (DWORD, DWORD), 0x00AA771C);
+    FunctionPointer(int, RSDK_Unknown41, (DWORD, DWORD, DWORD, DWORD, DWORD, const char*, ...), 0x00AA7720);
+    FunctionPointer(int, RSDK_Unknown42, (DWORD, DWORD), 0x00AA7724);
+    FunctionPointer(int, RSDK_Unknown43, (DWORD), 0x00AA7728);
+    FunctionPointer(int, RSDK_ClearStruct, (DWORD, DWORD), 0x00AA7730);
+    FunctionPointer(int, RSDK_Unknown45, (void), 0x00AA7744);
+    FunctionPointer(int, RSDK_GetEntityCount, (DWORD, DWORD), 0x00AA7754);
+    FunctionPointer(int, RSDK_Unknown47, (DWORD, DWORD), 0x00AA775C);
+    FunctionPointer(int, RSDK_CopyEntity, (DWORD, DWORD), 0x00AA776C);
+    FunctionPointer(int, RSDK_AddDrawListRef, (DWORD, DWORD), 0x00AA7778);
+    FunctionPointer(int, RSDK_Unknown50, (DWORD, DWORD), 0x00AA777C);
+    FunctionPointer(int, RSDK_Unknown51, (DWORD, DWORD), 0x00AA7780);
+    FunctionPointer(int, RSDK_SetGameMode, (int gameMode), 0x00AA7788);
+    FunctionPointer(int, RSDK_Unknown53, (DWORD), 0x00AA778C);
+    FunctionPointer(int, RSDK_CheckValidScene, (void), 0x00AA7790);
+    FunctionPointer(int, RSDK_CheckStageFolder, (const char* FolderName), 0x00AA7794);
+    FunctionPointer(int, RSDK_InitSceneLoad, (void), 0x00AA7798);
+    FunctionPointer(int, RSDK_GetObjectIDByName, (char* Name), 0x00AA779C);
+    FunctionPointer(int, RSDK_Unknown57, (void), 0x00AA77A0);
+    FunctionPointer(int, RSDK_Unknown58, (DWORD, DWORD, DWORD, DWORD), 0x00AA77A4);
+    FunctionPointer(int, RSDK_GetSettingsValue, (int valueID), 0x00AA77A8);
+    FunctionPointer(int, RSDK_SetSettingsValue, (int valueID, int value), 0x00AA77AC);
+    FunctionPointer(int, RSDK_ResizeWindow, (void), 0x00AA77B0);
+    FunctionPointer(int, RSDK_Sin1024, (WORD angle), 0x00AA77B4);
+    FunctionPointer(int, RSDK_Cos1024, (WORD angle), 0x00AA77B8);
+    FunctionPointer(int, RSDK_Sin512, (WORD angle), 0x00AA77C8);
+    FunctionPointer(int, RSDK_Cos512, (WORD angle), 0x00AA77CC);
+    FunctionPointer(int, RSDK_Sin256, (BYTE angle), 0x00AA77DC);
+    FunctionPointer(int, RSDK_Cos256, (BYTE angle), 0x00AA77E0);
+    FunctionPointer(int, RSDK_Rand, (int min, int max), 0x00AA77F0);
+    FunctionPointer(int, RSDK_Random, (int min, int max, int key), 0x00AA77F4);
+    FunctionPointer(int, RSDK_SetRandomKey, (int key), 0x00AA77F8);
+    FunctionPointer(int, RSDK_ATan2, (int X, int Y), 0x00AA77FC);
+    FunctionPointer(int, RSDK_SetText, (TextInfo* TextInfo, char* Text, DWORD OverrideLength), 0x00AA7828);
+    FunctionPointer(int, RSDK_Unknown64, (DWORD, DWORD), 0x00AA782C);
+    FunctionPointer(int, RSDK_Unknown65, (DWORD, DWORD), 0x00AA7830);
+    FunctionPointer(int, RSDK_Unknown66, (DWORD, DWORD), 0x00AA7834);
+    FunctionPointer(int, RSDK_Unknown67, (DWORD, DWORD), 0x00AA7838);
+    FunctionPointer(int, RSDK_LoadStrings, (DWORD, DWORD, DWORD), 0x00AA783C);
+    FunctionPointer(int, RSDK_Unknown68, (DWORD, DWORD, DWORD, DWORD), 0x00AA7840);
+    FunctionPointer(int, RSDK_CopyString, (char* dst, char* src), 0x00AA7844);
+    FunctionPointer(int, RSDK_Unknown69, (DWORD, DWORD, DWORD), 0x00AA7848);
+    FunctionPointer(int, RSDK_Unknown70, (DWORD, DWORD, DWORD, DWORD, DWORD), 0x00AA784C);
+    FunctionPointer(int, RSDK_Unknown71, (DWORD, DWORD), 0x00AA7850);
+    FunctionPointer(int, RSDK_Unknown72, (DWORD, DWORD, DWORD, DWORD, DWORD), 0x00AA7858);
+    FunctionPointer(int, RSDK_Unknown73, (DWORD, DWORD, DWORD, DWORD, DWORD), 0x00AA785C);
+    FunctionPointer(int, RSDK_SetLimitedFade, (int DestPaletteID, int SrcPaletteA, int SrcPaletteB, int BlendAmount, int StartIndex, int EndIndex), 0x00AA7884);
+    FunctionPointer(int, RSDK_DrawQuad, (Vector2* Points, int PointCount, int Red, int Green, int Blue, signed int Alpha, InkEffect InkEffect), 0x00AA789C);
+    FunctionPointer(int, RSDK_DrawQuadTextured, (Vector2* VertexPositions, Vector2* VertexUVs, int FaceCount, signed int Alpha, InkEffect InkEffect), 0x00AA78A0);
+    FunctionPointer(int, RSDK_DrawUnknown, (unsigned __int16 SpriteIndex, _DWORD, int Alpha), 0x00AA78A8);
+    FunctionPointer(int, RSDK_DrawText, (_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD), 0x00AA78AC);
+    FunctionPointer(int, RSDK_DrawUnknown2, (_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD), 0x00AA78B0);
+    FunctionPointer(int, RSDK_SetPaletteThing, (_DWORD, _DWORD, _DWORD, _DWORD), 0x00AA78BC);
+    FunctionPointer(int, RSDK_SetSpriteString, (_DWORD, _DWORD, _DWORD), 0x00AA78F8);
+    FunctionPointer(int, RSDK_Unknown82, (int SpriteIndex, int AnimListID, unsigned __int16* Text, _DWORD, _DWORD, _DWORD), 0x00AA790C);
+    FunctionPointer(int, RSDK_Unknown84, (_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD), 0x00AA7928);
+    FunctionPointer(int, RSDK_Unknown85, (_DWORD), 0x00AA792C);
+    FunctionPointer(int, RSDK_Unknown86, (_DWORD), 0x00AA7930);
+    FunctionPointer(int, RSDK_Unknown91, (_DWORD), 0x00AA7974);
+    FunctionPointer(int, RSDK_Unknown92, (_DWORD), 0x00AA7978);
+    FunctionPointer(int, RSDK_Unknown93, (_DWORD), 0x00AA797C);
+    FunctionPointer(int, RSDK_Unknown94, (_DWORD), 0x00AA7980);
+    FunctionPointer(int, RSDK_Unknown95, (_DWORD), 0x00AA7984);
+    FunctionPointer(int, RSDK_Unknown96, (_DWORD), 0x00AA7988);
+    FunctionPointer(int, RSDK_LoadVideo, (const char* Filepath, _DWORD, _DWORD, _DWORD), 0x00AA798C);
+    FunctionPointer(int, RSDK_LoadPNG, (_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD), 0x00AA7990);
+    FunctionPointer(int, RSDK_Unknown98, (_DWORD), 0x00AA7994);
+    FunctionPointer(int, RSDK_Unknown99, (_DWORD, _DWORD, _DWORD), 0x00AA7998);
+    FunctionPointer(int, RSDK_Unknown100, (_DWORD), 0x00AA799C);
+    FunctionPointer(int, RSDK_Unknown101, (_DWORD), 0x00AA79A0);
+    FunctionPointer(int, RSDK_Unknown102, (_DWORD, _DWORD), 0x00AA79BC);
+    FunctionPointer(int, RSDK_Unknown103, (_DWORD), 0x00AA79C0);
+    FunctionPointer(int, RSDK_Unknown104, (void), 0x00AA79C4);
+    FunctionPointer(int, RSDK_PrintDebug3, (_DWORD, _DWORD), 0x00AA79D0);
+    FunctionPointer(int, RSDK_PrintString, (_DWORD, _DWORD), 0x00AA79D4);
+    FunctionPointer(int, RSDK_PrintSomething6, (_DWORD, _DWORD), 0x00AA79D8);
+    FunctionPointer(int, RSDK_PrintSomething4, (_DWORD, _DWORD, _DWORD), 0x00AA79E0);
+    FunctionPointer(int, RSDK_PrintSomething2, (_DWORD, _DWORD, _DWORD, _DWORD), 0x00AA79E8);
+    FunctionPointer(int, RSDK_Unknown105, (_DWORD, _DWORD), 0x00AA79F0);
+    FunctionPointer(int, RSDK_Unknown106, (_DWORD), 0x00AA79F4);
+    FunctionPointer(int, RSDK_SetDebugValue, (char* name, int* value, int type, int unknownA, int unknownB), 0x00AA79FC);
 
     //Entity Calls & States
     FunctionPointer(int, ShieldState_Insta, (), 0x00004270);
