@@ -4483,7 +4483,7 @@ namespace SonicMania
 
     inline int CreateObject(int objID, void* ObjectStruct, const char* ObjectName, unsigned int EntitySize, unsigned int ObjSize, void (*Update)(void), void (*LateUpdate)(void), void (*StageUpdate)(void), void (*Draw)(void), void (*Setup)(void* Subtype), void (*StageLoad)(void), void (*EditorLoad)(void), void (*EditorDraw)(void), void (*GetAttributes)(void)) {
         if (objID == CreateSlot_New)
-            return CreateObj(ObjectStruct, ObjectName, EntitySize, ObjSize, Update, LateUpdate, StageUpdate, Draw, Setup, StageLoad, Unknown1, Unknown2, GetAttributes);
+            return CreateObj(ObjectStruct, ObjectName, EntitySize, ObjSize, Update, LateUpdate, StageUpdate, Draw, Setup, StageLoad, EditorLoad, EditorDraw, GetAttributes);
         if (objID == CreateSlot_Replace)
             objID = UnlinkObject(ObjectName);
 
