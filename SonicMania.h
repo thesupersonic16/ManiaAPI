@@ -1253,7 +1253,7 @@ namespace SonicMania
     FunctionPointer(int, Camera_ShakeScreen, (int ShakeX, int EntityID, int ShakeY), 0x002140); //Broken, Use "ShakeCamera"
     FunctionPointer(int, Camera_SetTargetEntity, (int EntityID, Entity* Target), 0x002010); //Untested, may work
     FunctionPointer(int, GetEntityID, (Entity* EntityPtr), 0x001D3CC0);
-    FunctionPointer(int, GetActiveObjects, (unsigned __int16 ObjectType, Entity* EntityPtr), 0x001C8430);
+    FunctionPointer(int, GetActiveObjects, (unsigned __int16 ObjectType, Entity** EntityPtr), 0x001C8430);
     FunctionPointer(int, GetObjects, (unsigned __int16 ObjectType, Entity* EntityPtr), 0x001C84E0);
     FunctionPointer(void*, GetObjectByID, (unsigned __int16 SlotID), 0x001D3C90);
     FunctionPointer(int, GetAttribute, (int AttributeType, const char* AttributeName, int ObjectID, int StoreOffset), 0x001D3B20);
@@ -4329,12 +4329,12 @@ namespace SonicMania
         if (OBJ_Camera)
         {
             Camera = NULL;
-            result = GetActiveObjects(OBJ_Camera->ObjectID, (Entity*)&Camera);
+            result = GetActiveObjects(OBJ_Camera->ObjectID, (Entity**)&Camera);
             if (result == 1)
             {
                 while (Camera->ActiveEntity != CameraTarget)
                 {
-                    result = GetActiveObjects(OBJ_Camera->ObjectID, (Entity*)&Camera);
+                    result = GetActiveObjects(OBJ_Camera->ObjectID, (Entity**)&Camera);
                     if (result != 1)
                         return result;
                 }
